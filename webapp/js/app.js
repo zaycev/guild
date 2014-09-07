@@ -55,6 +55,20 @@ var app = angular.module("NlcdClient", ["ngRoute", "ngSanitize", "angularFileUpl
 }]).run(function(auth) {
     // This hooks al auth events to check everything as soon as the app starts
     auth.hookEvents();
+
+    jQuery(document).ready(function($) {
+    $("#header .search input[type='text']")
+        .on("focusin", function(){
+            $("#header .search-placeholder").hide();
+        })
+        .on("focusout", function(){
+            if( !$(this).val() ) {
+                $("#header .search-placeholder").show();
+            }
+        });
+
+});
+
 });
 
 

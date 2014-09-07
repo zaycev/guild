@@ -1,5 +1,7 @@
-app.controller("PostController", ["$scope", "$location", "$sce", "ApiFactory", "FileUploader",
-    function ($scope, $location, $sce, ApiFactory, FileUploader) {
+app.controller("PostController", ["$scope", "$location", "$sce", "ApiFactory", "FileUploader", "auth",
+    function ($scope, $location, $sce, ApiFactory, FileUploader, auth) {
+
+        console.log(auth);
 
         $scope.newProject = {
             description: "",
@@ -45,7 +47,7 @@ app.controller("PostController", ["$scope", "$location", "$sce", "ApiFactory", "
 
         uploader.onCompleteItem = function(fileItem, response, status, headers) {
 
-            ApiFactory.Post("1", $scope.newProject.title, $scope.newProject.description, response.data.newName)
+            ApiFactory.Post(auth.profile.user_id, $scope.newProject.title, $scope.newProject.description, response.data.newName)
             .success(function(data) {
                 window.location = "/app/#/view?projectId=" + data.data.projectId;
             });

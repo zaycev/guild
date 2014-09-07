@@ -2,16 +2,16 @@
 
 <h3>{{projectData.title}}</h3>
 <h4>Author
-<small>{{projectData.creator.firstName}} {{projectData.creator.lastName}}</small>
+<small>{{projectData.creator.userName}}</small>
 </h4>
 
 <img style="width:64;height:64px;" src="{{projectData.creator.image}}" class="img-circle"/>
 
 <h4>Other guys</h4>
 <ul>
-    <li ng-repeat="guy in projectData.team">
+    <li ng-repeat="guy in projectData.participants">
         <a href="#/profile?userId={{guy.id}}">
-            <img style="width:32px;height:32px;" src="{{guy.image}}" class="img-thumbnail" /> {{guy.firstName}} {{guy.lastName}}
+            <img style="width:32px;height:32px;" src="{{guy.userPicture}}" class="img-thumbnail" /> {{guy.userName}}
         </a>
     </li>
 </ul>

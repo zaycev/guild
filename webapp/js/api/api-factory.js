@@ -53,6 +53,35 @@ app.factory("ApiFactory", ["$http", "$location",
                     }
                 });
 
+            },
+
+            NewUser: function(userId, userName, userScreenName, userPicture) {
+
+                return $http({
+                    url:    "/api/v1/new_user",
+                    method: "GET",
+                    params: {
+                        "userId": userId,
+                        "userName": userName,
+                        "userScreenName": userScreenName,
+                        "userPicture": userPicture
+                    }
+                });
+
+            },
+
+
+            UpVote: function(userId, projectId) {
+
+                return $http({
+                    url:    "/api/v1/up_vote",
+                    method: "GET",
+                    params: {
+                        "userId": userId,
+                        "projectId": projectId,
+                    }
+                });
+
             }
 
         };

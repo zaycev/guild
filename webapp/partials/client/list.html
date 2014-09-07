@@ -1,17 +1,56 @@
-<div class="row">
-  <div class="col-md-2"></div>
-  <div class="col-md-8">
-    <table class="table table-condensed">
-      <tr ng-repeat="project in projectList">
-        <td>
-          <a href="#/view?projectId={{project.id}}">{{project.title}}</a>
-        </td>
-        <td>{{project.reputation}}</td>
-        <td>
-          <img style="width:64;height:64px;" src="{{project.image}}" alt="{{project.creator.name}}" class="img-circle pull-right"/>
-        </td>
-      </tr>
-    </table>
-  </div>
-  <div class="col-md-2"></div>
-</div>
+<div class="body-holder">
+
+        <header id="header" class="clearfix logged">
+
+            <a href="#" class="user-profile" title="Your profile" ng-show="{{auth.isAuthenticated}}">
+                <img src="{{auth.profile.picture}}" alt=""/>
+            </a>
+
+            <a href="#" class="join h-btn ir" title="" ng-show="{{!auth.isAuthenticated}}"></a>
+
+            <a href="#" class="add-thing h-btn ir" title="Add thing">Add thing</a>
+            <div class="search">
+                <form action="" method="post">
+                    <button type="submit" class="h-btn ir">Search</button>
+                    <input type="text" name="search" required />
+
+                    <div class="search-placeholder"><em>#letsdoit</em> find things to build</div>
+                </form>
+            </div>
+        </header>
+
+        <div id="breadcrumbs">
+            <div class="wrap">
+                <h3>latest ideas</h3>
+            </div>
+        </div>
+
+        <div class="wrap">
+            <ul id="things" class="nav">
+                <li class="thing" ng-repeat="project in projectList">
+                    <a href="#/profile/?userId={{project.creator.user_id}}" class="user-profile" title="{{project.title}}">
+                        <img src="{{project.creator.userPicture}}" alt="" />
+                    </a>
+                    <div class="rating">
+                        <a style="cursor:pointer;" ng-click="UpVote(project.id)" class="vote ir" title="Vote"></a>
+                        <div class="score">{{project.upvoters.length}}</div>
+                    </div>
+                    <a href="#/view/?projectId={{project.id}}" class="link">
+                        <h2>{{project.title}}</h2>
+                        <ul class="bottom clearfix">
+                            <!-- <li>10 talking</li> -->
+                            <li>{{project.participants.length}} participants</li>
+                        </ul>
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+    </div>
+
+    <footer id="footer">
+        <div class="wrap">
+            <a href="#" class="logo">#letsdoit</a>
+            <div class="slogan">you don’t need a hackathon to hack</div>
+        </div>
+    </footer>

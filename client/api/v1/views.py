@@ -54,7 +54,6 @@ def upload(request):
     }
 
 
-
 @csrf_exempt
 @nlcd_api_call
 def post(request):
@@ -63,7 +62,7 @@ def post(request):
     title = request.GET.get("title")
     description = request.GET.get("description")
     image = request.GET.get("image")
-    user = User.objects.get(id=user_id)
+    user = LDUserData.objects.get(user_id=user_id)
     new_project = LDProject(creator=user, title=title, description=description)
     new_project.save()
     new_project.image.save(os.path.basename(image), File(open(image)))
@@ -89,7 +88,8 @@ def profile(request):
 
 def project_to_json(project):
     user = project.creator
-    data = LDUserData.objects.get(id=user.id)
+    upvoters = project.upvoters.all()
+    participants = project.participants.all()
     return {
         "id": project.id,
         "title": project.title,
@@ -97,36 +97,74 @@ def project_to_json(project):
         "reputation": project.reputation,
         "image": "/%s" % project.image.name,
         "creator":  {
-            "firstName": user.first_name,
-            "lastName": user.last_name,
-            "userName": user.username,
-            "tagLine": data.tagline,
-            "twitter": data.twitter,
-            "image": "/%s" % data.image.name,
+            "userId": user.user_id,
+            "userName": user.user_name,
+            "userScreenName": user.user_screen_name,
+            "userPicture":user.user_picture,
+            "tagLine": user.tagline,
         },
-        "team": [{
-            "id": data.holder.id,
-            "firstName": data.holder.first_name,
-            "lastName": data.holder.last_name,
-            "userName": data.holder.username,
-            "tagLine": data.tagline,
-            "twitter": data.twitter,
-            "image": "/%s" % data.image.name,
-        } for data in LDUserData.objects.filter(activity__id=project.id)]
+        "upvoters": [{
+                "userId": user.user_id,
+                "userName": user.user_name,
+                "userScreenName": user.user_screen_name,
+                "userPicture":user.user_picture,
+                "tagLine": user.tagline,
+            } for user in upvoters],
+
+        "participants": [{
+                "userId": user.user_id,
+                "userName": user.user_name,
+                "userScreenName": user.user_screen_name,
+                "userPicture":user.user_picture,
+                "tagLine": user.tagline,
+            } for user in participants],
     }
 
 
 def user_to_json(user):
-    data = LDUserData.objects.get(id=user.id)
-    activity = data.activity.all()
     projects = LDProject.objects.filter(creator=user)
+    activities = []
     return {
-        "firstName": user.first_name,
-        "lastName": user.last_name,
-        "userName": user.username,
-        "activity": [project_to_json(p) for p in activity],
+        "userId": user.user_id,
+        "userName": user.user_name,
+        "userScreenName": user.user_screen_name,
+        "userPicture": user.user_picture,
+        "tagLine": user.tagline,
         "projects": [project_to_json(p) for p in projects],
-        "tagLine": data.tagline,
-        "twitter": data.twitter,
-        "image": "/%s" % data.image.name,
     }
+
+
+@csrf_exempt
+@nlcd_api_call
+def up_vote(request):
+    user_id = request.GET.get("userId")
+    project_id = request.GET.get("projectId")
+    user = LDUserData.objects.get(user_id=user_id)
+    project = LDProject.objects.get(id=project_id)
+    project.upvoters.add(user)
+    return ""
+
+
+
+@csrf_exempt
+@nlcd_api_call
+def new_user(request):
+
+    user_id = request.GET.get("userId")
+    user_name = request.GET.get("userName")
+    user_screen_name = request.GET.get("userScreenName")
+    user_picture = request.GET.get("userPicture")
+
+    try:
+        user = LDUserData.objects.get(user_id=user_id)
+        print "BYL", user
+    except LDUserData.DoesNotExist:
+        user = LDUserData(user_id=user_id,
+            user_name=user_name,
+            user_screen_name=user_screen_name,
+            user_picture=user_picture)
+        user.save()
+        print "NOVY", user
+
+
+    return user_to_json(user)
