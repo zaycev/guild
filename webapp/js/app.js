@@ -37,6 +37,12 @@ var app = angular.module("NlcdClient", ["ngRoute", "ngSanitize", "angularFileUpl
              requiresLogin: true
         });
 
+        $routeProvider.when("/editProfile", {
+             templateUrl: "/webapp/partials/client/editProfile.html",
+             controller: "EditProfileController",
+             requiresLogin: true
+        });
+
         $routeProvider.when("/login", {
              templateUrl: "/webapp/partials/client/login.html",
              controller: "LoginController"
@@ -55,19 +61,6 @@ var app = angular.module("NlcdClient", ["ngRoute", "ngSanitize", "angularFileUpl
 }]).run(function(auth) {
     // This hooks al auth events to check everything as soon as the app starts
     auth.hookEvents();
-
-    jQuery(document).ready(function($) {
-    $("#header .search input[type='text']")
-        .on("focusin", function(){
-            $("#header .search-placeholder").hide();
-        })
-        .on("focusout", function(){
-            if( !$(this).val() ) {
-                $("#header .search-placeholder").show();
-            }
-        });
-
-});
 
 });
 
@@ -124,3 +117,19 @@ String.prototype.CutStr =  function (value, wordwise, max, tail) {
 
     return value + (tail || " ...");
 };
+
+
+
+app.directive('ngEnter', function () {
+    return function (scope, element, attrs) {
+        element.bind("keydown keypress", function (event) {
+            if(event.which === 13) {
+                scope.$apply(function (){
+                    scope.$eval(attrs.ngEnter);
+                });
+
+                event.preventDefault();
+            }
+        });
+    };
+});

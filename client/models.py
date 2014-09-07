@@ -22,8 +22,8 @@ class LDProject(models.Model):
         db_table = "t_LdProject"
 
     creator = models.ForeignKey(LDUserData, blank=True, null=True)
-    upvoters = models.ManyToManyField(LDUserData, related_name="LDProject.upvoters", blank=True, null=True)
-    participants = models.ManyToManyField(LDUserData, related_name="LDProject.participants", blank=True, null=True)
+    upvoters = models.ManyToManyField(LDUserData, related_name="voted", blank=True, null=True)
+    participants = models.ManyToManyField(LDUserData, related_name="participated", blank=True, null=True)
 
     title = models.CharField(null=True, blank=True, max_length=100)
     reputation = models.IntegerField(default=0)

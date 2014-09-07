@@ -9,13 +9,14 @@ app.factory("ApiFactory", ["$http", "$location",
 
         return {
 
-            List: function(size, skip) {
+            List: function(size, skip, query) {
                 return $http({
                     url:    "/api/v1/list",
                     method: "GET",
                     params: {
                         "size": size,
-                        "skip": skip
+                        "skip": skip,
+                        "query": query
                     }
                 });
             },
@@ -82,7 +83,19 @@ app.factory("ApiFactory", ["$http", "$location",
                     }
                 });
 
-            }
+            },
+
+
+            SaveProfile: function(profileData) {
+                return $http({
+                    url:    "/api/v1/save",
+                    method: "GET",
+                    params: {
+                        "userId": profileData.userId,
+                        "tagLine": profileData.tagLine
+                    }
+                });
+            },
 
         };
 

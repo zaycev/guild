@@ -1,48 +1,107 @@
-<h3>Profile</h3>
-<div class="container">
-    <img style="width:64;height:64px;" src="{{profileData.image}}" class="img-circle"/><br/>
-    {{profileData.firstName}} {{profileData.lastName}}<br/>
-    {{profileData.twitter}}<br/>
-    {{profileData.tagLine}}<br/>
+<div class="body-holder profile">
+
+    <header id="header" class="clearfix logged">
+        <a href="#" class="user-profile" title="Your profile" ng-show="{{auth.isAuthenticated}}">
+            <img src="{{auth.profile.picture}}" alt=""/>
+        </a>
+
+        <a href="#" class="join h-btn ir" title="" ng-show="{{!auth.isAuthenticated}}"></a>
+
+        <a href="#/post" class="add-thing h-btn ir" title="Add thing">Add thing</a>
+        <div class="search">
+            <form action="" method="post">
+                <button type="submit" class="h-btn ir">Search</button>
+                <input type="text" name="search" required />
+
+                <div class="search-placeholder"><em>#letsdoit</em> find things to build</div>
+            </form>
+        </div>
+    </header>
+
+
+
+    <div class="wrap userdata">
+        
+        <img src="{{userData.userPicture}}" alt="" />
+        <h3>{{userData.userName}}</h3>
+        <div class="tagline">{{userData.tagLine}}</div>
+
+        <a ng-show="auth.profile.user_id==userData.userId" href="#/editProfile">Edit profile</a>
+        <a ng-show="auth.profile.user_id==userData.userId" href="JavaScript:null;" ng-click="LogOut()">Log out</a>
+
+    </div>
+
+
+    <div id="breadcrumbs">
+        <div class="wrap">
+            <h3>Your ideas</h3>
+        </div>
+    </div>
+
+    <div class="wrap">
+        <ul id="things" class="nav">
+            
+            <li class="thing" ng-repeat="project in userData.projects">
+                <a href="#/view/?projectId={{project.id}}" class="user-profile" title="Your profile">
+                    <img src="{{project.creator.userPicture}}" alt="" />
+                </a>
+                <div class="rating">
+                    <a href="#" class="vote ir" title="Vote"></a>
+                    <div class="score">{{project.upvoters.length}}</div>
+                </div>
+                <a href="#" class="link">
+                    <h2>{{project.title}}</h2>
+                    <ul class="bottom clearfix">
+<!--                         <li>3 talking</li>
+ -->                        <li>{{project.participants.length}} participants</li>
+                    </ul>
+                </a>
+            </li>
+
+        </ul>
+    </div>
+
+
+
+    <div id="breadcrumbs">
+        <div class="wrap">
+            <h3>Your activity</h3>
+        </div>
+    </div>
+
+    <div class="wrap">
+        <ul id="things" class="nav">
+            
+            <li class="thing" ng-repeat="project in userData.activities">
+                <a href="#/view/?projectId={{project.id}}" class="user-profile" title="Your profile">
+                    <img src="{{project.creator.userPicture}}" alt="" />
+                </a>
+                <div class="rating">
+                    <a href="#" class="vote ir" title="Vote"></a>
+                    <div class="score">{{project.upvoters.length}}</div>
+                </div>
+                <a href="#" class="link">
+                    <h2>{{project.title}}</h2>
+                    <ul class="bottom clearfix">
+<!--                         <li>3 talking</li>
+ -->                        <li>{{project.participants.length}} participants</li>
+                    </ul>
+                </a>
+            </li>
+
+        </ul>
+    </div>
+
+
+
 </div>
 
-<h3>Projects</h3>
-<div class="row">
-  <div class="col-md-2"></div>
-  <div class="col-md-8">
-    <table class="table table-condensed">
-      <tr ng-repeat="project in profileData.projects">
-        <td>
-          <a href="#/view?id={{project.id}}">{{project.title}}</a>
-        </td>
-        <td>{{project.reputation}}</td>
-        <td>
-          <img style="width:64;height:64px;" src="{{project.image}}" alt="{{project.creator.name}}" class="img-circle"/>
-        </td>
-      </tr>
-    </table>
-  </div>
-  <div class="col-md-2"></div>
-</div>
+<footer id="footer">
+    <div class="wrap">
+        <a href="#" class="logo">#letsdoit</a>
+        <div class="slogan">you don’t need a hackathon to hack</div>
+    </div>
+</footer>
 
-<h3>Activity</h3>
-<div class="row">
-  <div class="col-md-2"></div>
-  <div class="col-md-8">
-    <table class="table table-condensed" ng-show="profileData.activity.length">
-      <tr ng-repeat="project in profileData.activity">
-        <td>
-          <a href="#/view?id={{project.id}}">{{project.title}}</a>
-        </td>
-        <td>{{project.reputation}}</td>
-        <td>
-          <img style="width:64;height:64px;" src="{{project.image}}" alt="{{project.creator.name}}" class="img-circle"/>
-        </td>
-      </tr>
-    </table>
-
-    <span ng-show="profileData.activity.length==0">No activity so far..</span>
-
-  </div>
-  <div class="col-md-2"></div>
-</div>
+<script type="text/javascript" src="js/vendor/jquery-1.9.1.min.js"></script>
+<script type="text/javascript" src="js/main.js"></script>

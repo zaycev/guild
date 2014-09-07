@@ -19,6 +19,8 @@ from client.api.decorators import nlcd_api_call
 
 from django.contrib.auth import get_user_model
 
+from django.db.models import Q
+
 # User = get_user_model()
 
 
@@ -29,8 +31,15 @@ def list(request):
 
     list_size = int(request.GET.get("size", "10"))
     list_skip = int(request.GET.get("skip", "0"))
+    query = request.GET.get("query")
 
-    projects = LDProject.objects.filter().order_by("-reputation")[list_skip:(list_skip + list_size)]
+    if query is None:
+        projects = LDProject.objects.all()
+    else:
+        projects = LDProject.objects.filter(Q(title__contains=query) |  Q(description__contains=query))
+
+
+    projects = projects.order_by("-reputation")[list_skip:(list_skip + list_size)]
 
     projects_json = [project_to_json(project) for project in projects]
 
@@ -63,9 +72,11 @@ def post(request):
     description = request.GET.get("description")
     image = request.GET.get("image")
     user = LDUserData.objects.get(user_id=user_id)
-    new_project = LDProject(creator=user, title=title, description=description)
-    new_project.save()
-    new_project.image.save(os.path.basename(image), File(open(image)))
+
+    if image:
+        new_project = LDProject(creator=user, title=title, description=description)
+        new_project.save()
+        new_project.image.save(os.path.basename(image), File(open(image)))
 
     return {
         "projectId": new_project.id,
@@ -83,8 +94,9 @@ def view(request):
 @csrf_exempt
 @nlcd_api_call
 def profile(request):
-    user = User.objects.get(id=request.GET.get("userId", "1"))
+    user = LDUserData.objects.get(user_id=request.GET.get("userId"))
     return user_to_json(user)
+
 
 def project_to_json(project):
     user = project.creator
@@ -123,7 +135,7 @@ def project_to_json(project):
 
 def user_to_json(user):
     projects = LDProject.objects.filter(creator=user)
-    activities = []
+    activities = user.voted.all()
     return {
         "userId": user.user_id,
         "userName": user.user_name,
@@ -131,6 +143,7 @@ def user_to_json(user):
         "userPicture": user.user_picture,
         "tagLine": user.tagline,
         "projects": [project_to_json(p) for p in projects],
+        "activities": [project_to_json(p) for p in activities],
     }
 
 
@@ -168,3 +181,15 @@ def new_user(request):
 
 
     return user_to_json(user)
+
+
+@csrf_exempt
+@nlcd_api_call
+def save_profile(request):
+    print "SAVE PROFILE"
+    user_id = request.GET.get("userId")
+    tagline = request.GET.get("tagLine")
+    user = LDUserData.objects.get(user_id=user_id)
+    user.tagline = tagline
+    user.save()
+    return ""

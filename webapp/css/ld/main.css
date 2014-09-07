@@ -264,3 +264,134 @@ body {
 		font-size: 10px;
 	}
 /* // Footer - end */
+
+
+.newpost .wrap form input[type="text"], textarea {
+	width: 100%;
+	margin: 7px 0 5px;
+}
+
+form input[type="file"] {
+	margin: 18px 0 5px;
+
+}
+
+form button {
+	margin: 50px auto 5px;
+	display: block;
+	padding: 10px 25px;
+	font-size: 40px;
+	background: #f6ff00;
+	border: 0;
+	font-weight: 600;
+	color: #ff3c3c;
+}
+
+form button:hover {
+	color: #f6ff00;
+	background: #ff3c3c;
+}
+
+
+/* NEWPOST */
+
+.newpost .wrap form input[type="text"], textarea {
+	width: 100%;
+	margin: 7px 0 5px;
+}
+
+form input[type="file"] {
+	margin: 18px 0 5px;
+
+}
+
+form button {
+	margin: 50px auto 5px;
+	display: block;
+	padding: 10px 25px;
+	font-size: 40px;
+	background: #f6ff00;
+	border: 0;
+	font-weight: 600;
+	color: #ff3c3c;
+}
+
+form button:hover {
+	color: #f6ff00;
+	background: #ff3c3c;
+}
+
+
+.newpost .wrap form input.largeText {
+	font-size: 27px;
+}
+
+
+.newpost .wrap form input.smallText {
+	font-size: 20px;
+}
+
+form .hint {
+	font-size: 13px;
+	margin: 0 0 30px 0;
+	display: block;
+	color: #999;
+}
+
+.newpost .wrap h2 {
+	font-size: 24px;
+}
+
+
+
+.profile .wrap {
+	padding-top: 50px;
+}
+
+.profile .userdata { 
+	text-align: center 
+}
+
+.profile .userdata img {
+	display: block;
+	margin: 20px auto;
+	border-radius: 50%;
+	overflow: hidden;
+	width: 100px;
+	height: 100px;
+}
+
+.profile .userdata h3 {
+	font-size: 22px;
+}
+
+.profile .userdata .tagline {
+	width: 270px;
+	font-size: 13px;
+	line-height: 17px;
+	margin: 10px auto;
+}
+
+.profile a { 
+	margin: 0 10px ;
+	font-size: 13px;
+	color: lightblue;
+ }
+
+
+ .editprofile .userdata {
+ 	padding-top: 50px;
+ 	min-height: 350px;
+ }
+
+ .editprofile .userdata .tagline {
+
+ 	font-size: 30px;
+ 	width: 100%;
+ 	margin: 50px auto 5px;
+ }
+
+  .editprofile .userdata a {
+
+float: right;
+ }

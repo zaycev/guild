@@ -6,7 +6,6 @@
 app.controller("ListController", ["$scope", "$location", "$sce", "ApiFactory", "auth",
     function ($scope, $location, $sce, ApiFactory, auth) {
 
-
         $(document).ready(function($) {
                 $("#header .search input[type='text']")
             .on("focusin", function(){
@@ -36,5 +35,11 @@ app.controller("ListController", ["$scope", "$location", "$sce", "ApiFactory", "
 
             });
         }
+
+        $scope.List = function() {
+            ApiFactory.List(50, 0, $scope.query).success(function(data) {
+                $scope.projectList = data.data;
+            });
+        };
 
 }]);

@@ -8,11 +8,11 @@
 
             <a href="#" class="join h-btn ir" title="" ng-show="{{!auth.isAuthenticated}}"></a>
 
-            <a href="#" class="add-thing h-btn ir" title="Add thing">Add thing</a>
+            <a href="#/post" class="add-thing h-btn ir" title="Add thing">Add thing</a>
             <div class="search">
                 <form action="" method="post">
-                    <button type="submit" class="h-btn ir">Search</button>
-                    <input type="text" name="search" required />
+                    <button type="submit" class="h-btn ir" ng-click="List()">Search</button>
+                    <input type="text" name="search" required ng-model="query" ng-enter="List()" />
 
                     <div class="search-placeholder"><em>#letsdoit</em> find things to build</div>
                 </form>
@@ -26,9 +26,9 @@
         </div>
 
         <div class="wrap">
-            <ul id="things" class="nav">
+            <ul id="things" class="nav" ng-show="projectList.length">
                 <li class="thing" ng-repeat="project in projectList">
-                    <a href="#/profile/?userId={{project.creator.user_id}}" class="user-profile" title="{{project.title}}">
+                    <a href="#/profile/?userId={{project.creator.userId}}" class="user-profile" title="{{project.title}}">
                         <img src="{{project.creator.userPicture}}" alt="" />
                     </a>
                     <div class="rating">
@@ -44,6 +44,10 @@
                     </a>
                 </li>
             </ul>
+        </div>
+
+        <div ng-show="!projectList.length">
+            No results
         </div>
 
     </div>

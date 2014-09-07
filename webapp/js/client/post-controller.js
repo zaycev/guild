@@ -1,7 +1,19 @@
 app.controller("PostController", ["$scope", "$location", "$sce", "ApiFactory", "FileUploader", "auth",
     function ($scope, $location, $sce, ApiFactory, FileUploader, auth) {
 
-        console.log(auth);
+        $(document).ready(function($) {
+                $("#header .search input[type='text']")
+            .on("focusin", function(){
+                $("#header .search-placeholder").hide();
+            })
+            .on("focusout", function(){
+                if( !$(this).val() ) {
+                    $("#header .search-placeholder").show();
+                }
+            });
+        });
+
+        $scope.auth = auth;
 
         $scope.newProject = {
             description: "",

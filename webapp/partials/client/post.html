@@ -1,21 +1,60 @@
-<form role="form">
+<div class="body-holder newpost">
 
-  <div class="form-group">
-    <label for="titleForm">Your Idea</label>
-    <input type="text" class="form-control" id="titleForm" ng-model="newProject.title">
-  </div>
+    <header id="header" class="clearfix logged">
 
-  <div class="form-group">
-    <label for="descriptionForm">Describe your idea</label>
-    <textarea type="text" class="form-control" id="descriptionForm" ng-model="newProject.description"></textarea>
-  </div>
+            <a href="#" class="user-profile" title="Your profile" ng-show="{{auth.isAuthenticated}}">
+                <img src="{{auth.profile.picture}}" alt=""/>
+            </a>
 
-  <div class="form-group">
-    <label for="exampleInputFile">Image</label>
-    <input type="file" id="exampleInputFile" nv-file-select uploader="uploader">
-    <p class="help-block">Image for.</p>
-  </div>
+            <a href="#" class="join h-btn ir" title="" ng-show="{{!auth.isAuthenticated}}"></a>
 
-  <button class="btn btn-default" ng-click="uploader.uploadAll()">Submit</button>
+            <a href="#/post" class="add-thing h-btn ir" title="Add thing">Add thing</a>
+            <div class="search">
+                <form action="" method="post">
+                    <button type="submit" class="h-btn ir">Search</button>
+                    <input type="text" name="search" required />
 
-</form>
+                    <div class="search-placeholder"><em>#letsdoit</em> find things to build</div>
+                </form>
+            </div>
+        </header>
+
+    <div id="breadcrumbs">
+        <div class="wrap">
+            <h1>POST NEW IDEA YOU WANT TO BUILD</h1>
+        </div>
+    </div>
+
+    <div class="wrap">
+        
+        <form>
+            <h2>Idea:</h2>
+            <input type="text" class="largeText" id="title" maxlength="60" ng-model="newProject.title" required/><br />
+            <span class="hint">Only 60 chars. It's your elevator pitch for other hackers. Include only important keywords</span>
+            <br />
+
+            <h2>Justification:</h2>
+            <textarea type="text" class="smallText" id="desc" rows="4" maxlength="400" ng-model="newProject.description"></textarea><br />
+            <span class="hint">Max 400 chars. Describe: 1) problem 2) solution (what's included in the MVP) and 3) what skills you lack to accomplish.</span>
+            <br />
+
+            <h2>Have Mockup?</h2>
+            <input type="file" nv-file-select uploader="uploader"/><br />
+            <span class="hint">It's super helpful for explaining the idea to have a mockup or screenshot. Even a sketch on a napkin helps.</span>
+
+            <button type="submit" ng-click="uploader.uploadAll()" />LET'S DO IT</button>
+
+        </form>
+
+
+
+    </div>
+
+</div>
+
+<footer id="footer">
+    <div class="wrap">
+        <a href="#" class="logo">#letsdoit</a>
+        <div class="slogan">you don’t need a hackathon to hack</div>
+    </div>
+</footer>

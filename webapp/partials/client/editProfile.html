@@ -1,0 +1,39 @@
+<div class="body-holder editprofile">
+
+    <header id="header" class="clearfix logged">
+        <a href="#" class="user-profile" title="Your profile" ng-show="{{auth.isAuthenticated}}">
+            <img src="{{auth.profile.picture}}" alt=""/>
+        </a>
+        <a href="#" class="join h-btn ir" title="" ng-show="{{!auth.isAuthenticated}}"></a>
+        <a href="#/post" class="add-thing h-btn ir" title="Add thing">Add thing</a>
+        <div class="search">
+            <form action="" method="post">
+                <button type="submit" class="h-btn ir">Search</button>
+                <input type="text" name="search" required />
+                <div class="search-placeholder"><em>#letsdoit</em> find things to build</div>
+            </form>
+        </div>
+    </header>
+
+
+
+    <div class="wrap userdata">
+        <a href="javascript:window.history.back()">Cancel</a>           
+        <h1>Edit your tagline</h1>
+
+        <form>
+        <textarea id="tagline" class="tagline" maxlength="160" rows="3" ng-model="userData.tagLine"/></textarea>
+            <span class="hint">160 chars. Your tagline is very important because it tells other hackers which skills you have, so that they can decide if you're a good match. Use it to highlight your specific skills, projects, accomplishments and titles.</span>
+        <button ng-click="SaveProfile()">Save</button>
+    </form>
+
+    </div>
+
+
+
+<footer id="footer">
+    <div class="wrap">
+        <a href="#" class="logo">#letsdoit</a>
+        <div class="slogan">you don’t need a hackathon to hack</div>
+    </div>
+</footer>
