@@ -17,13 +17,10 @@ app.controller("LoginController", ["$scope", "$location", "$sce", "ApiFactory", 
                                    auth.profile.name,
                                    auth.profile.screen_name,
                                    auth.profile.picture).success(function(data) {
-
-
                 });
-
               }, function(data) {
                 console.log(data);
             });
-        }
+        };
 
 }]);

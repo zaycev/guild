@@ -17,6 +17,7 @@ urlpatterns = patterns("client.api.v1.views",
     url(r"profile/$", "profile", name="profile"),
     url(r"up_vote/$", "up_vote", name="up_vote"),
     url(r"new_user/$", "new_user", name="new_user"),
+    url(r"comment/$", "comment", name="comment"),
     url(r"save/$", "save_profile", name="save_profile"),
 
 )

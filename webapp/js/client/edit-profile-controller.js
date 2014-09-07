@@ -15,7 +15,6 @@ app.controller("EditProfileController", ["$scope", "$location", "$sce", "ApiFact
 
     $scope.auth = auth;
 
-
     ApiFactory.Profile(auth.profile.user_id).success(function(data) {
         $scope.userData = data.data;
         console.log($scope.userData);

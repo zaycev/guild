@@ -2,13 +2,14 @@
 
         <header id="header" class="clearfix logged">
 
-            <a href="#" class="user-profile" title="Your profile" ng-show="{{auth.isAuthenticated}}">
+            <a href="#/profile?userId={{auth.profile.user_id}}" class="user-profile" title="Your profile" ng-show="{{auth.isAuthenticated}}">
                 <img src="{{auth.profile.picture}}" alt=""/>
             </a>
+            <a href="JavaScript:null;" class="join h-btn ir" title="" ng-show="{{!auth.isAuthenticated}}" ng-click="login()"></a>
+            
+            <a href="JavaScript:null;" ng-click="GoPost()" class="add-thing h-btn ir" title="Add thing">Add thing</a>
 
-            <a href="#" class="join h-btn ir" title="" ng-show="{{!auth.isAuthenticated}}"></a>
 
-            <a href="#/post" class="add-thing h-btn ir" title="Add thing">Add thing</a>
             <div class="search">
                 <form action="" method="post">
                     <button type="submit" class="h-btn ir" ng-click="List()">Search</button>
@@ -17,6 +18,7 @@
                     <div class="search-placeholder"><em>#letsdoit</em> find things to build</div>
                 </form>
             </div>
+
         </header>
 
         <div id="breadcrumbs">

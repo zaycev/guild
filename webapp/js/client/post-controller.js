@@ -24,6 +24,11 @@ app.controller("PostController", ["$scope", "$location", "$sce", "ApiFactory", "
             url: "/api/v1/upload/"
         });
 
+        $scope.Post = function() {
+            uploader.uploadAll();
+        };
+
+
         uploader.onWhenAddingFileFailed = function(item /*{File|FileLikeObject}*/, filter, options) {
             // console.info('onWhenAddingFileFailed', item, filter, options);
         };

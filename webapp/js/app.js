@@ -15,32 +15,27 @@ var app = angular.module("NlcdClient", ["ngRoute", "ngSanitize", "angularFileUpl
 
         $routeProvider.when("/list", {
              templateUrl: "/webapp/partials/client/list.html",
-             controller: "ListController",
-             requiresLogin: true
+             controller: "ListController"
         });
 
         $routeProvider.when("/post", {
              templateUrl: "/webapp/partials/client/post.html",
-             controller: "PostController",
-             requiresLogin: true
+             controller: "PostController"
         });
 
         $routeProvider.when("/view", {
              templateUrl: "/webapp/partials/client/view.html",
-             controller: "ViewController",
-             requiresLogin: true
+             controller: "ViewController"
         });
 
         $routeProvider.when("/profile", {
              templateUrl: "/webapp/partials/client/profile.html",
-             controller: "ProfileController",
-             requiresLogin: true
+             controller: "ProfileController"
         });
 
         $routeProvider.when("/editProfile", {
              templateUrl: "/webapp/partials/client/editProfile.html",
-             controller: "EditProfileController",
-             requiresLogin: true
+             controller: "EditProfileController"
         });
 
         $routeProvider.when("/login", {
@@ -53,8 +48,7 @@ var app = angular.module("NlcdClient", ["ngRoute", "ngSanitize", "angularFileUpl
         authProvider.init({
             domain: 'letsdo.auth0.com',
             clientID: 'x9fQt7BU6A5HjucW01o69AS64OJiv8fI',
-            callbackURL: location.href,
-            loginUrl: '/login'
+            callbackURL: location.href
         });
 
 

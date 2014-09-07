@@ -97,6 +97,21 @@ app.factory("ApiFactory", ["$http", "$location",
                 });
             },
 
+            PostComment: function(userId, projectId, commentText) {
+
+                return $http({
+                    url:    "/api/v1/comment",
+                    method: "GET",
+                    params: {
+                        "userId": userId,
+                        "projectId": projectId,
+                        "commentText": commentText,
+                    }
+                });
+
+
+            } 
+
         };
 
 

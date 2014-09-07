@@ -13,12 +13,10 @@ from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.models import User
 
 from client.models import LDProject
+from client.models import LDComment
 from client.models import LDUserData
-
 from client.api.decorators import nlcd_api_call
-
 from django.contrib.auth import get_user_model
-
 from django.db.models import Q
 
 # User = get_user_model()
@@ -50,13 +48,17 @@ def list(request):
 @nlcd_api_call
 def upload(request):
 
-    original_name = request.FILES["file"].name
-    ext = original_name.split(".")[-1]
-    data = request.FILES["file"].read()
-    filename = "webapp/uploads/random/%s.%s" % (uuid.uuid4(), ext)
+    try:
+        original_name = request.FILES["file"].name
+        ext = original_name.split(".")[-1]
+        data = request.FILES["file"].read()
+        filename = "webapp/uploads/random/%s.%s" % (uuid.uuid4(), ext)
 
-    with open(filename, "w") as o_fl:
-        o_fl.write(data)
+        with open(filename, "w") as o_fl:
+            o_fl.write(data)
+    except:
+        import traceback
+        traceback.print_exc()
 
     return {
         "newName": filename
@@ -73,9 +75,9 @@ def post(request):
     image = request.GET.get("image")
     user = LDUserData.objects.get(user_id=user_id)
 
+    new_project = LDProject(creator=user, title=title, description=description)
+    new_project.save()
     if image:
-        new_project = LDProject(creator=user, title=title, description=description)
-        new_project.save()
         new_project.image.save(os.path.basename(image), File(open(image)))
 
     return {
@@ -86,7 +88,7 @@ def post(request):
 @csrf_exempt
 @nlcd_api_call
 def view(request):
-    project_id = request.GET.get("projectId", "1")
+    project_id = request.GET.get("projectId")
     project = LDProject.objects.get(id=project_id)
     return project_to_json(project)
 
@@ -99,38 +101,55 @@ def profile(request):
 
 
 def project_to_json(project):
-    user = project.creator
-    upvoters = project.upvoters.all()
-    participants = project.participants.all()
-    return {
-        "id": project.id,
-        "title": project.title,
-        "description": project.description,
-        "reputation": project.reputation,
-        "image": "/%s" % project.image.name,
-        "creator":  {
-            "userId": user.user_id,
-            "userName": user.user_name,
-            "userScreenName": user.user_screen_name,
-            "userPicture":user.user_picture,
-            "tagLine": user.tagline,
-        },
-        "upvoters": [{
+    try:
+        user = project.creator
+        upvoters = project.upvoters.all()
+        participants = project.participants.all()
+        comments = LDComment.objects.filter(project=project).order_by("-timestamp")
+        return {
+            "id": project.id,
+            "title": project.title,
+            "description": project.description,
+            "reputation": project.reputation,
+            "image": "/%s" % project.image.name,
+            "creator":  {
                 "userId": user.user_id,
                 "userName": user.user_name,
                 "userScreenName": user.user_screen_name,
                 "userPicture":user.user_picture,
                 "tagLine": user.tagline,
-            } for user in upvoters],
+            },
+            "upvoters": [{
+                    "userId": user.user_id,
+                    "userName": user.user_name,
+                    "userScreenName": user.user_screen_name,
+                    "userPicture":user.user_picture,
+                    "tagLine": user.tagline,
+                } for user in upvoters],
 
-        "participants": [{
-                "userId": user.user_id,
-                "userName": user.user_name,
-                "userScreenName": user.user_screen_name,
-                "userPicture":user.user_picture,
-                "tagLine": user.tagline,
-            } for user in participants],
-    }
+            "participants": [{
+                    "userId": user.user_id,
+                    "userName": user.user_name,
+                    "userScreenName": user.user_screen_name,
+                    "userPicture":user.user_picture,
+                    "tagLine": user.tagline,
+                } for user in participants],
+            "comments": [{
+                "text": c.text,
+                "author": {
+                    "userId": c.creator.user_id,
+                    "userName": c.creator.user_name,
+                    "userScreenName": c.creator.user_screen_name,
+                    "userPicture": c.creator.user_picture,
+                    "tagLine": c.creator.tagline,
+                },
+                "date": c.timestamp.strftime('%Y-%m-%d %H:%M'),
+                "is_part": c.is_part,
+            } for c in comments]
+        }
+    except:
+        import traceback
+        traceback.print_exc()
 
 
 def user_to_json(user):
@@ -192,4 +211,26 @@ def save_profile(request):
     user = LDUserData.objects.get(user_id=user_id)
     user.tagline = tagline
     user.save()
+    return ""
+
+
+@csrf_exempt
+@nlcd_api_call
+def comment(request):
+    print "COMMENTED YOBA"
+    try:
+        project_id = request.GET.get("projectId")
+        project = LDProject.objects.get(id=project_id)
+        user_id = request.GET.get("userId")
+        comment_text = request.GET.get("commentText")
+        user = LDUserData.objects.get(user_id=user_id)
+        comment = LDComment(project=project, creator=user, text=comment_text, is_part = "#letsdoit" in comment_text or user.user_id == project.creator.user_id)
+        comment.save()
+
+        if "#letsdoit" in comment_text and user.user_id != project.creator.user_id:
+            project.participants.add(user)
+
+    except:
+        import traceback
+        traceback.print_exc()
     return ""

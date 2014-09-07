@@ -25,20 +25,50 @@ app.controller("ListController", ["$scope", "$location", "$sce", "ApiFactory", "
             $scope.projectList = data.data;
         });
 
+        $scope.GoPost = function() {
+            if (auth.isAuthenticated) {
+                window.location = "#/post"
+            } else {
+                $scope.login();
+            }
+        };
+
         $scope.UpVote = function(projectId) {
 
-            ApiFactory.UpVote(auth.profile.user_id, projectId).success(function() {
+            if (auth.isAuthenticated) {
+                ApiFactory.UpVote(auth.profile.user_id, projectId).success(function() {
 
-                ApiFactory.List().success(function(data) {
-                    $scope.projectList = data.data;
+                    ApiFactory.List().success(function(data) {
+                        $scope.projectList = data.data;
+                    });
+
                 });
+            } else {
+                $scope.login();
+            }
 
-            });
         }
 
         $scope.List = function() {
             ApiFactory.List(50, 0, $scope.query).success(function(data) {
                 $scope.projectList = data.data;
+            });
+        };
+
+
+        $scope.login = function() {
+            auth.signin({
+                popup: true
+              }, function() {
+
+                ApiFactory.NewUser(auth.profile.user_id,
+                                   auth.profile.name,
+                                   auth.profile.screen_name,
+                                   auth.profile.picture).success(function(data) {
+                });
+               location.reload();
+              }, function(data) {
+                console.log(data);
             });
         };
 

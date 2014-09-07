@@ -1,37 +1,102 @@
-<img style="width:256px;" src="{{projectData.image}}" class="img-rounded"/>
+<div class="body-holder">
 
-<h3>{{projectData.title}}</h3>
-<h4>Author
-<small>{{projectData.creator.userName}}</small>
-</h4>
-
-<img style="width:64;height:64px;" src="{{projectData.creator.image}}" class="img-circle"/>
-
-<h4>Other guys</h4>
-<ul>
-    <li ng-repeat="guy in projectData.participants">
-        <a href="#/profile?userId={{guy.id}}">
-            <img style="width:32px;height:32px;" src="{{guy.userPicture}}" class="img-thumbnail" /> {{guy.userName}}
+    <header id="header" class="have-back logged clearfix">
+        <a href="#" class="user-profile" title="Your profile">
+            <img src="images/avatar.jpg" alt="" />
         </a>
-    </li>
-</ul>
+        <!--a href="#" class="join h-btn ir" title=""></a-->
+        <a href="#" class="add-thing h-btn ir" title="Add thing">Add thing</a>
+        <a href="#" class="back h-btn ir" title="Back">Back</a>
+        <div class="search">
+            <form action="" method="post">
+                <button type="submit" class="h-btn ir">Search</button>
+                <input type="text" name="search" required />
 
-<br/>
-<br/>
-<br/>
+                <div class="search-placeholder"><em>#letsdoit</em> find things to build</div>
+            </form>
+        </div>
+    </header>
 
-    <div id="disqus_thread"></div>
-    <script type="text/javascript">
-        /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
-        var disqus_shortname = 'hackaton2014'; // required: replace example with your forum shortname
+    <div id="thing-page">
+        <div class="wrap">
+            <div class="inner">
 
-        /* * * DON'T EDIT BELOW THIS LINE * * */
-        (function() {
-            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
-            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-        })();
-    </script>
-    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
-    <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
-    
+                <div class="story clearfix">
+                    <div class="rating">
+                        <a href="#" class="vote ir" title="Vote"></a>
+                        <div class="score">{{projectData.upvoters.length}}</div>
+                    </div>
+                    <div class="cover">
+                        <img src="{{projectData.image}}" alt="" />
+                    </div>
+                    <div class="content">
+                        <h1>{{projectData.title}}</h1>
+                        <p>{{projectData.description}}</p>
+                    </div>
+                </div>
+
+                <ul class="nav clearfix user-box">
+                    <li class="author">
+                        <div class="pic">
+                            <a href="#">
+                                <img src="{{projectData.creator.userPicture}}" alt="" />
+                            </a>
+                        </div>
+                        <div class="name">
+                            <a href="#/profile?userId={{projectData.creator.userId}}">{{projectData.creator.userName}}</a>
+                        </div>
+                        <div class="bio">{{projectData.creator.tagLine}}</div>
+                    </li>
+                    <li class="participants" ng-show="projectData.participants">
+                        <h4>{{projectData.participants.length}} participants</h4>
+                        <div class="pics">
+                            <a href="#/profile?userId={{participant.userId}}" ng-repeat="participant in projectData.participants">
+                                <img src="{{participant.userPicture}}" alt="" />
+                            </a>
+                        </div>
+                    </li>
+                    <li class="upvoters" ng-show="projectData.upvoters">
+                        <h4>{{projectData.upvoters.length}} upvoters</h4>
+                        <div class="pics">
+                            <a href="#/profile?userId={{upvoter.userId}}" ng-repeat="upvoter in projectData.upvoters">
+                                <img src="{{upvoter.userPicture}}" alt="" />
+                            </a>
+                        </div>
+                    </li>
+                </ul>
+
+                <div id="lets-do-it" class="clearfix">
+                    <form action="" method="post">
+                        <input type="text" name="hash" placeholder="tag your comment #letsdoit to participate" ng-model="commentText" ng-enter="PostComment()" required />
+                        <button ng-click="PostComment()">Lets do it</button>
+                    </form>
+                </div>
+
+                <ul id="comments" class="nav">
+
+                    <li ng-class="{active:c.is_part, pasive:!c.is_part}" ng-repeat="c in projectData.comments">
+                        <a href="#/profile?userId={{c.author.userId}}" class="user-profile" title="">
+                            <img src="{{c.author.userPicture}}" alt="" />
+                        </a>
+                        <div class="message-holder">
+                            <div class="message">
+                                {{c.text}}
+                            </div>
+                            <time>{{c.date}}</time>
+                        </div>
+                    </li>
+
+                </ul>
+
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<footer id="footer">
+    <div class="wrap">
+        <a href="#" class="logo">#letsdoit</a>
+        <div class="slogan">you don’t need a hackathon to hack</div>
+    </div>
+</footer>

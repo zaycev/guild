@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from django.db import models
 from django.contrib.auth.models import User
 
@@ -31,3 +33,14 @@ class LDProject(models.Model):
 
     image = models.ImageField(upload_to="webapp/uploads/")
 
+
+class LDComment(models.Model):
+
+    class Meta:
+        db_table = "t_LdComment"
+
+    creator = models.ForeignKey(LDUserData, blank=False, null=False)
+    text = models.CharField(null=False, blank=False, max_length=400)
+    timestamp = models.DateTimeField(default=datetime.now, blank=True)
+    is_part = models.BooleanField(default=False)
+    project = models.ForeignKey(LDProject, blank=False, null=False)
