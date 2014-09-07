@@ -3,11 +3,15 @@
  */
 
 
-app.controller("ListController", ["$scope", "$location", "$sce", "NcldApiFactory",
-    function ($scope, $location, $sce, NcldApiFactory) {
+app.controller("ListController", ["$scope", "$location", "$sce", "ApiFactory",
+    function ($scope, $location, $sce, ApiFactory) {
 
-        // // Get node ID from URL parameters
-        // var graphId = $location.search().g;
-        // if (!graphId) graphId = "5"; // Default
+        $scope.projectList = [];
+
+        ApiFactory.List().success(function(data) {
+
+            $scope.projectList = data.data;
+
+        });
 
 }]);

@@ -4,17 +4,28 @@
 
 "use strict";
 
-app.factory("NcldApiFactory", ["$http", "$location",
+app.factory("ApiFactory", ["$http", "$location",
     function($http, $location) {
 
         return {
 
-            getTestGraph: function(graphId) {
+            List: function(size, skip) {
                 return $http({
-                    url:    "/api/v1/get_test_graph",
+                    url:    "/api/v1/list",
                     method: "GET",
                     params: {
-                        "graphId": graphId
+                        "size": size,
+                        "skip": skip
+                    }
+                });
+            },
+
+            Profile: function(userId) {
+                return $http({
+                    url:    "/api/v1/profile",
+                    method: "GET",
+                    params: {
+                        "userId": userId
                     }
                 });
             }

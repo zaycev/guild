@@ -10,10 +10,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <!-- Google Font -->
-    <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Gentium%20Book%20Basic">
-
-    <title>&alpha; mediator</title>
+    <title>Lets Do It</title>
 
     <!-- CSS -->
     <link href="/webapp/vendor/bs/css/bootstrap.css" rel="stylesheet">
@@ -31,21 +28,37 @@
   <body>
 
 
-    <div id="wrap" ng-view>
+    <div class="container">
 
-    </div>
-    
-    <br/>
-    
-    <div id="footer">
-      <div class="container">
-        <p class="text-muted">
-          <small>
-            2014 &copy; Let Do It
-          </small>
-        </p>
+      <!-- Static navbar -->
+      <div class="navbar navbar-default" role="navigation">
+        <div class="container-fluid">
+          <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#">Let's do it!</a>
+          </div>
+          <div class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+              <li><a href="/#/list">List</a></li>
+              <li><a href="/#/post">Post</a></li>
+              <li><a href="/#/view">View</a></li>
+              <li><a href="/#/profile">Profile</a></li>
+            </ul>
+          </div><!--/.nav-collapse -->
+        </div><!--/.container-fluid -->
       </div>
-    </div>
+
+      <div id="wrap" ng-view>
+          
+      </div>
+
+    </div> <!-- /container -->
+
 
     <!-- Angular libs -->
     <script src="/webapp/js/vendor/angular-route.min.js"></script>
@@ -61,6 +74,9 @@
     <script src="/webapp/js/app.js"></script>
     <script src="/webapp/js/api/api-factory.js"></script>
     <script src="/webapp/js/client/list-controller.js"></script>
+    <script src="/webapp/js/client/post-controller.js"></script>
+    <script src="/webapp/js/client/view-controller.js"></script>
+    <script src="/webapp/js/client/profile-controller.js"></script>
 
   </body>
 </html>

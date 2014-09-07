@@ -20,8 +20,12 @@ ALLOWED_HOSTS = ["localhost"]
 
 
 INSTALLED_APPS = (
+    "django.contrib.auth",
     "django.contrib.contenttypes",
     "django.contrib.staticfiles",
+    "django.contrib.sessions",
+    "django.contrib.messages",
+    "django.contrib.admin",
     "client"
 )
 
@@ -41,7 +45,7 @@ WSGI_APPLICATION = "nlcd.wsgi.application"
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.sqlite3",
-        "NAME": project_dir("nlcd.db"),
+        "NAME": project_dir("sqilte.db"),
     }
 }
 

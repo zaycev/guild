@@ -8,13 +8,30 @@ Author: Vova Zaytsev <zaytsev@usc.edu>
 var app = angular.module("NlcdClient", ["ngRoute", "ngSanitize"])
     .config(["$routeProvider", "$locationProvider",
 
+
     function($routeProvider, $locationPrvioder) {
-        $routeProvider.when("/", {
+
+        $routeProvider.when("/list", {
              templateUrl: "/webapp/partials/client/list.html",
              controller: "ListController"
-
         });
-        $routeProvider.otherwise({redirectTo: "/"});
+
+        $routeProvider.when("/post", {
+             templateUrl: "/webapp/partials/client/post.html",
+             controller: "PostController"
+        });
+
+        $routeProvider.when("/view", {
+             templateUrl: "/webapp/partials/client/view.html",
+             controller: "ViewController"
+        });
+
+        $routeProvider.when("/profile", {
+             templateUrl: "/webapp/partials/client/profile.html",
+             controller: "ProfileController"
+        });
+
+        $routeProvider.otherwise({redirectTo: "/list"});
 
 }]);
 
