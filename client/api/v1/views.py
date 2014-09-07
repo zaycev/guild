@@ -169,12 +169,16 @@ def user_to_json(user):
 @csrf_exempt
 @nlcd_api_call
 def up_vote(request):
-    user_id = request.GET.get("userId")
-    project_id = request.GET.get("projectId")
-    user = LDUserData.objects.get(user_id=user_id)
-    project = LDProject.objects.get(id=project_id)
-    project.upvoters.add(user)
-    return ""
+    try:
+        user_id = request.GET.get("userId")
+        project_id = request.GET.get("projectId")
+        user = LDUserData.objects.get(user_id=user_id)
+        project = LDProject.objects.get(id=project_id)
+        project.upvoters.add(user)
+        return ""
+    except:
+        import traceback
+        traceback.print_exc()
 
 
 
