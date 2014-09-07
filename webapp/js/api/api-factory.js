@@ -38,6 +38,21 @@ app.factory("ApiFactory", ["$http", "$location",
                         "userId": userId
                     }
                 });
+            },
+
+            Post: function(userId, newTitle, newDescription, newImage) {
+
+                return $http({
+                    url:    "/api/v1/post",
+                    method: "GET",
+                    params: {
+                        "userId": userId,
+                        "title": newTitle,
+                        "description": newDescription,
+                        "image": newImage
+                    }
+                });
+
             }
 
         };

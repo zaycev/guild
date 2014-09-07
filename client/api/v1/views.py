@@ -3,7 +3,10 @@
 
 import re
 import json
+import uuid
+import os
 
+from django.core.files import File
 from django.conf import settings
 from django.views.decorators.csrf import csrf_exempt
 
@@ -36,17 +39,38 @@ def list(request):
 
 @csrf_exempt
 @nlcd_api_call
+def upload(request):
+
+    original_name = request.FILES["file"].name
+    ext = original_name.split(".")[-1]
+    data = request.FILES["file"].read()
+    filename = "webapp/uploads/random/%s.%s" % (uuid.uuid4(), ext)
+
+    with open(filename, "w") as o_fl:
+        o_fl.write(data)
+
+    return {
+        "newName": filename
+    }
+
+
+
+@csrf_exempt
+@nlcd_api_call
 def post(request):
 
     user_id = request.GET.get("userId")
-    graph_id = request.GET.get("userId")
-    graph_id = request.GET.get("userId")
-    graph_id = request.GET.get("userId")
+    title = request.GET.get("title")
+    description = request.GET.get("description")
+    image = request.GET.get("image")
+    user = User.objects.get(id=user_id)
+    new_project = LDProject(creator=user, title=title, description=description)
+    new_project.save()
+    new_project.image.save(os.path.basename(image), File(open(image)))
 
-    with open("webapp/json/%s.json" % graph_id, "rb") as i_fl:
-        graph = json.load(i_fl)
-
-    return graph
+    return {
+        "projectId": new_project.id,
+    }
 
 
 @csrf_exempt

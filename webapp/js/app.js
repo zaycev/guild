@@ -5,7 +5,7 @@ Author: Vova Zaytsev <zaytsev@usc.edu>
 "use strict";
 
 
-var app = angular.module("NlcdClient", ["ngRoute", "ngSanitize"])
+var app = angular.module("NlcdClient", ["ngRoute", "ngSanitize", "angularFileUpload"])
     .config(["$routeProvider", "$locationProvider",
 
 
