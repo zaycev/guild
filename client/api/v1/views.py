@@ -52,29 +52,33 @@ def post(request):
 @csrf_exempt
 @nlcd_api_call
 def view(request):
-    project_id = request.GET.get("userId")
-    with open("webapp/json/%s.json" % graph_id, "rb") as i_fl:
-        graph = json.load(i_fl)
-    return graph
+    project_id = request.GET.get("projectId", "1")
+    project = LDProject.objects.get(id=project_id)
+    return project_to_json(project)
 
 
 @csrf_exempt
 @nlcd_api_call
 def profile(request):
-    user = User.objects.get(id=1)
+    user = User.objects.get(id=request.GET.get("userId", "1"))
     return user_to_json(user)
 
 def project_to_json(project):
+    user = project.creator
+    data = LDUserData.objects.get(id=user.id)
     return {
         "id": project.id,
         "title": project.title,
         "description": project.description,
         "reputation": project.reputation,
         "image": "/%s" % project.image.name,
-        "creator": {
-            "userName": project.creator.username,
-            "firstName": project.creator.first_name,
-            "lastName": project.creator.last_name,
+        "creator":  {
+            "firstName": user.first_name,
+            "lastName": user.last_name,
+            "userName": user.username,
+            "tagLine": data.tagline,
+            "twitter": data.twitter,
+            "image": "/%s" % data.image.name,
         }
     }
 

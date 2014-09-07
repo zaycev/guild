@@ -20,6 +20,16 @@ app.factory("ApiFactory", ["$http", "$location",
                 });
             },
 
+            View: function(projectId) {
+                return $http({
+                    url:    "/api/v1/view",
+                    method: "GET",
+                    params: {
+                        "projectId": projectId
+                    }
+                });
+            },
+
             Profile: function(userId) {
                 return $http({
                     url:    "/api/v1/profile",

@@ -11,5 +11,6 @@ from django.views.generic.base import RedirectView
 
 urlpatterns = patterns("client.api.v1.views",
     url(r"list/$", "list", name="list"),
+    url(r"view/$", "view", name="view"),
     url(r"profile/$", "profile", name="profile"),
 )
