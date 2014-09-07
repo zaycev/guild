@@ -5,35 +5,57 @@ Author: Vova Zaytsev <zaytsev@usc.edu>
 "use strict";
 
 
-var app = angular.module("NlcdClient", ["ngRoute", "ngSanitize", "angularFileUpload"])
-    .config(["$routeProvider", "$locationProvider",
+var app = angular.module("NlcdClient", ["ngRoute", "ngSanitize", "angularFileUpload", "auth0"])
+    .config(["$routeProvider", "$locationProvider", "authProvider", "$httpProvider",
 
 
-    function($routeProvider, $locationPrvioder) {
+    function($routeProvider, $locationPrvioder, authProvider, $httpProvider) {
+
+        $httpProvider.interceptors.push('authInterceptor');
 
         $routeProvider.when("/list", {
              templateUrl: "/webapp/partials/client/list.html",
-             controller: "ListController"
+             controller: "ListController",
+             requiresLogin: true
         });
 
         $routeProvider.when("/post", {
              templateUrl: "/webapp/partials/client/post.html",
-             controller: "PostController"
+             controller: "PostController",
+             requiresLogin: true
         });
 
         $routeProvider.when("/view", {
              templateUrl: "/webapp/partials/client/view.html",
-             controller: "ViewController"
+             controller: "ViewController",
+             requiresLogin: true
         });
 
         $routeProvider.when("/profile", {
              templateUrl: "/webapp/partials/client/profile.html",
-             controller: "ProfileController"
+             controller: "ProfileController",
+             requiresLogin: true
+        });
+
+        $routeProvider.when("/login", {
+             templateUrl: "/webapp/partials/client/login.html",
+             controller: "LoginController"
         });
 
         $routeProvider.otherwise({redirectTo: "/list"});
 
-}]);
+        authProvider.init({
+            domain: 'letsdo.auth0.com',
+            clientID: 'x9fQt7BU6A5HjucW01o69AS64OJiv8fI',
+            callbackURL: location.href,
+            loginUrl: '/login'
+        });
+
+
+}]).run(function(auth) {
+    // This hooks al auth events to check everything as soon as the app starts
+    auth.hookEvents();
+});
 
 
 
