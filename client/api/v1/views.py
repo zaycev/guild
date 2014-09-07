@@ -79,7 +79,16 @@ def project_to_json(project):
             "tagLine": data.tagline,
             "twitter": data.twitter,
             "image": "/%s" % data.image.name,
-        }
+        },
+        "team": [{
+            "id": data.holder.id,
+            "firstName": data.holder.first_name,
+            "lastName": data.holder.last_name,
+            "userName": data.holder.username,
+            "tagLine": data.tagline,
+            "twitter": data.twitter,
+            "image": "/%s" % data.image.name,
+        } for data in LDUserData.objects.filter(activity__id=project.id)]
     }
 
 
