@@ -15,7 +15,7 @@ from django.contrib.auth.models import User
 from client.models import LDProject
 from client.models import LDComment
 from client.models import LDUserData
-from client.api.decorators import nlcd_api_call
+from client.api.decorators import api_call
 from django.contrib.auth import get_user_model
 from django.db.models import Q
 
@@ -24,7 +24,7 @@ from django.db.models import Q
 
 
 @csrf_exempt
-@nlcd_api_call
+@api_call
 def list(request):
 
     list_size = int(request.GET.get("size", "10"))
@@ -45,7 +45,7 @@ def list(request):
 
 
 @csrf_exempt
-@nlcd_api_call
+@api_call
 def upload(request):
 
     try:
@@ -66,7 +66,7 @@ def upload(request):
 
 
 @csrf_exempt
-@nlcd_api_call
+@api_call
 def post(request):
 
     user_id = request.GET.get("userId")
@@ -86,7 +86,7 @@ def post(request):
 
 
 @csrf_exempt
-@nlcd_api_call
+@api_call
 def view(request):
     project_id = request.GET.get("projectId")
     project = LDProject.objects.get(id=project_id)
@@ -94,7 +94,7 @@ def view(request):
 
 
 @csrf_exempt
-@nlcd_api_call
+@api_call
 def profile(request):
     user = LDUserData.objects.get(user_id=request.GET.get("userId"))
     return user_to_json(user)
@@ -167,7 +167,7 @@ def user_to_json(user):
 
 
 @csrf_exempt
-@nlcd_api_call
+@api_call
 def up_vote(request):
     try:
         user_id = request.GET.get("userId")
@@ -183,7 +183,7 @@ def up_vote(request):
 
 
 @csrf_exempt
-@nlcd_api_call
+@api_call
 def new_user(request):
 
     user_id = request.GET.get("userId")
@@ -207,7 +207,7 @@ def new_user(request):
 
 
 @csrf_exempt
-@nlcd_api_call
+@api_call
 def save_profile(request):
     print "SAVE PROFILE"
     user_id = request.GET.get("userId")
@@ -219,7 +219,7 @@ def save_profile(request):
 
 
 @csrf_exempt
-@nlcd_api_call
+@api_call
 def comment(request):
     print "COMMENTED YOBA"
     try:
