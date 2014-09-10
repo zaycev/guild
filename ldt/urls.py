@@ -5,16 +5,37 @@ from django.conf.urls import url
 from django.conf.urls import include
 from django.conf.urls import patterns
 
-from django.shortcuts import redirect
-from django.views.generic.base import RedirectView
-
 from django.contrib import admin
-admin.autodiscover()
 
+
+from api import views as api
+from app import views as app
 
 urlpatterns = patterns("client.views",
-    url(r"^$",      RedirectView.as_view(url="/app/", permanent=False)),
-    url(r"^app/",   include("client.urls")),
-    url(r"^api/v1/",include("client.api.v1.urls")),
-    url(r'^admin/', include(admin.site.urls)),
+
+    url(r"^$",                  app.app),
+    url(r"^debug/$",            app.debug),
+
+    url(r"api/idea/get/$",      api.idea_get),
+    url(r"api/idea/list/$",     api.idea_list),
+    url(r"api/idea/vote/$",     api.idea_vote),
+    url(r"api/idea/part/$",     api.idea_part),
+    url(r"api/idea/create/$",   api.idea_create),
+    url(r"api/idea/update/$",   api.idea_update),
+    url(r"api/idea/remove/$",   api.idea_remove),
+
+    url(r"api/pic/upload/$",    api.pic_upload),
+    url(r"api/pic/remove/$",    api.pic_remove),
+
+    url(r"api/profile/create$", api.profile_create),
+    url(r"api/profile/update$", api.profile_updare),
+
+    url(r"api/comment/get$",    api.comment_get),
+    url(r"api/comment/create$", api.comment_create),
+    url(r"api/comment/delete$", api.comment_remove),
+
+    url(r"^admin/", include(admin.site.urls)),
 )
+
+admin.autodiscover()
+

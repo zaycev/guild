@@ -26,7 +26,9 @@ INSTALLED_APPS = (
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.admin",
-    "client"
+    "feed",
+    "api",
+    "app",
 )
 
 MIDDLEWARE_CLASSES = (

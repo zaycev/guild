@@ -1,0 +1,625 @@
+/* 
+========================================================================
+              / by --- Elegant Division (http://e-div.com)
+    Markup  --- for -- Peter Green
+              \ in --- 2014
+========================================================================
+*/
+
+/* Common styles
+======================================================================== */
+body,
+button,
+input,
+select,
+textarea {
+	font: 400 1em/1.4em 'Montserrat', Arial, sans-serif;
+	color: #000;
+}
+
+a {
+	color: #777;
+}
+a:hover {
+	text-decoration: none;
+}
+
+h1, h2, h3, h4, h4 {
+	margin: 0;
+	font-weight: 400;
+}
+
+.wrap {
+	margin: 0 auto;
+	width: 980px;
+}
+
+/*html,
+body {
+	min-height: 100%;
+}
+.body-holder {
+	min-height: 100%;
+	height: auto !important;
+	height: 100%;
+	margin-bottom: -160px;
+	padding-bottom: 160px;
+}*/
+.body-holder {
+	min-width: 800px;
+}
+/* // Common styles - end */
+
+
+/* Header
+======================================================================== */
+#header {
+	background-color: #f6ff00;
+	height: 59px;
+	padding: 15px;
+}
+	#header .h-btn {
+		border: none;
+		background-color: #f6ff00;
+		background-repeat: no-repeat;
+		width: 83px;
+		height: 59px;
+	}
+	#header .h-btn:hover {
+		background-color: #fe4738;
+	}
+	#header .join {
+		float: right;
+		background-image: url(/webapp/img/header-profile.png);
+		background-position: 18px 6px;
+		margin-left: 3px;
+	}
+	#header .join:hover {
+		background-position: 18px -77px;
+	}
+	#header .user-profile {
+		float: right;
+		border-radius: 50%;
+		overflow: hidden;
+		margin-left: 16px
+	}
+	#header .user-profile,
+	#header .user-profile img {
+		width: 57px;
+		height: 57px;
+	}
+	#header .add-thing {
+		float: right;
+		background-image: url(/webapp/img/header-add.png);
+		background-position: 23px 8px;
+	}
+	#header .add-thing:hover {
+		background-position: 23px -82px;
+	}
+	#header .back {
+		float: left;
+		background-image: url(/webapp/img/header-back.png);
+		background-position: 33px 20px;
+		width: 72px;
+		height: 59px;
+		margin-left: -81px;
+	}
+	#header .back:hover {
+		background-position: 33px -61px;
+	}
+	#header .search {
+		position: relative;
+		border: 1px solid #fb9d1e;
+		height: 57px;
+		margin-right: 200px;
+		overflow: hidden;
+	}
+		#header .search button {
+			float: right;
+			margin: -1px -1px 0 0;
+			background-image: url(/webapp/img/header-search.png);
+			background-position: 24px 9px;
+			position: relative;
+			z-index: 2;
+		}
+		#header .search button:hover {
+			background-position: 24px -81px;
+		}
+		#header .search input[type="text"] {
+			position: relative;
+			z-index: 2;
+			height: 56px;
+			background: transparent;
+			border: none !important;
+			outline: none !important;
+			box-shadow: none !important;
+			color: #ff3c3c;
+			padding: 0 0 0 6px;
+			width: 80%;
+			line-height: 0;
+		}
+		#header .search input[type="text"],
+		#header .search-placeholder {
+			font-weight: 700;
+			text-transform: uppercase;
+			font-size: 51px;
+			letter-spacing: -1px;
+		}
+		#header .search-placeholder {
+			position: absolute;
+			top: -3px;
+			left: 6px;
+			padding: 20px 0;
+			color: #f9e307;
+			font-weight: 700;
+			text-transform: uppercase;
+			font-size: 51px;
+			overflow: hidden;
+			white-space: nowrap;
+
+			-webkit-user-select: none;
+			-moz-user-select: none;
+			-ms-user-select: none;
+			user-select: none;
+		}
+			#header .search-placeholder em {
+				color: #ff3c3c;
+				font-style: normal;
+			}
+#header.logged {
+	padding-right: 25px;
+}
+	#header.logged .search {
+		margin-right: 169px;
+	}
+#header.have-back {
+	padding-left: 81px;
+}
+/* // Header - end */
+
+
+/* Content
+======================================================================== */
+#breadcrumbs {
+	border-bottom: 1px solid #ececec;
+	padding: 30px 0;
+	margin-bottom: 16px;
+}
+	#breadcrumbs h3 {
+		padding: 0 20px;
+		font-size: 16px;
+		color: #aaa;
+		text-transform: uppercase;
+		letter-spacing: 1px;
+	}
+
+#things {
+}
+	#things .thing {
+		margin-bottom: 5px;
+	}
+	#things .thing:hover {
+		background-color: #ffeded;
+	}
+		#things .user-profile {
+			float: right;
+			border-radius: 50%;
+			overflow: hidden;
+			margin: 14px 23px 0 0;
+		}
+		#things .user-profile,
+		#things .user-profile img {
+			width: 38px;
+			height: 38px;
+		}
+		#things .rating {
+			float: left;
+			margin: 16px 0 0 10px;
+			width: 22px;
+			text-align: center;
+			padding: 4px;
+		}
+			#things .vote {
+				cursor: pointer;
+				height: 20px;
+				border-bottom: 1px solid rgba(132,132,132, .2);
+				background: url(/webapp/img/vote-arrow.png) no-repeat 7px 7px;
+			}
+			#things .vote:hover {
+				background-color: #f6ff00;
+				background-position: 7px -12px;
+			}
+			#things .score {
+				color: rgba(41,41,41, .4);
+				font-size: 10px;
+			}
+		#things .link {
+			padding: 20px 95px 12px 54px;
+			display: block;
+			text-decoration: none;
+		}
+			#things .link h2 {
+				font-size: 25px;
+				color: #292929;
+				height: 26px;
+				letter-spacing: -.5px;
+
+				/* voodoo magic */
+				white-space: nowrap;
+				overflow: hidden;
+				text-overflow: ellipsis;
+			}
+			#things .thing:hover .link h2 {
+				color: #000;
+			}
+			#things .link .bottom {
+				font-size: 12px;
+				color: rgba(41,41,41, .4);
+			}
+				#things .link .bottom li {
+					float: left;
+					margin-right: 19px;
+				}
+
+#thing-page {
+	margin: 46px 0 0;
+}
+	#thing-page .inner {
+		padding-left: 58px;
+	}
+		#thing-page .story {
+			margin-bottom: 32px;
+		}
+			#thing-page .story .rating {
+				float: left;
+				margin: -5px 0 0 -59px;
+				width: 33px;
+				text-align: center;
+			}
+				#thing-page .story .rating .vote {
+					height: 28px;
+					border-bottom: 1px solid #000;
+					background: url(/webapp/img/vote-arrow-inner.png) no-repeat 11px 11px;
+					margin-bottom: 4px;
+				}
+				#thing-page .story .rating .vote:hover {
+					background-color: #f6ff00;
+					background-position: 11px -32px;
+				}
+				#thing-page .story .rating .score {
+					font-size: 15px;
+				}
+			#thing-page .story .cover {
+				float: right;
+				margin: 14px 0 30px 90px;
+			}
+				#thing-page .story .cover img {
+					max-width: 280px;
+					max-height: 350px;
+				}
+			#thing-page .story h1 {
+				font-size: 40px;
+				line-height: 48px;
+				letter-spacing: -1.5px;
+				margin-bottom: 37px;
+			}
+			#thing-page .story p {
+				margin: 27px 0;
+				font-size: 20px;
+				line-height: 27px;
+				overflow: hidden;
+				letter-spacing: -.7px;
+			}
+			#thing-page .story .content {
+				max-width: 660px;
+				overflow: hidden;
+			}
+
+		#thing-page .user-box {
+			margin: 0 0 46px -6px;
+		}
+			#thing-page .user-box li {
+				float: left;
+			}
+			#thing-page .user-box .author {
+				width: 290px;
+				margin-right: 60px;
+				letter-spacing: -.2px;
+			}
+				#thing-page .user-box .author .pic,
+				#thing-page .user-box .participants .pics a,
+				#thing-page .user-box .upvoters .pics a {
+					float: left;
+					margin-right: 16px;
+					border-radius: 50%;
+					overflow: hidden;
+					display: block;
+				}
+				#thing-page .user-box .author .pic {
+					margin-top: 3px;
+				}
+					#thing-page .user-box .author img,
+					#thing-page .user-box .participants .pics a img {
+						width: 62px;
+						height: 62px;
+					}
+				#thing-page .user-box .author .name {
+					margin-bottom: 3px;
+				}
+					#thing-page .user-box .author .name a {
+						text-decoration: none;
+						color: #292929;
+						font-size: 16px;
+					}
+				#thing-page .user-box .author .bio {
+					font-size: 12px;
+					line-height: 15px;
+					overflow: hidden;
+				}
+			#thing-page .user-box .participants {
+				max-width: 368px;
+				margin-right: 60px;
+			}
+				#thing-page .user-box .participants h4,
+				#thing-page .user-box .upvoters h4 {
+					color: #aaa;
+					font-size: 15px;
+					margin: -27px 0 5px;
+					letter-spacing: -.3px;
+				}
+				#thing-page .user-box .participants .pics {
+				}
+					#thing-page .user-box .participants .pics a {
+						margin: 0 10px 10px 0;
+					}
+			#thing-page .user-box .upvoters {
+				max-width: 150px;
+			}
+				#thing-page .user-box .upvoters h4 {
+					margin-bottom: 17px;
+				}
+				#thing-page .user-box .upvoters .pics a {
+					margin: 0 1px 4px 0;
+				}
+					#thing-page .user-box .upvoters .pics a img {
+						width: 21px;
+						height: 21px;
+					}
+
+		#lets-do-it {
+			margin-bottom: 75px;
+		}
+			#lets-do-it input[type="text"] {
+				padding: 0 26px;
+				width: 605px;
+				border: 1px solid #f6ff00;
+				background-color: #f8f8fd;
+				height: 78px;
+				outline: none !important;
+				box-shadow: none !important;
+				float: left;
+				font-size: 31px;
+				letter-spacing: -1.5px;
+			}
+			#lets-do-it.comment input[type="text"] {
+				border-color: #d7d7d7;
+			}
+			#lets-do-it input[type="text"]::-webkit-input-placeholder {
+				color: #b1b1b1;
+			}
+			#lets-do-it input[type="text"]::-moz-placeholder {
+				color: #b1b1b1;
+			}
+			#lets-do-it input[type="text"]::-ms-input-placeholder {
+				color: #b1b1b1;
+			}
+			#lets-do-it button {
+				background-color: #f6ff00;
+				border: none;
+				height: 80px;
+				color: #ff3c3c;
+				font-size: 36px;
+				text-transform: uppercase;
+				text-align: center;
+				font-weight: 700;
+				width: 263px;
+			}
+			#lets-do-it button:hover {
+				background-color: #ff3c3c;
+				color: #f6ff00;
+			}
+			#lets-do-it.comment button {
+				background-color: #d7d7d7;
+				color: #6a6a6c;
+			}
+			#lets-do-it.comment button:hover {
+				background-color: #878787;
+				color: #2c2c2d;
+			}
+
+		#comments {
+			width: 770px;
+		}
+			#comments .pasive {
+				margin-bottom: 20px;
+			}
+			#comments .active {
+				margin-bottom: 12px;
+			}
+				#comments .user-profile {
+					float: left;
+					border-radius: 50%;
+					overflow: hidden;
+				}
+				#comments .pasive .user-profile {
+					margin: -4px 19px 0 1px;
+				}
+					#comments .pasive .user-profile img {
+						width: 29px;
+						height: 29px;
+						opacity: .5;
+					}
+				#comments .active .user-profile {
+					margin: -3px 14px 0 -3px;
+				}
+					#comments .active .user-profile img {
+						width: 38px;
+						height: 38px;
+					}
+				#comments .message-holder {
+					overflow: hidden;
+				}
+					#comments .pasive .message {
+						font-size: 13px;
+						line-height: 19px;
+						letter-spacing: -.3px;
+					}
+					#comments .pasive .message,
+					#comments .pasive .message a {
+						color: #696969;
+					}
+					#comments .active .message {
+						font-size: 24px;
+						line-height: 30px;
+						letter-spacing: -.4px;
+					}
+					#comments .active .message .hashtag {
+						color: #f6ff00;
+					}
+					#comments time {
+						display: block;
+						font-size: 10px;
+						color: #cfcfcf;
+						margin-top: -2px;
+						letter-spacing: -.3px;
+					}
+/* // Content - end */
+
+
+/* Footer
+======================================================================== */
+#footer {
+	text-align: center;
+	padding: 34px 0 23px;
+	background-color: #e9e9e9;
+	text-transform: uppercase;
+	margin-top: 50px;
+	height: 55px;
+}
+	#footer .logo {
+		text-decoration: none;
+		color: #ff3c3c;
+		font-weight: 700;
+		font-size: 17px;
+		margin-bottom: 10px;
+		display: inline-block;
+	}
+	#footer .slogan {
+		color: #999;
+		font-size: 10px;
+	}
+/* // Footer - end */
+
+
+/* NEWPOST */
+
+.newpost .wrap form input[type="text"], textarea {
+	width: 100%;
+	margin: 7px 0 5px;
+}
+
+form input[type="file"] {
+	margin: 18px 0 5px;
+
+}
+
+form button {
+	margin: 50px auto 5px;
+	display: block;
+	padding: 10px 25px;
+	font-size: 40px;
+	background: #f6ff00;
+	border: 0;
+	font-weight: 600;
+	color: #ff3c3c;
+}
+
+form button:hover {
+	color: #f6ff00;
+	background: #ff3c3c;
+}
+
+
+.newpost .wrap form input.largeText {
+	font-size: 27px;
+}
+
+
+.newpost .wrap form input.smallText {
+	font-size: 20px;
+}
+
+form .hint {
+	font-size: 13px;
+	margin: 0 0 30px 0;
+	display: block;
+	color: #999;
+}
+
+.newpost .wrap h2 {
+	font-size: 24px;
+}
+
+
+
+.profile .wrap {
+	padding-top: 50px;
+}
+
+.profile .userdata { 
+	text-align: center 
+}
+
+.profile .userdata img {
+	display: block;
+	margin: 20px auto;
+	border-radius: 50%;
+	overflow: hidden;
+	width: 100px;
+	height: 100px;
+}
+
+.profile .userdata h3 {
+	font-size: 22px;
+}
+
+.profile .userdata .tagline {
+	width: 270px;
+	font-size: 13px;
+	line-height: 17px;
+	margin: 10px auto;
+}
+
+.profile a { 
+	margin: 0 10px ;
+	font-size: 13px;
+	color: lightblue;
+ }
+
+
+ .editprofile .userdata {
+ 	padding-top: 50px;
+ 	min-height: 350px;
+ }
+
+ .editprofile .userdata .tagline {
+
+ 	font-size: 30px;
+ 	width: 100%;
+ 	margin: 50px auto 5px;
+ }
+
+  .editprofile .userdata a {
+
+float: right;
+ }
