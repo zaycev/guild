@@ -1,0 +1,47 @@
+<header id="header" class="have-back logged clearfix">
+
+    <a ng-click="$root.Logout()"
+       ng-show="{{$root.Auth.isAuthenticated}}"
+       style="cursor:pointer;"
+       class="user-profile"
+       title="Your profile">
+        <img src="images/avatar.jpg" alt="" />
+    </a>
+
+    <a ng-click="$root.Login()"
+       ng-show="{{!$root.Auth.isAuthenticated}}"
+       style="cursor:pointer;"
+       class="join h-btn ir"
+       title="">
+    </a>
+
+    <a ng-show="{{!$root.controller=='create'}}"
+       ng-click="$root.Create()"
+       style="cursor:pointer;"
+       class="add-thing h-btn ir"
+       title="Add thing">
+       Add thing
+    </a>
+
+    <a ng-show="{{$root.showBack}}"
+       ng-click="$root.Back()"
+       style="cursor:pointer;"
+       class="back h-btn ir"
+       title="Back">
+        Back
+    </a>
+
+    <div class="search">
+        <form>
+            <button ng-click="$root.Search()"
+                    style="cursor:pointer;"
+                    class="h-btn ir">
+                Search
+            </button>
+            <input type="text" name="search" ng-model="$root.searchQuery" ng-enter="$root.Search()"/>
+            <div class="search-placeholder" style="display:none;"><em>#letsdoit</em> find things to build</div>
+        </form>
+    </div>
+
+
+</header>

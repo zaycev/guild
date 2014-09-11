@@ -1,0 +1,30 @@
+<div id="breadcrumbs">
+    <div class="wrap">
+        <h3>latest ideas</h3>
+    </div>
+</div>
+
+<div class="wrap">
+    <ul id="things" class="nav" ng-show="projectList.length">
+        <li class="thing" ng-repeat="project in projectList">
+            <a href="#/profile/?userId={{project.creator.userId}}" class="user-profile" title="{{project.title}}">
+                <img src="{{project.creator.userPicture}}" alt="" />
+            </a>
+            <div class="rating">
+                <a style="cursor:pointer;" ng-click="UpVote(project.id)" class="vote ir" title="Vote"></a>
+                <div class="score">{{project.upvoters.length}}</div>
+            </div>
+            <a href="#/view/?projectId={{project.id}}" class="link">
+                <h2>{{project.title}}</h2>
+                <ul class="bottom clearfix">
+                    <!-- <li>10 talking</li> -->
+                    <li>{{project.participants.length}} participants</li>
+                </ul>
+            </a>
+        </li>
+    </ul>
+</div>
+
+<div ng-show="!projectList.length">
+    No results
+</div>

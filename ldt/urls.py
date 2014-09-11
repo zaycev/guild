@@ -11,7 +11,7 @@ from django.contrib import admin
 from api import views as api
 from app import views as app
 
-urlpatterns = patterns("client.views",
+urlpatterns = patterns("",
 
     url(r"^$",                  app.app),
     url(r"^debug/$",            app.debug),
@@ -35,6 +35,9 @@ urlpatterns = patterns("client.views",
     url(r"api/comment/delete$", api.comment_remove),
 
     url(r"^admin/", include(admin.site.urls)),
+
+    url(r"^api-token-auth/",    "rest_framework_jwt.views.obtain_jwt_token"),
+    url(r"^api-token-refresh/", "rest_framework_jwt.views.refresh_jwt_token"),
 )
 
 admin.autodiscover()

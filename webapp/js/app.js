@@ -14,33 +14,8 @@ var app = angular.module("LdtApp", ["ngRoute", "ngSanitize", "angularFileUpload"
         $httpProvider.interceptors.push('authInterceptor');
 
         $routeProvider.when("/list", {
-             templateUrl: "/webapp/partials/client/list.html",
+             templateUrl: "/webapp/partials/list.html",
              controller: "ListController"
-        });
-
-        $routeProvider.when("/post", {
-             templateUrl: "/webapp/partials/client/post.html",
-             controller: "PostController"
-        });
-
-        $routeProvider.when("/view", {
-             templateUrl: "/webapp/partials/client/view.html",
-             controller: "ViewController"
-        });
-
-        $routeProvider.when("/profile", {
-             templateUrl: "/webapp/partials/client/profile.html",
-             controller: "ProfileController"
-        });
-
-        $routeProvider.when("/editProfile", {
-             templateUrl: "/webapp/partials/client/editProfile.html",
-             controller: "EditProfileController"
-        });
-
-        $routeProvider.when("/login", {
-             templateUrl: "/webapp/partials/client/login.html",
-             controller: "LoginController"
         });
 
         $routeProvider.otherwise({redirectTo: "/list"});
@@ -52,69 +27,11 @@ var app = angular.module("LdtApp", ["ngRoute", "ngSanitize", "angularFileUpload"
         });
 
 
-}]).run(function(auth) {
-    // This hooks al auth events to check everything as soon as the app starts
-    auth.hookEvents();
-
-});
+}])
 
 
 
-// angular.module("ng").filter("cut", function () {
-//     return function (value, wordwise, max, tail) {
-//         if (!value) return "";
-
-//         max = parseInt(max, 10);
-//         if (!max) return value;
-//         if (value.length <= max) return value;
-
-//         value = value.substr(0, max);
-//         if (wordwise) {
-//             var lastspace = value.lastIndexOf(' ');
-//             if (lastspace != -1) {
-//                 value = value.substr(0, lastspace);
-//             }
-//         }
-
-//         return value + (tail || " ...");
-//     };
-// });
-
-
-// angular.module("ng")
-//     .filter("to_trusted", ["$sce", function($sce){
-//         return function(text) {
-//             return $sce.trustAsHtml(text);
-//         };
-//     }]);
-
-
-String.prototype.toTitleCase = function () {
-    return this.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
-};
-
-
-String.prototype.CutStr =  function (value, wordwise, max, tail) {
-    if (!value) return "";
-
-    max = parseInt(max, 10);
-    if (!max) return value;
-    if (value.length <= max) return value;
-
-    value = value.substr(0, max);
-    if (wordwise) {
-        var lastspace = value.lastIndexOf(' ');
-        if (lastspace != -1) {
-            value = value.substr(0, lastspace);
-        }
-    }
-
-    return value + (tail || " ...");
-};
-
-
-
-app.directive('ngEnter', function () {
+app.directive("ngEnter", function () {
     return function (scope, element, attrs) {
         element.bind("keydown keypress", function (event) {
             if(event.which === 13) {

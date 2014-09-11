@@ -1,3 +1,4 @@
+{% verbatim %}
 <!DOCTYPE html>
 <html lang="en" ng-app="LdtApp">
 
@@ -22,16 +23,28 @@
     <!-- Java Script -->
     <script src="/webapp/js/vendor/angular.min.js"></script>
 
-
-
   </head>
 
   <body>
 
-    <div id="wrap" ng-view>
+    <div class="body-holder">
 
-    </div> <!-- /container -->
+        <!-- HEADER -->
+        <ng-include src="'/webapp/partials/header.html'"></ng-include>
 
+        <!-- BODY -->
+        <div id="wrap" ng-view>
+
+        </div>
+
+    </div>
+
+    <footer id="footer">
+        <div class="wrap">
+            <a href="#" class="logo">#letsdoit</a>
+            <div class="slogan">you don’t need a hackathon to hack</div>
+        </div>
+    </footer>
 
     <!-- Angular libs -->
     <script src="/webapp/js/vendor/angular-route.min.js"></script>
@@ -39,23 +52,17 @@
     <script src="/webapp/js/vendor/angular-sanitize.min.js"></script>
     <script src="/webapp/js/vendor/angular-file-upload.js"></script>
 
-    <!-- Auth0 widget script and AngularJS module -->
-    <script src="//cdn.auth0.com/w2/auth0-widget-5.2.min.js"></script>
-    <script src="//cdn.auth0.com/w2/auth0-angular-2.js"> </script>
-
     <!-- Other JS libs -->
     <script src="/webapp/js/vendor/auth0-widget-5.2.min.js"></script>
     <script src="/webapp/js/vendor/auth0-angular-2.js"> </script>
+    <script src="/webapp/js/vendor/jquery-2.1.0.min.js"> </script>
 
     <!-- Angular web app -->
     <script src="/webapp/js/app.js"></script>
-    <script src="/webapp/js/api/api-factory.js"></script>
-    <script src="/webapp/js/client/list-controller.js"></script>
-    <script src="/webapp/js/client/post-controller.js"></script>
-    <script src="/webapp/js/client/view-controller.js"></script>
-    <script src="/webapp/js/client/profile-controller.js"></script>
-    <script src="/webapp/js/client/edit-profile-controller.js"></script>
-    <script src="/webapp/js/client/login-controller.js"></script>
+    <script src="/webapp/js/common.js"></script>
+    <script src="/webapp/js/api.js"></script>
+    <script src="/webapp/js/controller/list.js"></script>
 
   </body>
 </html>
+{% endverbatim %}
