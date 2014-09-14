@@ -1,3 +1,6 @@
-djangorestframework-jwt
+djangorestframework
+django-filter
 django==1.7
+markdown
 pil
+jwt

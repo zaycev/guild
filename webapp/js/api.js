@@ -9,108 +9,58 @@ app.factory("LdtApi", ["$http", "$location",
 
         return {
 
-            List: function(size, skip, query) {
+            IdeaCreate: function(title, summary, pictureId) {
                 return $http({
-                    url:    "/api/v1/list",
-                    method: "GET",
+                    url:    "/api/idea/create/",
+                    method: "POST",
                     params: {
-                        "size": size,
-                        "skip": skip,
-                        "query": query
+                        "title": title,
+                        "summary": summary,
+                        "pictureId": pictureId
                     }
                 });
             },
 
-            View: function(projectId) {
+            IdeaGet: function(iid) {
                 return $http({
-                    url:    "/api/v1/view",
+                    url:    "/api/idea/get/",
                     method: "GET",
                     params: {
-                        "projectId": projectId
+                        "iid": iid
                     }
                 });
             },
 
-            Profile: function(userId) {
+            IdeaList: function(skipSize, textQuery) {
                 return $http({
-                    url:    "/api/v1/profile",
+                    url:    "/api/idea/list/",
                     method: "GET",
                     params: {
-                        "userId": userId
+                        "skipSize": skipSize,
+                        "textQuery": textQuery
                     }
                 });
             },
 
-            Post: function(userId, newTitle, newDescription, newImage) {
-
+            ProfileCreate: function(profileData) {
                 return $http({
-                    url:    "/api/v1/post",
+                    url:    "/api/profile/create/",
                     method: "GET",
-                    params: {
-                        "userId": userId,
-                        "title": newTitle,
-                        "description": newDescription,
-                        "image": newImage
-                    }
-                });
-
-            },
-
-            NewUser: function(userId, userName, userScreenName, userPicture) {
-
-                return $http({
-                    url:    "/api/v1/new_user",
-                    method: "GET",
-                    params: {
-                        "userId": userId,
-                        "userName": userName,
-                        "userScreenName": userScreenName,
-                        "userPicture": userPicture
-                    }
-                });
-
-            },
-
-
-            UpVote: function(userId, projectId) {
-
-                return $http({
-                    url:    "/api/v1/up_vote",
-                    method: "GET",
-                    params: {
-                        "userId": userId,
-                        "projectId": projectId,
-                    }
-                });
-
-            },
-
-
-            SaveProfile: function(profileData) {
-                return $http({
-                    url:    "/api/v1/save",
-                    method: "GET",
-                    params: {
-                        "userId": profileData.userId,
-                        "tagLine": profileData.tagLine
-                    }
+                    params: profileData
                 });
             },
 
-            PostComment: function(userId, projectId, commentText) {
 
+            ProfileGet: function(uid) {
                 return $http({
-                    url:    "/api/v1/comment",
+                    url:    "/api/profile/get/",
                     method: "GET",
                     params: {
-                        "userId": userId,
-                        "projectId": projectId,
-                        "commentText": commentText,
+                        "uid": uid
                     }
                 });
-
-
             }
+
 
         };
 }]);
@@ -125,6 +75,16 @@ app.factory("NavApi", [function() {
 
             var searchQuery = $location.search().q;
             console.log([searchQuery]);
+
+            if ($root.controller != "list") {
+                $root.textQuery    = "";
+                $root.skipSize     = 0;
+                $root.tQ           = "";
+            } else {
+                $root.textQuery    = searchQuery;
+                $root.skipSize     = 0;
+                $root.tQ           = searchQuery;
+            }
 
             $(document).ready(function($) {
                 $("#header .search input[type='text']")

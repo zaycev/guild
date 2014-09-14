@@ -1,21 +1,21 @@
 <header id="header" class="have-back logged clearfix">
 
-    <a ng-click="$root.Logout()"
-       ng-show="{{$root.Auth.isAuthenticated}}"
+    <a ng-show="$root.Auth.isAuthenticated"
+       href="#/profile"
        style="cursor:pointer;"
        class="user-profile"
        title="Your profile">
-        <img src="images/avatar.jpg" alt="" />
+        <img src="{{$root.Auth.profile.picture}}" alt="" />
     </a>
 
     <a ng-click="$root.Login()"
-       ng-show="{{!$root.Auth.isAuthenticated}}"
+       ng-show="!$root.Auth.isAuthenticated"
        style="cursor:pointer;"
        class="join h-btn ir"
        title="">
     </a>
 
-    <a ng-show="{{!$root.controller=='create'}}"
+    <a ng-show="$root.controller!='create'"
        ng-click="$root.Create()"
        style="cursor:pointer;"
        class="add-thing h-btn ir"
@@ -23,7 +23,7 @@
        Add thing
     </a>
 
-    <a ng-show="{{$root.showBack}}"
+    <a ng-show="$root.showBack"
        ng-click="$root.Back()"
        style="cursor:pointer;"
        class="back h-btn ir"
@@ -38,10 +38,9 @@
                     class="h-btn ir">
                 Search
             </button>
-            <input type="text" name="search" ng-model="$root.searchQuery" ng-enter="$root.Search()"/>
+            <input type="text" name="search" ng-model="$root.textQuery" ng-enter="$root.Search()"/>
             <div class="search-placeholder" style="display:none;"><em>#letsdoit</em> find things to build</div>
         </form>
     </div>
-
-
 </header>
+<br/>

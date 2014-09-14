@@ -1,31 +1,64 @@
 # coding: utf-8
 # Author: Vova Zaytsev <zaytsev@usc.edu>
 
-from feed.models import UserProfile
-from feed.models import IdeaEntry
-from feed.models import Picture
-from feed.models import Comment
+from django.core.exceptions import ObjectDoesNotExist
 
+from rest_framework.decorators import api_view
+from rest_framework.decorators import permission_classes
+from rest_framework.decorators import authentication_classes
+
+from rest_framework.response import Response
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticatedOrReadOnly
+
+from api.auth import Auth0Authentication
+
+from feed.models import Comment
+from feed.models import Picture
+from feed.models import IdeaEntry
+from feed.models import UserProfile
 from feed.models import IDEA_STATUS
 from feed.models import COMMENT_STATUS
 
 
-#########################
+class API_CONF:
+    PAGE_SIZE = 50
+
+
+# ########################
 # IDEA API
 #########################
 
 
+@api_view(["GET"])
+@authentication_classes([Auth0Authentication])
+@permission_classes([IsAuthenticatedOrReadOnly])
 def idea_get(request):
-    pass
+    idea_iid = request.GET.get("iid")
+    if idea_iid is not None:
+        try:
+            idea = IdeaEntry.objects.get(iid=idea_iid)
+        except ObjectDoesNotExist:
+            idea = None
+    else:
+        idea = None
+    if idea is not None:
+        return Response(idea.json(creator=True, comments=True, votes=True, members=True))
+    return Response({
+        "iid": None,
+        "details": "Idea not found",
+    })
 
 
+
+@api_view(["GET"])
+@authentication_classes([Auth0Authentication])
+@permission_classes([IsAuthenticatedOrReadOnly])
 def idea_list(request):
-    pass
 
+    ideas = []
 
-def idea_get(request):
-    pass
-
+    return Response(ideas)
 
 def idea_vote(request):
     pass
@@ -35,8 +68,23 @@ def idea_part(request):
     pass
 
 
+@api_view(["POST"])
+@authentication_classes([Auth0Authentication])
+@permission_classes([IsAuthenticated])
 def idea_create(request):
-    pass
+    user = request.user
+    profile = UserProfile.objects.get(user=user)
+    idea_title = request.GET.get("title")
+    idea_summary = request.GET.get("summary")
+    idea_picture_id = request.GET.get("pictureId")
+    new_idea = IdeaEntry(creator=profile,
+                         title=idea_title,
+                         summary=idea_summary,
+                         pic_id=idea_picture_id)
+    new_idea.save()
+    return Response({
+        "iid": new_idea.iid,
+    })
 
 
 def idea_update(request):
@@ -65,11 +113,52 @@ def pic_remove(request):
 #########################
 
 
+@api_view(["GET"])
+@authentication_classes([Auth0Authentication])
+@permission_classes([IsAuthenticatedOrReadOnly])
+def profile_get(request):
+    user_id = request.GET.get("uid")
+    if user_id is None:
+        if request.user.is_authenticated():
+            try:
+                profile = UserProfile.objects.get(user=request.user)
+            except ObjectDoesNotExist:
+                profile = None
+        else:
+            profile = None
+    else:
+        try:
+            profile = UserProfile.objects.get(user_id=user_id)
+        except ObjectDoesNotExist:
+            profile = None
+    if profile is not None:
+        return Response(profile.json(ideas=True, activity=True, comments=False))
+    return Response({
+        "uid": None,
+        "details": "User not found"
+    })
+
+
+# @permission_classes([IsAuthenticated])
+@api_view(["GET"])
+@authentication_classes([Auth0Authentication])
+@permission_classes([IsAuthenticatedOrReadOnly])
 def profile_create(request):
-    pass
+    profile = UserProfile.objects.get(user=request.user)
+    profile.nickname = request.GET.get("nickname")
+    profile.email = request.GET.get("email")
+    profile.email_verified = request.GET.get("email_verified", False)
+    if request.GET.get("picture") is not None:
+        pic_url = request.GET.get("picture")
+        download_path = Picture.download(pic_url)
+        dir_name, pic_name = profile.gen_pic_path()
+        pic_id, _ = Picture.store(download_path, profile, save_to=(dir_name, pic_name), resize=(256, 256))
+        profile.pic_id = pic_id
+    profile.save()
+    return Response(profile.json(max_ideas=0, ideas=False, activity=False, comments=False))
 
 
-def profile_updare(request):
+def profile_update(request):
     pass
 
 

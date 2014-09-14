@@ -1,0 +1,51 @@
+<div class="wrap">
+
+    <form>
+        <h2>Idea:</h2>
+
+        <input type="text"
+               class="largeText"
+               id="title"
+               maxlength="60"
+               ng-model="ideaTitle"
+               required/>
+        <br />
+
+        <span class="hint">
+            Only 60 chars. It's your elevator pitch for other hackers. Include only important keywords
+        </span>
+
+        <br />
+
+        <h2>Justification:</h2>
+
+        <textarea type="text"
+                  class="smallText"
+                  id="desc"
+                  rows="4"
+                  maxlength="400"
+                  ng-model="ideaSummary"></textarea>
+        <br />
+
+        <span class="hint">
+            Max 400 chars. Describe: 1) problem 2) solution (what's included in the MVP) and 3) what skills you lack to accomplish.
+        </span>
+        <br />
+
+        <h2>Have Mockup?</h2>
+        <input
+            id="fileUploadInput"
+            type="file"
+            nv-file-select
+            uploader="uploader"/>
+        <br />
+
+        <span class="hint">
+            It's super helpful for explaining the idea to have a mockup or screenshot. Even a sketch on a napkin helps.
+        </span>
+
+        <button id="IdeaFile" type="submit" ng-click="IdeaCreate()" />LET'S DO IT</button>
+
+    </form>
+
+</div>

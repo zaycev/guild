@@ -5,7 +5,7 @@ Author: Vova Zaytsev <zaytsev@usc.edu>
 "use strict";
 
 
-var app = angular.module("LdtApp", ["ngRoute", "ngSanitize", "angularFileUpload", "auth0"])
+var app = angular.module("LdtApp", ["ngRoute", "ngSanitize", "angularFileUpload", "auth0", "ngProgress"])
     .config(["$routeProvider", "$locationProvider", "authProvider", "$httpProvider",
 
 
@@ -17,6 +17,23 @@ var app = angular.module("LdtApp", ["ngRoute", "ngSanitize", "angularFileUpload"
              templateUrl: "/webapp/partials/list.html",
              controller: "ListController"
         });
+
+        $routeProvider.when("/post", {
+             templateUrl: "/webapp/partials/post.html",
+             controller: "PostController"
+        });
+
+        $routeProvider.when("/profile", {
+             templateUrl: "/webapp/partials/profile.html",
+             controller: "ProfileController"
+        });
+
+
+        $routeProvider.when("/idea", {
+             templateUrl: "/webapp/partials/idea.html",
+             controller: "IdeaController"
+        });
+
 
         $routeProvider.otherwise({redirectTo: "/list"});
 

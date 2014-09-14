@@ -1,0 +1,86 @@
+<div ng-show="profile.uid" class="profile">
+
+    <div class="wrap userdata">
+
+        <img src="{{profile.picture}}" alt=""/>
+
+        <h3>{{profile.nickname}}</h3>
+
+        <div class="tagline">{{profile.tagline}}</div>
+
+        <a ng-show="auth.profile.user_id==profile.username" href="#/edit-profile">Edit profile</a>
+        <a style="cursor:pointer;" ng-show="auth.profile.user_id==profile.username" ng-click="Logout()">Log out</a>
+
+    </div>
+
+    <div id="breadcrumbs" ng-show="profile.ideas">
+        <div class="wrap">
+            <h3>Your ideas</h3>
+        </div>
+    </div>
+
+    <div class="wrap" ng-show="profile.ideas">
+        <ul id="things" class="nav">
+
+            <li class="thing" ng-repeat="idea in profile.ideas">
+
+                <a href="#/profile/?u={{idea.creator.uid}}" class="user-profile" title="Your profile">
+                    <img src="{{idea.creator.picture}}" alt=""/>
+                </a>
+
+                <div class="rating">
+                    <a style="cursor:pointer;" class="vote ir" title="Vote"></a>
+                    <div class="score">{{idea.votes}}</div>
+                </div>
+
+                <a href="#/idea/?i={{idea.iid}}" class="link">
+                    <h2>{{idea.title}}</h2>
+                    <ul class="bottom clearfix">
+                        <li>{{idea.members}} participants</li>
+                    </ul>
+                </a>
+
+            </li>
+
+        </ul>
+    </div>
+
+
+    <div id="breadcrumbs" ng-show="profile.activity">
+        <div class="wrap">
+            <h3>Your activity</h3>
+        </div>
+    </div>
+
+    <div class="wrap" ng-show="profile.activity">
+        <ul id="things" class="nav">
+
+            <li class="thing" ng-repeat="idea in profile.activity">
+
+                <a href="#/profile/?u={{idea.creator.uid}}" class="user-profile" title="Your profile">
+                    <img src="{{idea.creator.picture}}" alt=""/>
+                </a>
+
+                <div class="rating">
+                    <a style="cursor:pointer;" class="vote ir" title="Vote"></a>
+                    <div class="score">{{idea.votes}}</div>
+                </div>
+
+                <a href="#/idea/?i={{idea.iid}}" class="link">
+                    <h2>{{idea.title}}</h2>
+                    <ul class="bottom clearfix">
+                        <li>{{idea.members}} participants</li>
+                    </ul>
+                </a>
+
+            </li>
+
+        </ul>
+    </div>
+
+</div>
+
+
+<div ng-show="profile.details" class="profile">
+    FIXME: Login to see your profile
+</div>

@@ -21,22 +21,22 @@ def api_call(request_function):
             error_code = 0
             debug_str = ""
             http_code = 200
-        except common.NlcdApi400Error:
+        except common.LdtApi400Error:
             response_data_dict = None
             error_code = 1
             debug_str = traceback.format_exc()
             http_code = 400
-        except common.NlcdApi500Error:
+        except common.LdtApi500Error:
             response_data_dict = None
             error_code = 2
             debug_str = traceback.format_exc()
             http_code = 500
-        except common.NlcdApi501Error:
+        except common.LdtApi501Error:
             response_data_dict = None
             error_code = 3
             debug_str = traceback.format_exc()
             http_code = 501
-        except common.NlcdApi503Error:
+        except common.LdtApi503Error:
             response_data_dict = None
             error_code = 4
             debug_str = traceback.format_exc()
@@ -54,8 +54,8 @@ def api_call(request_function):
             "errorStr":         "",
             "debugStr":         debug_str,
             "data":             response_data_dict,
-            "beginTime":        common.format_iso_datetine(ts_begin),
-            "endTime":          common.format_iso_datetine(ts_end),
+            "beginTime":        common.format_iso_datetime(ts_begin),
+            "endTime":          common.format_iso_datetime(ts_end),
             "durationTime":     str(ts_end - ts_begin),
         }
 

@@ -21,7 +21,7 @@ def format_iso_time(datetime):
     return datetime.strftime("%H:%M:%S")
 
 
-def format_iso_datetine(datetime):
+def format_iso_datetime(datetime):
     """Formats `datetime` in following format '%Y-%m-%dT%H:%M:%S'"""
     return datetime.strftime("%Y-%m-%dT%H:%M:%S")
 
