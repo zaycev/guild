@@ -5,26 +5,26 @@
 </div>
 
 <div class="wrap">
-    <ul id="things" class="nav" ng-show="projectList.length">
-        <li class="thing" ng-repeat="project in projectList">
-            <a href="#/profile/?userId={{project.creator.userId}}" class="user-profile" title="{{project.title}}">
-                <img src="{{project.creator.userPicture}}" alt="" />
+    <ul id="things" class="nav" ng-show="ideas.length>0">
+        <li class="thing" ng-repeat="idea in ideas">
+            <a href="#/profile/?u={{idea.creator.uid}}" class="user-profile" title="{{idea.creator.nickname}}">
+                <img src="{{idea.creator.picture}}" alt="" />
             </a>
             <div class="rating">
-                <a style="cursor:pointer;" ng-click="UpVote(project.id)" class="vote ir" title="Vote"></a>
-                <div class="score">{{project.upvoters.length}}</div>
+                <a style="cursor:pointer;" ng-click="UpVote(idea.iid)" class="vote ir" title="Vote"></a>
+                <div class="score">{{idea.num_votes}}</div>
             </div>
-            <a href="#/view/?projectId={{project.id}}" class="link">
-                <h2>{{project.title}}</h2>
+            <a href="#/idea/?i={{idea.iid}}" class="link">
+                <h2>{{idea.title}}</h2>
                 <ul class="bottom clearfix">
                     <!-- <li>10 talking</li> -->
-                    <li>{{project.participants.length}} participants</li>
+                    <li>{{nickname.num_members}} participants</li>
                 </ul>
             </a>
         </li>
     </ul>
 </div>
 
-<div ng-show="!projectList.length">
+<div ng-show="ideas.length==0">
     No results
 </div>

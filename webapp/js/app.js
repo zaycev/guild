@@ -18,6 +18,16 @@ var app = angular.module("LdtApp", ["ngRoute", "ngSanitize", "angularFileUpload"
              controller: "ListController"
         });
 
+        $routeProvider.when("/idea", {
+             templateUrl: "/webapp/partials/idea.html",
+             controller: "IdeaController"
+        });
+
+        $routeProvider.when("/edit-idea", {
+             templateUrl: "/webapp/partials/edit-idea.html",
+             controller: "EditIdeaController"
+        });
+
         $routeProvider.when("/post", {
              templateUrl: "/webapp/partials/post.html",
              controller: "PostController"
@@ -28,11 +38,11 @@ var app = angular.module("LdtApp", ["ngRoute", "ngSanitize", "angularFileUpload"
              controller: "ProfileController"
         });
 
-
-        $routeProvider.when("/idea", {
-             templateUrl: "/webapp/partials/idea.html",
-             controller: "IdeaController"
+        $routeProvider.when("/edit-profile", {
+             templateUrl: "/webapp/partials/edit-profile.html",
+             controller: "EditProfileController"
         });
+
 
 
         $routeProvider.otherwise({redirectTo: "/list"});
@@ -60,4 +70,11 @@ app.directive("ngEnter", function () {
             }
         });
     };
+});
+
+
+app.filter("parseIsoDate", function() {
+  return function(input) {
+    return new Date(input);
+  };
 });

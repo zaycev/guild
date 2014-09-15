@@ -3,37 +3,62 @@
  */
 
 
-app.controller("PostController", ["$scope", "$rootScope", "$location", "LdtApi", "NavApi", "auth", "FileUploader",
-    function ($scope, $rootScope, $location, LdtApi, NavApi, auth, FileUploader) {
+app.controller("PostController", ["$scope", "$rootScope", "$location", "LdtApi", "NavApi", "auth", "FileUploader", "ngProgress",
+    function ($scope, $rootScope, $location, LdtApi, NavApi, auth, FileUploader, ngProgress) {
 
         //
         $rootScope.controller = "create";
         NavApi.Init($rootScope, $location);
 
+
+        //
+        var pictureId       = null;
+        $scope.ideaTitle    = "";
+        $scope.ideaSummary  = "";
         var uploader = $scope.uploader = new FileUploader({
-            url: "/api/v1/file/upload"
+            url: "/api/pic/upload/"
         });
 
-        $scope.ideaTitle    = "Test Title";
-        $scope.ideaSummary  = "Test Summary";
+        // CreateIdea
+        var createIdea = function() {
+            if ($scope.ideaTitle.length == 0)
+                return;
+            ngProgress.start();
+            LdtApi.IdeaCreate($scope.ideaTitle, $scope.ideaSummary, pictureId)
+                .success(function(response) {
+                    $location.path("idea").search("i", response.iid);
+                })
+                .error(function(data) {
+                    $rootScope.ShowError("PostIdea");
+                });
+        };
 
-        var pictureId     = null;
 
+        // Post Idea
         $scope.IdeaCreate = function() {
-
-            // If file set
+            if ($scope.ideaTitle.length == 0)
+                return;
             if ($("#fileUploadInput").val()) {
-                console.log("SET");
+
+                ngProgress.start();
+                uploader.uploadAll();
+
             } else {
-                LdtApi.IdeaCreate($scope.ideaTitle, $scope.ideaSummary, pictureId)
-                    .success(function(data) {
 
-                    })
-                    .error(function(data) {
-
-                    });
+                createIdea();
             }
+        };
 
+
+        // Upload Callbacks
+        uploader.onCompleteItem = function(fileItem, response, status, headers) {
+            if (response.pid) {
+                pictureId = response.pid;
+                ngProgress.set(50);
+                createIdea();
+            } else {
+                $rootScope.ShowError("UploadImage");
+            }
         };
 
 }]);

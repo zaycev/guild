@@ -1,0 +1,33 @@
+<div class="wrap userdata editprofile" ng-show="profile.uid">
+
+    <a href="#/profile">Cancel</a>
+
+
+    <h1>Edit your tagline</h1>
+
+    <form>
+
+        <textarea id="tagline"
+                  class="tagline"
+                  maxlength="160"
+                  rows="3"
+                  ng-model="profile.tagline"/>
+
+        </textarea>
+
+
+        <span class="hint">
+            160 chars. Your tagline is very important because it tells other hackers which skills you have, so that they can decide if you're a good match. Use it to highlight your specific skills, projects, accomplishments and titles.
+        </span>
+
+
+        <button ng-click="UpdateProfile()">Save</button>
+
+    </form>
+
+</div>
+
+
+<div ng-show="profile.details" class="profile">
+    FIXME: Login to see your profile
+</div>

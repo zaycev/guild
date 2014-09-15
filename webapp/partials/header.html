@@ -23,7 +23,7 @@
        Add thing
     </a>
 
-    <a ng-show="$root.showBack"
+    <a ng-show="$root.controller!='list'||$root.tQ"
        ng-click="$root.Back()"
        style="cursor:pointer;"
        class="back h-btn ir"

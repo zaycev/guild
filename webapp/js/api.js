@@ -42,6 +42,18 @@ app.factory("LdtApi", ["$http", "$location",
                 });
             },
 
+
+            IdeaVote: function(iid) {
+                return $http({
+                    url:    "/api/idea/vote/",
+                    method: "POST",
+                    params: {
+                        "iid": iid
+                    }
+                });
+            },
+
+
             ProfileCreate: function(profileData) {
                 return $http({
                     url:    "/api/profile/create/",
@@ -59,6 +71,29 @@ app.factory("LdtApi", ["$http", "$location",
                         "uid": uid
                     }
                 });
+            },
+
+
+            ProfileUpdate: function(tagline) {
+                return $http({
+                    url:    "/api/profile/update/",
+                    method: "POST",
+                    params: {
+                        "tagline": tagline
+                    }
+                });
+            },
+
+
+            CommentCreate: function(iid, text) {
+                return $http({
+                    url:    "/api/comment/create/",
+                    method: "POST",
+                    params: {
+                        "iid": iid,
+                        "text": text
+                    }
+                });
             }
 
 
@@ -74,7 +109,6 @@ app.factory("NavApi", [function() {
         Init: function($root, $location) {
 
             var searchQuery = $location.search().q;
-            console.log([searchQuery]);
 
             if ($root.controller != "list") {
                 $root.textQuery    = "";
@@ -143,28 +177,22 @@ app.factory("NavApi", [function() {
                 if (searchQuery !== true && typeof searchQuery !== "undefined") {
                     $root.searchQuery = searchQuery;
                     $("#header .search-placeholder").hide();
-                    console.log("Hide");
                 } else {
                     $("#header .search-placeholder").show();
-                    console.log("Show");
                 }
 
                 $root.showBack = $root.controller != "list" || searchQuery !== true || typeof searchQuery !== "undefined";
-                console.log($root.showBack);
 
             });
 
             if (searchQuery !== true && typeof searchQuery !== "undefined") {
                 $root.searchQuery = searchQuery;
                 $("#header .search-placeholder").hide();
-                console.log("Hide");
             } else {
                 $("#header .search-placeholder").show();
-                console.log("Show");
             }
 
             $root.showBack = $root.controller != "list" || searchQuery !== true || typeof searchQuery !== "undefined";
-            console.log($root.showBack);
 
         }
 

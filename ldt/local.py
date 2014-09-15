@@ -5,6 +5,12 @@ import os
 import json
 import datetime
 
+try:
+    from psycopg2cffi import compat
+    compat.register()
+except ImportError:
+    pass
+
 
 def project_dir(dir_name):
     return os.path.join(os.path.dirname(__file__), "..", dir_name)\
@@ -48,8 +54,12 @@ WSGI_APPLICATION = "ldt.wsgi.application"
 
 DATABASES = {
     "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": project_dir("sqilte.db"),
+        "ENGINE":   "django.db.backends.postgresql_psycopg2",
+        "NAME":     "udun",
+        "USER":     "saruman",
+        "PASSWORD": "Cefaigfilj#twuc5",
+        "HOST":     "127.0.0.1",
+        "PORT":     "5432",
     }
 }
 
@@ -90,21 +100,18 @@ LOGGING = {
     "handlers": {
 
         "main-log-file": {
-            "level": "INFO",
             "class": "logging.handlers.WatchedFileHandler",
             "filename": "logs/app.txt",
             "formatter": "verbose",
         },
 
         "ldt-log-file": {
-            "level": "INFO",
             "class": "logging.handlers.WatchedFileHandler",
             "filename": "logs/ldt.txt",
             "formatter": "verbose",
         },
 
         "console": {
-            "level": "DEBUG",
             "class": "logging.StreamHandler",
             "formatter": "simple",
         },
@@ -115,13 +122,13 @@ LOGGING = {
 
         "django": {
             "handlers": ["main-log-file", "console"],
-            "level": "DEBUG",
+            "level": "ERROR",
             "propagate": True,
         },
 
         "ldt": {
-            "handlers": ["ldt-log-file"],
-            "level": "DEBUG",
+            "handlers": ["ldt-log-file", "console"],
+            "level": "INFO",
             "propagate": True
         },
     },

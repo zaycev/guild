@@ -8,13 +8,19 @@ import imghdr
 import string
 import requests
 
-
 from datetime import datetime
 from django.db import models
 from api.common import format_iso_datetime
 from django.contrib.auth.models import User
+from django.core.exceptions import ObjectDoesNotExist
 
-from PIL import Image
+from djorm_pgfulltext.models import SearchManager
+from djorm_pgfulltext.fields import VectorField
+
+try:
+    from PIL import Image
+except ImportError:
+    import Image
 
 
 ALPHABET = string.letters + string.digits
@@ -54,32 +60,48 @@ class UserProfile(models.Model):
         pic_name = "u__%08x.jpg" % self.user_id
         return dir_name, pic_name
 
-    def json(self, max_ideas=10, ideas=True, activity=True, comments=True):
+    def json(self, max_ideas=0, ideas=False, activity=False, comments=False, username=False):
 
         if ideas:
-            ideas = IdeaEntry.objects.filter(creator=self)[:max_ideas]
-            ideas = [idea.json(creator=True, comments=False, votes=False, members=False) for idea in ideas]
+            ideas = IdeaEntry.objects.select_related("creator").filter(creator=self)[:max_ideas]
+            ideas = [idea.json(creator=True) for idea in ideas]
         else:
-            ideas = IdeaEntry.objects.filter(creator=self).count()
+            ideas = None
 
-        return {
-            "uid": self.user_id,
-            "username": self.user.username,
+        if activity:
+            activity = self.t_votes.all().select_related("creator")[:max_ideas]
+            activity = [idea.json(creator=True) for idea in activity]
+        else:
+            activity = None
+
+        if username:
+            username = self.user.username
+        else:
+            username = None
+
+        p_json = {
+            "uid":      self.user_id,
+            "username": username,
             "nickname": self.nickname,
-            "email": self.email,
-            "tagline": self.tagline,
-            "created": format_iso_datetime(self.created),
-            "picture": None if self.pic_id is None else "/webapp/usercontent/%s/%s" % self.gen_pic_path(),
-            "ideas": ideas,
-            "activity": [],
+            "email":    self.email,
+            "tagline":  self.tagline,
+            "created":  format_iso_datetime(self.created),
+            "picture":  None if self.pic_id is None else "/webapp/usercontent/%s/%s" % self.gen_pic_path(),
+            "ideas":    ideas,
+            "activity": activity,
         }
+
+        if username:
+            p_json["username"] = self.user.username
+
+        return p_json
 
 
 class IdeaEntry(models.Model):
 
     class Meta:
         db_table = "t_idea"
-        ordering = ("-updated",)
+        ordering = ("-num_votes", "-voted", "-created",)
 
     iid = models.AutoField(primary_key=True, null=False)
     creator = models.ForeignKey(UserProfile, null=False)
@@ -105,52 +127,99 @@ class IdeaEntry(models.Model):
     members = models.ManyToManyField(UserProfile, related_name="t_members")
     max_members = models.SmallIntegerField(default=-1, null=True)
 
-    def json(self, creator=False, comments=False, votes=False, members=False):
+    num_votes = models.IntegerField(default=0, null=False)
+    num_members = models.IntegerField(default=0, null=False)
+    num_comments = models.IntegerField(default=0, null=False)
+
+    search_index = VectorField()
+
+    objects = SearchManager(
+        fields = ("title", "summary"),
+        config = "pg_catalog.english", # this is default
+        search_field = "search_index", # this is default
+        auto_update_search_field = True
+    )
+
+
+    def add_member(self, profile):
+        if profile.user_id != self.creator_id:
+            self.members.add(profile)
+            self.num_members = self.members.count()
+            self.save()
+
+    def add_vote(self, profile):
+        if profile.user_id != self.creator_id:
+            self.votes.add(profile)
+            self.voted = datetime.now()
+            self.num_votes = self.votes.count()
+            self.save()
+
+    def add_comment(self, profile, text):
+        contains_hashtag = "#letsdoit" in text
+        from_creator = profile.user_id == self.creator_id
+        status = "I" if from_creator or contains_hashtag else "N"
+        comment = Comment(creator=profile, idea=self, text=text, status=status)
+        comment.save()
+        if contains_hashtag:
+            self.add_member(profile)
+        self.num_comments = Comment.objects.filter(idea=self).count()
+        self.save()
+        return comment
+
+
+    def json(self, creator=False, comments=False, votes=False, members=False, pic=False):
 
         if creator:
-            creator = self.creator.json(ideas=False, activity=False, comments=False)
+            creator = self.creator.json()
         else:
             creator = self.creator_id
 
         if comments:
-            comments = [comment.json() for comment in Comment.objects.filter(idea=self)[:25]]
-            comments_num = Comment.objects.filter(idea=self).count()
+            comments = [comment.json() for comment in Comment.objects.select_related("creator").filter(idea=self)[:25]]
         else:
-            comments = Comment.objects.filter(idea=self).count()
-            comments_num = None
+            comments = None
 
         if votes:
-            votes = [user.json(ideas=False,
-                               votes=False,
-                               membership=False,
+            votes = [user.json(max_ideas=0,
+                               ideas=False,
+                               activity=False,
                                comments=False) for user in self.votes.all()[:10]]
-            votes_num = self.votes.all().count()
         else:
-            votes = self.votes.count()
-            votes_num = None
+            votes = []
 
         if members:
-            members = [user.json(ideas=False,
-                                 votes=False,
-                                 membership=False,
+            members = [user.json(max_ideas=0,
+                                 ideas=False,
+                                 activity=False,
                                  comments=False) for user in self.members.all()[:10]]
-            members_num = self.members.all().count()
         else:
-            members = self.members.count()
-            members_num = None
+            members = None
+
+        if pic and self.pic_id is not None:
+            try:
+                pic = Picture.objects.get(pid=self.pic_id).path
+            except ObjectDoesNotExist:
+                pic = None
+        else:
+            pic = None
 
         return {
-            "iid": self.iid,
-            "title": self.title,
-            "summary": self.summary,
-            "created": format_iso_datetime(self.created),
-            "creator": creator,
-            "comments": comments,
-            "comments_num": comments_num,
-            "votes": votes,
-            "votes_num": votes_num,
-            "members": members,
-            "members_num": members_num,
+
+            "iid":          self.iid,
+            "pic":          pic,
+            "title":        self.title,
+            "creator":      creator,
+
+            "summary":      self.summary,
+            "created":      format_iso_datetime(self.created),
+
+            "votes":        votes,
+            "members":      members,
+            "comments":     comments,
+
+            "num_votes":    self.num_votes,
+            "num_members":  self.num_members,
+            "num_comments": self.num_comments,
         }
 
 
@@ -165,7 +234,7 @@ class Picture(models.Model):
 
     pid = models.AutoField(primary_key=True, null=False)
     path = models.CharField(max_length=64, null=False, blank=False)
-    owner = models.ForeignKey(UserProfile, null=False)
+    owner = models.ForeignKey(UserProfile, null=True)
 
     @staticmethod
     def download(pic_url):
@@ -176,7 +245,14 @@ class Picture(models.Model):
         return download_path
 
     @staticmethod
-    def store(origin, owner, save_to=None, remove_origin=True, resize=False):
+    def upload(data):
+        upload_path = os.path.join(Picture.UPLOADS, uuid.uuid4().hex)
+        with open(upload_path, "wb") as pic_file:
+            pic_file.write(data)
+        return upload_path
+
+    @staticmethod
+    def store(origin, owner=None, save_to=None, remove_origin=True, resize=False):
 
         if save_to is None:
             u = uuid.uuid4().hex
@@ -230,7 +306,7 @@ class Comment(models.Model):
         return {
             "cid": self.cid,
             "text": self.text,
-            "status": self.status,
+            "status": self.status=="I",
             "creator": self.creator.json(max_ideas=0, ideas=False, activity=False, comments=False),
             "created": format_iso_datetime(self.created),
         }

@@ -8,8 +8,8 @@
 
         <div class="tagline">{{profile.tagline}}</div>
 
-        <a ng-show="auth.profile.user_id==profile.username" href="#/edit-profile">Edit profile</a>
-        <a style="cursor:pointer;" ng-show="auth.profile.user_id==profile.username" ng-click="Logout()">Log out</a>
+        <a ng-show="profile.username" href="#/edit-profile">Edit profile</a>
+        <a style="cursor:pointer;text-decoration:underline;" ng-show="profile.username" ng-click="Logout()">Log out</a>
 
     </div>
 
@@ -24,13 +24,15 @@
 
             <li class="thing" ng-repeat="idea in profile.ideas">
 
-                <a href="#/profile/?u={{idea.creator.uid}}" class="user-profile" title="Your profile">
+                <a href="#/profile/?u={{idea.creator.uid}}"
+                   class="user-profile"
+                   title="Your profile">
                     <img src="{{idea.creator.picture}}" alt=""/>
                 </a>
 
                 <div class="rating">
                     <a style="cursor:pointer;" class="vote ir" title="Vote"></a>
-                    <div class="score">{{idea.votes}}</div>
+                    <div class="score">{{idea.num_votes}}</div>
                 </div>
 
                 <a href="#/idea/?i={{idea.iid}}" class="link">
@@ -63,7 +65,7 @@
 
                 <div class="rating">
                     <a style="cursor:pointer;" class="vote ir" title="Vote"></a>
-                    <div class="score">{{idea.votes}}</div>
+                    <div class="score">{{idea.num_votes}}</div>
                 </div>
 
                 <a href="#/idea/?i={{idea.iid}}" class="link">
