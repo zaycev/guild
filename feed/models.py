@@ -273,15 +273,15 @@ class Picture(models.Model):
 
         pic_format = imghdr.what(origin)
         im = Image.open(origin)
+
         if resize:
             im.thumbnail(resize, Image.ANTIALIAS)
         im.convert("RGB").save(save_path, "JPEG", quality=85)
+
         if remove_origin:
             os.remove(origin)
-        return pic_meta.pid, path
 
-        else:
-            return None, None
+        return pic_meta.pid, path
 
 
 class Comment(models.Model):
