@@ -46,7 +46,7 @@ class UserProfile(models.Model):
         db_table = "t_profile"
 
     user = models.ForeignKey(User, primary_key=True, null=False)
-    nickname = models.CharField(max_length=30, null=False, blank=False)
+    nickname = models.CharField(max_length=64, null=False, blank=False)
     email = models.EmailField(unique=True, null=True, max_length=50)
     email_verified = models.BooleanField(default=False, null=False)
     tagline = models.CharField(max_length=100, null=True, blank=True)
