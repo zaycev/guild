@@ -4,4 +4,7 @@ django==1.7
 markdown
 psycopg2cffi
 pil
+uwsgi
+requests
 PyJWT
+djorm-ext-pgfulltext

@@ -272,14 +272,13 @@ class Picture(models.Model):
         save_path = os.path.join(save_dir, pic_name)
 
         pic_format = imghdr.what(origin)
-        if pic_format == "jpeg" or pic_format == "png" or pic_format == "gif":
-            im = Image.open(origin)
-            if resize:
-                im.thumbnail(resize, Image.ANTIALIAS)
-            im.convert("RGB").save(save_path, "JPEG", quality=85)
-            if remove_origin:
-                os.remove(origin)
-            return pic_meta.pid, path
+        im = Image.open(origin)
+        if resize:
+            im.thumbnail(resize, Image.ANTIALIAS)
+        im.convert("RGB").save(save_path, "JPEG", quality=85)
+        if remove_origin:
+            os.remove(origin)
+        return pic_meta.pid, path
 
         else:
             return None, None
