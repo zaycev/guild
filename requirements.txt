@@ -7,4 +7,6 @@ pil
 uwsgi
 requests
 PyJWT
+uwsgi
 djorm-ext-pgfulltext
+Jinja2

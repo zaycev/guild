@@ -16,10 +16,10 @@ def project_dir(dir_name):
     return os.path.join(os.path.dirname(__file__), "..", dir_name)\
         .replace("\\", "//")
 
-SECRET_KEY = "h8(e(u3#k)l802(4mfh^f&&jp!@p*s#98tf++l#z-e83(#$x@*"
-DEBUG = True
-TEMPLATE_DEBUG = True
-ALLOWED_HOSTS = ["localhost"]
+SECRET_KEY      = "h8(e(u3#k)l802(4mfh^f&&jp!@p*s#98tf++l#z-e83(#$x@*"
+DEBUG           = {{DJANGO_DEBUG}}
+TEMPLATE_DEBUG  = {{DJANGO_DEBUG}}
+ALLOWED_HOSTS   = ["localhost"]
 
 
 INSTALLED_APPS = (
@@ -35,6 +35,7 @@ INSTALLED_APPS = (
     "app",
 )
 
+
 MIDDLEWARE_CLASSES = (
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
@@ -44,6 +45,7 @@ MIDDLEWARE_CLASSES = (
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 )
 
+
 ROOT_URLCONF = "ldt.urls"
 WSGI_APPLICATION = "ldt.wsgi.application"
 
@@ -51,19 +53,21 @@ WSGI_APPLICATION = "ldt.wsgi.application"
 DATABASES = {
     "default": {
         "ENGINE":   "django.db.backends.postgresql_psycopg2",
-        "NAME":     "udun",
-        "USER":     "saruman",
-        "PASSWORD": "Cefaigfilj#twuc5",
-        "HOST":     "127.0.0.1",
-        "PORT":     "5432",
+        "NAME":     "{{DJANGO_DB_NAME}}",
+        "USER":     "{{DJANGO_DB_USER}}",
+        "PASSWORD": "{{DJANGO_DB_PASS}}",
+        "HOST":     "{{DJANGO_DB_PORT}}",
+        "PORT":     "{{DJANGO_DB_HOST}}",
     }
 }
 
-LANGUAGE_CODE = "en-us"
-TIME_ZONE = "UTC"
-USE_I18N = True
-USE_L10N = True
-USE_TZ = True
+
+LANGUAGE_CODE   = "en-us"
+TIME_ZONE       = "America/Los_Angeles"
+USE_I18N        = True
+USE_L10N        = True
+USE_TZ          = True
+
 
 STATIC_ROOT = "/webapp/"
 STATIC_URL = "/webapp/"
@@ -95,21 +99,20 @@ LOGGING = {
 
     "handlers": {
 
-        "main-log-file": {
-            "class": "logging.handlers.WatchedFileHandler",
-            "filename": "logs/app.txt",
-            "formatter": "verbose",
+        "django-file": {
+            "class":        "logging.handlers.RotatingFileHandler",
+            "filename":     "{{LOGGING_DJANGO_FILE}}",
+            "formatter":    "verbose",
+            "backupCount": 32,
+            "maxBytes": 1024 * 1024 * 128,
         },
 
-        "ldt-log-file": {
-            "class": "logging.handlers.WatchedFileHandler",
-            "filename": "logs/ldt.txt",
-            "formatter": "verbose",
-        },
-
-        "console": {
-            "class": "logging.StreamHandler",
-            "formatter": "simple",
+        "apilog-file": {
+            "class":        "logging.handlers.RotatingFileHandler",
+            "filename":     "{{LOGGING_APILOG_FILE}}",
+            "formatter":    "verbose",
+            "backupCount": 32,
+            "maxBytes": 1024 * 1024 * 128,
         },
 
     },
@@ -117,18 +120,20 @@ LOGGING = {
     "loggers": {
 
         "django": {
-            "handlers": ["main-log-file", "console"],
-            "level": "ERROR",
-            "propagate": True,
+            "handlers":     ["django-file"],
+            "level":        "ERROR",
+            "propagate":    True,
         },
 
-        "ldt": {
-            "handlers": ["ldt-log-file", "console"],
-            "level": "INFO",
-            "propagate": True
+        "apilog": {
+            "handlers":     ["apilog-file"],
+            "level":        "INFO",
+            "propagate":    True
         },
+
     },
 }
+
 
 REST_FRAMEWORK = {
     "DEFAULT_PERMISSION_CLASSES": (
