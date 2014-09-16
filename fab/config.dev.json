@@ -12,7 +12,7 @@
     "DJANGO_DB_NAME":           "udun",
     "DJANGO_DB_USER":           "saruman",
     "DJANGO_DB_PORT":           "5432",
-    "DJANGO_DB_HOST":           "127.0.0.1",
+    "DJANGO_DB_HOST":           "localhost",
     "DJANGO_DB_PASS":           "Cefaigfilj#twuc5",
 
     "NGINX_PORT":               80,

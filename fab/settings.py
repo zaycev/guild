@@ -56,8 +56,8 @@ DATABASES = {
         "NAME":     "{{DJANGO_DB_NAME}}",
         "USER":     "{{DJANGO_DB_USER}}",
         "PASSWORD": "{{DJANGO_DB_PASS}}",
-        "HOST":     "{{DJANGO_DB_PORT}}",
-        "PORT":     "{{DJANGO_DB_HOST}}",
+        "HOST":     "{{DJANGO_DB_HOST}}",
+        "PORT":     "{{DJANGO_DB_PORT}}",
     }
 }
 
@@ -103,16 +103,16 @@ LOGGING = {
             "class":        "logging.handlers.RotatingFileHandler",
             "filename":     "{{LOGGING_DJANGO_FILE}}",
             "formatter":    "verbose",
-            "backupCount": 32,
-            "maxBytes": 1024 * 1024 * 128,
+            "backupCount":  32,
+            "maxBytes":     1024 * 1024 * 128,
         },
 
         "apilog-file": {
             "class":        "logging.handlers.RotatingFileHandler",
             "filename":     "{{LOGGING_APILOG_FILE}}",
             "formatter":    "verbose",
-            "backupCount": 32,
-            "maxBytes": 1024 * 1024 * 128,
+            "backupCount":  32,
+            "maxBytes":     1024 * 1024 * 128,
         },
 
     },
