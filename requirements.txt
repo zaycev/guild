@@ -1,12 +1,11 @@
+djorm-ext-pgfulltext
 djangorestframework
 django-filter
+psycopg2cffi
 django==1.7
 markdown
-psycopg2cffi
-pil
-uwsgi
 requests
+Jinja2
 PyJWT
 uwsgi
-djorm-ext-pgfulltext
-Jinja2
+pil

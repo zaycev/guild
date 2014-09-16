@@ -104,6 +104,10 @@ def deploy():
         print(green("Pulling from GitHub."))
         run("git pull")
 
+        print(green("Fetching requirements."))
+        run("pypy -m pip install -r {path}/requirements.txt".format(**config))
+
+        print(green("Setting up logs."))
         run("mkdir -p {logs}".format(**config))
 
 
