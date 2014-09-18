@@ -17,6 +17,19 @@ from fabric.api import *
 from fabric.colors import green, red
 
 
+PYPY_UWSGI_BIN = "/usr/lib/pypy/bin/uwsgi"
+
+UBUNTU_PACKAGES = [
+    "git",
+    "uwsgi",
+    "nginx",
+    "pypy",
+    "pypy-dev",
+    "uwsgi-plugin-python",
+    "postgresql-server-dev-9.3",
+]
+
+
 def dev():
     env.config = {
         "repository":   "https://github.com/zaycev/letsdothis.git",
@@ -55,35 +68,30 @@ def server():
 def init():
     config = env.config
     if not env.local:
-        print(green("Init deployment."))
-        run("aptitude -f install %s" % " ".join((
-            "git",
-            "uwsgi",
-            "nginx",
-            "pypy",
-            "pypy-dev",
-            "uwsgi-plugin-python",
-            "postgresql-server-dev-9.3",
-        )))
+
+        # print(green("Installing packages."))
+
+        print(green("Clonning repository."))
+        run("aptitude update")
+        run("aptitude -f install %s" % " ".join(UBUNTU_PACKAGES))
+
+        print(green("Installing python requirements."))
         if not fabric.contrib.files.exists(env.config["path"]):
             run("git clone {repository} -b {branch} {path}".format(**env.config))
         run("pypy -m pip install -r {path}/requirements.txt".format(**config))
+
+        print(green("Compiling additional requirements."))
+        run("mkdir -p {path}/build".format(**config))
+        run("curl http://uwsgi.it/install | bash -s pypy {path}/uwsgi".format(**config))
 
 
 def update():
     print(green("Updating packages."))
     config = env.config
     run("aptitude -f update")
-    run("aptitude -f upgrade %s" % " ".join((
-        "git",
-        "uwsgi",
-        "nginx",
-        "pypy",
-        "pypy-dev",
-        "uwsgi-plugin-python",
-        "postgresql-server-dev-9.3",
-    )))
-    run("pypy -m pip install -r {path}/requirements.txt".format(**config))
+    run("aptitude -f upgrade %s" % " ".join(UBUNTU_PACKAGES))
+    run("pypy -m pip install -r {path}/requirements.txt --upgrade".format(**config))
+    run("curl http://uwsgi.it/install | bash -s pypy /tmp/uwsgi")
 
 
 def deploy():
@@ -118,22 +126,24 @@ def deploy():
                                              use_jinja=True)
 
         print(green("Uploading usgi.ini"))
-        fabric.contrib.files.upload_template("fab/uwsgi.ini",
-                                             "{path}/uwsgi.ini".format(**config),
-                                             context=context,
-                                             use_jinja=True)
-        run("cp -f {path}/uwsgi.ini /etc/uwsgi/apps-available/{stage}.ini".format(**config))
-        run("ln -sf /etc/uwsgi/apps-available/{stage}.ini /etc/uwsgi/apps-enabled/{stage}.ini".format(**config))
-        run("/etc/init.d/uwsgi stop {stage}".format(**config))
+        # fabric.contrib.files.upload_template("fab/uwsgi.ini",
+        #                                      "{path}/uwsgi.ini".format(**config),
+        #                                      context=context,
+        #                                      use_jinja=True)
+        # run("cp -f {path}/uwsgi.ini /etc/uwsgi/apps-available/{stage}.ini".format(**config))
+        # run("ln -sf /etc/uwsgi/apps-available/{stage}.ini /etc/uwsgi/apps-enabled/{stage}.ini".format(**config))
+        # run("/etc/init.d/uwsgi restart {stage}".format(**config))
+        run("%s --http-socket :9090 --pypy-home /opt/pypy --pypy-lib /opt/libs/libpypy-c.so --pypy-setup /home/foobar/foo.py")
 
         print(green("Uploading nginx config"))
         fabric.contrib.files.upload_template("fab/nginx.conf",
                                              "{path}/nginx.conf".format(**config),
                                              context=context,
                                              use_jinja=True)
+
         run("cp -f {path}/nginx.conf /etc/nginx/sites-available/{stage}".format(**config))
         run("ln -sf /etc/nginx/sites-available/{stage} /etc/nginx/sites-enabled/{stage}".format(**config))
-        run("/etc/init.d/nginx stop".format(**config))
+        run("/etc/init.d/nginx restart".format(**config))
 
         # print(green("Syncing database."))
         # # run("python manage.py syncdb --noinput")
