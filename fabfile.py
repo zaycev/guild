@@ -84,6 +84,10 @@ def init():
         run("mkdir -p {path}/build".format(**config))
         run("curl http://uwsgi.it/install | bash -s pypy {path}/uwsgi".format(**config))
 
+        print(green("Compiling additional requirements."))
+        run("curl http://uwsgi.it/install | bash -s pypy {path}/uwsgi".format(**config))
+        run("bzip2 < libpypy.so.bz2 > libpypy.so")
+
 
 def update():
     print(green("Updating packages."))
@@ -133,7 +137,8 @@ def deploy():
         # run("cp -f {path}/uwsgi.ini /etc/uwsgi/apps-available/{stage}.ini".format(**config))
         # run("ln -sf /etc/uwsgi/apps-available/{stage}.ini /etc/uwsgi/apps-enabled/{stage}.ini".format(**config))
         # run("/etc/init.d/uwsgi restart {stage}".format(**config))
-        run("%s --http-socket :9090 --pypy-home /opt/pypy --pypy-lib /opt/libs/libpypy-c.so --pypy-setup /home/foobar/foo.py")
+        cmd = "%s --http-socket :80 --pypy-home /usr/lib/pypy/bin --pypy-setup ldt/wsgi.py"
+        run()
 
         print(green("Uploading nginx config"))
         fabric.contrib.files.upload_template("fab/nginx.conf",
