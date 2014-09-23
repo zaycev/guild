@@ -24,7 +24,7 @@
     "LOGGING_DJANGO_FILE":      "/root/logs/dev/django.error.log",
     "LOGGING_APILOG_FILE":      "/root/logs/dev/api.log",
 
-    "LOGGING_UWSGI_FILE":       "/root/logs/uwsgi.log"
+    "LOGGING_UWSGI_FILE":       "/root/logs/dev/uwsgi.log"
 
 }
 

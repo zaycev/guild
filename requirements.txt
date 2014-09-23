@@ -8,4 +8,4 @@ requests
 Jinja2
 PyJWT
 uwsgi
-pil
+pillow==2.5.3

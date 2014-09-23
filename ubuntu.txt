@@ -1,0 +1,8 @@
+git
+nginx
+python
+python-pip
+uwsgi-plugin-python
+postgresql-server-9.3
+postgresql-server-dev-9.3
+
