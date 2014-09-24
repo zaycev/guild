@@ -180,6 +180,7 @@ def build_assets():
     with cd("%s/" % env.config["path"]):
         print(green("Building assets."))
         build = {}
+        build_in_out = {}
         timestamp = calendar.timegm(time.gmtime())
         dir_name = "build/%s" % timestamp
         local("mkdir -p %s" % dir_name)
@@ -192,16 +193,25 @@ def build_assets():
                 local("cat < %s >> %s" % (i_fl, fl_name))
                 local("echo '\\n' >> %s" % fl_name)
             o_file = "%s/%s.min.%s" % (dir_name, uid, ext)
-            # if ext == "js":
-            #     local("java -jar compiler.jar --language_in=ECMASCRIPT5 --js_output_file=%s %s" % (o_file, fl_name))
-            # if ext == "css":
-            #     local("java -jar compressor.jar %s -o %s" % (fl_name, o_file))
-            build[key] = o_file
+            if ext == "js":
+                local("java -jar compiler.jar --language_in=ECMASCRIPT5 --js_output_file=%s %s" % (o_file, fl_name))
+            if ext == "css":
+                local("java -jar compressor.jar %s -o %s" % (fl_name, o_file))
 
+            build_in = o_file
+            build_out = "webapp/assets/%s/%s.min.%s" % (timestamp, uid, ext)
+
+            build[key] = build_out
+            build_in_out[key] = (build_in, build_out)
+
+    run(("mkdir -p {path}/webapp/assets/%s" % timestamp).format(**config))
     fabric.contrib.files.upload_template("webapp/templates/app.tpl.html",
                                          "{path}/webapp/templates/app.html".format(**config),
                                          context=build,
                                          use_jinja=True)
+    for f_in, f_out in build_in_out.values():
+        fabric.contrib.files.upload_template(f_in, ("{path}/%s" % f_out).format(**config))
+
 
 
 
@@ -209,7 +219,6 @@ def devdeploy():
     dev()
     server()
     deploy()
-    build_assets()
 
 
 def proddeploy():
