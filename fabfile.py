@@ -10,8 +10,11 @@
 
 import os
 import json
+import uuid
 import glob
+import time
 import fabric
+import calendar
 
 from fabric.api import cd
 from fabric.api import env
@@ -19,6 +22,7 @@ from fabric.colors import red
 from fabric.colors import green
 from fabric.operations import run
 from fabric.operations import sudo
+from fabric.operations import local
 
 
 UBUNTU_PACKAGES = open("ubuntu.txt", "rb").read().split("\n")
@@ -163,10 +167,49 @@ def deploy():
         run("sudo service nginx restart".format(**config))
 
 
+def build_assets():
+
+    env.lcwd = os.path.dirname(__file__)
+    config = env.config
+
+    context = config["context"]
+
+    with open("assets.json", "rb") as i_fl:
+        assets = json.load(i_fl)
+
+    with cd("%s/" % env.config["path"]):
+        print(green("Building assets."))
+        build = {}
+        timestamp = calendar.timegm(time.gmtime())
+        dir_name = "build/%s" % timestamp
+        local("mkdir -p %s" % dir_name)
+        for key, files in assets.iteritems():
+            uid = uuid.uuid4().hex
+            ext = "js" if key.startswith("JS") else "css"
+            fl_name = "%s/%s.%s" % (dir_name, uid, ext)
+            local("touch %s" % fl_name)
+            for i_fl in files:
+                local("cat < %s >> %s" % (i_fl, fl_name))
+                local("echo '\\n' >> %s" % fl_name)
+            o_file = "%s/%s.min.%s" % (dir_name, uid, ext)
+            # if ext == "js":
+            #     local("java -jar compiler.jar --language_in=ECMASCRIPT5 --js_output_file=%s %s" % (o_file, fl_name))
+            # if ext == "css":
+            #     local("java -jar compressor.jar %s -o %s" % (fl_name, o_file))
+            build[key] = o_file
+
+    fabric.contrib.files.upload_template("webapp/templates/app.tpl.html",
+                                         "{path}/webapp/templates/app.html".format(**config),
+                                         context=build,
+                                         use_jinja=True)
+
+
+
 def devdeploy():
     dev()
     server()
     deploy()
+    build_assets()
 
 
 def proddeploy():
