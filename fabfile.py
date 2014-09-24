@@ -85,6 +85,7 @@ def init():
 
 
 
+
 def update_ubuntu():
     with open("ubuntu.txt", "r") as i_fl:
         ubuntu_packages = i_fl.read().split("\n")
