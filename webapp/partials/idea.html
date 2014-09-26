@@ -13,7 +13,7 @@
                 <div class="content">
                     <h1>{{idea.title}}</h1>
                     <p>{{idea.summary}}</p>
-                    <a href="#">Edit</a>
+                    <a href="#/edit-idea/?i={{idea.iid}}" ng-show="idea.editable">Edit</a>
                 </div>
             </div>
 

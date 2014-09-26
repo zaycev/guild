@@ -10,11 +10,12 @@ app.controller("IdeaController", ["$scope", "$rootScope", "$location", "LdtApi",
         $rootScope.controller = "idea";
         NavApi.Init($rootScope, $location);
 
+
         //
         $scope.auth = auth;
         $scope.idea = null;
         $scope.ideaId = $location.search().i;
-        $scope.commentText = ""
+        $scope.commentText = "";
 
 
         // Load Idea

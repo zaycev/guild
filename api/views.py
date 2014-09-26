@@ -46,7 +46,9 @@ def idea_get(request):
     else:
         idea = None
     if idea is not None:
+        editable = idea.creator_id == request.user.id # TODO: remove this legacy
         idea = idea.json(creator=True, comments=True, votes=True, members=True, pic=True)
+        idea["editable"] = editable
         return Response(idea)
 
     return Response({
