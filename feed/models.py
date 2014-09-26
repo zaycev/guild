@@ -2,6 +2,7 @@
 # Author: Vova Zaytsev <zaytsev@usc.edu>
 
 import os
+import re
 import uuid
 import shutil
 import imghdr
@@ -101,6 +102,9 @@ class UserProfile(models.Model):
 
 
 class IdeaEntry(models.Model):
+
+    EMPTY_RE = re.compile("\s+")
+    HASHTAG_RE = re.compile("#[a-zA-Z0-9_]+")
 
     class Meta:
         db_table = "t_idea"
@@ -213,9 +217,11 @@ class IdeaEntry(models.Model):
             "iid":          self.iid,
             "pic":          pic,
             "title":        self.title,
+            "titleChunks":  IdeaEntry.hashtagify(self.title),
             "creator":      creator,
 
             "summary":      self.summary,
+            "summaryChunks":IdeaEntry.hashtagify(self.summary),
             "created":      format_iso_datetime(self.created),
 
             "votes":        votes,
@@ -226,6 +232,27 @@ class IdeaEntry(models.Model):
             "num_members":  self.num_members,
             "num_comments": self.num_comments,
         }
+
+    @staticmethod
+    def hashtagify(text):
+        chunks = []
+        prev_pos = 0
+        for hashtag in IdeaEntry.HASHTAG_RE.finditer(text):
+            h_start, h_end = hashtag.start(), hashtag.end()
+            hashtag = text[h_start:h_end]
+            chunks.append({
+                "t": text[prev_pos:h_start],
+            })
+            chunks.append({
+                "t": hashtag,
+                "hw": hashtag[1:],
+            })
+            prev_pos = h_end
+        chunks.append({
+            "t": text[prev_pos:],
+        })
+        return chunks
+
 
 
 class Picture(models.Model):

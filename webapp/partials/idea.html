@@ -11,11 +11,12 @@
                     <img src="/webapp/usercontent/{{idea.pic}}" alt="" />
                 </div>
                 <div class="content">
-                    <h1>{{idea.title}}</h1>
-                    <p>{{idea.summary}}</p>
+                    <h1><span ng-repeat="c in idea.titleChunks"><span ng-show="!c.hw">{{c.t}}</span><a href="#list?q={{c.hw}}" ng-show="c.hw">{{c.t}}</a></span></h1>
+                    <p><span ng-repeat="c in idea.summaryChunks"><span ng-show="!c.hw">{{c.t}}</span><a href="#list?q={{c.hw}}" ng-show="c.hw">{{c.t}}</a></span></p>
                     <a href="#/edit-idea/?i={{idea.iid}}" ng-show="idea.editable">Edit</a>
                 </div>
             </div>
+
 
             <ul class="nav clearfix user-box">
                 <li class="author">
