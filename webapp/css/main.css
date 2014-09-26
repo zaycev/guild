@@ -199,7 +199,7 @@ body {
 		margin-bottom: 5px;
 	}
 	#things .thing:hover {
-		background-color: #ffeded;
+		background-color: #F9FFB2;
 	}
 		#things .user-profile {
 			float: right;
@@ -260,6 +260,8 @@ body {
 					float: left;
 					margin-right: 19px;
 				}
+
+
 
 #thing-page {
 	margin: 46px 0 0;
@@ -390,15 +392,15 @@ body {
 			margin-bottom: 75px;
 		}
 			#lets-do-it input[type="text"] {
-				padding: 0 26px;
-				width: 605px;
+				padding: 0 0 0 20px;
+				width: 576px;
 				border: 1px solid #f6ff00;
 				background-color: #f8f8fd;
 				height: 78px;
 				outline: none !important;
 				box-shadow: none !important;
 				float: left;
-				font-size: 31px;
+				font-size: 27px;
 				letter-spacing: -1.5px;
 			}
 			#lets-do-it.comment input[type="text"] {
@@ -422,7 +424,8 @@ body {
 				text-transform: uppercase;
 				text-align: center;
 				font-weight: 700;
-				width: 263px;
+				width: 323px;
+				word-spacing: -0.01em;
 			}
 			#lets-do-it button:hover {
 				background-color: #ff3c3c;
@@ -523,7 +526,7 @@ body {
 
 /* NEWPOST */
 
-.newpost .wrap form input[type="text"], textarea {
+.newpost.wrap form input[type="text"], textarea {
 	width: 100%;
 	margin: 7px 0 5px;
 }
@@ -550,12 +553,12 @@ form button:hover {
 }
 
 
-.newpost .wrap form input.largeText {
+.newpost.wrap form input.largeText {
 	font-size: 27px;
 }
 
 
-.newpost .wrap form input.smallText {
+.newpost.wrap form input.smallText {
 	font-size: 20px;
 }
 
@@ -566,7 +569,7 @@ form .hint {
 	color: #999;
 }
 
-.newpost .wrap h2 {
+.newpost.wrap h2 {
 	font-size: 24px;
 }
 
@@ -607,23 +610,45 @@ form .hint {
  }
 
 
- .editprofile .userdata {
+ .editprofile.userdata {
  	padding-top: 50px;
  	min-height: 350px;
  }
 
- .editprofile .userdata .tagline {
+ .editprofile.userdata .tagline {
 
  	font-size: 30px;
  	width: 100%;
  	margin: 50px auto 5px;
  }
 
-  .editprofile .userdata a {
+  .editprofile.userdata a {
 
 float: right;
  }
 
+
+.controls {
+	margin: 5px 0 0px 54px;
+	padding-bottom: 10px;
+}
+
+.paginator { 
+	text-align: center ; 
+	margin-top: 20px;
+	border-radius: 2px;
+	background-color: #eee;
+}
+
+.paginator:hover {
+	background-color: #e9e9e9;
+}
+
+.paginator a { 
+	padding: 20px 0 ; 
+	display: block;
+	text-decoration: none
+}
 
 /*
 Progress bar
@@ -636,7 +661,8 @@ Progress bar
     z-index: 99998;
     background-color: green;
     color: green;
-    box-shadow: 0 0 10px 0; /* Inherits the font color */
+    /*box-shadow: 0 0 10px 0;  Inherits the font color 
+    */
     height: 2px;
     opacity: 0;
 
@@ -656,4 +682,11 @@ Progress bar
     left: 0;
     right: 0;
     z-index: 99999;
+}
+
+
+.noresults { 
+	text-align: center;
+	padding: 50px 0;
+	min-height: 300px;
 }

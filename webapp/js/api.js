@@ -130,7 +130,7 @@ app.factory("NavApi", [function() {
                             $("#header .search-placeholder").show();
                         }
                     });
-                var hashtag = "#letsdoit ";
+                var hashtag = "#letsdothis ";
                 checkValue($("#lets-do-it input[type='text']").val());
                 $("#lets-do-it input[type='text']")
                     .on("keyup", function(){
@@ -147,7 +147,7 @@ app.factory("NavApi", [function() {
                                 .removeClass("comment")
                                 .addClass("join")
                                     .find("button")
-                                        .text("Lets do it");
+                                        .text("Let's do this!");
                         }
                     });
                 function checkValue(str){
@@ -157,7 +157,7 @@ app.factory("NavApi", [function() {
                                 .removeClass("comment")
                                 .addClass("join")
                                     .find("button")
-                                        .text("Lets do it");
+                                        .text("Let's do this!");
                         } else {
                             $("#lets-do-it")
                                 .removeClass("join")
@@ -170,7 +170,7 @@ app.factory("NavApi", [function() {
                             .removeClass("comment")
                             .addClass("join")
                                 .find("button")
-                                    .text("Lets do it");
+                                    .text("Let's do this!");
                     }
                 }
 

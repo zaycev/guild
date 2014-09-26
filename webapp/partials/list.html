@@ -1,6 +1,6 @@
 <div id="breadcrumbs">
     <div class="wrap">
-        <h3>latest ideas</h3>
+        <h3>Latest ideas</h3>
     </div>
 </div>
 
@@ -23,8 +23,11 @@
             </a>
         </li>
     </ul>
+
+    <div class="paginator"><a href="#">Load more</a></div>
 </div>
 
-<div ng-show="ideas.length==0">
-    No results
+
+<div ng-show="ideas.length==0" class="wrap noresults">
+    No results :(
 </div>

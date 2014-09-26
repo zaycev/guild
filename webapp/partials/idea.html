@@ -13,6 +13,7 @@
                 <div class="content">
                     <h1>{{idea.title}}</h1>
                     <p>{{idea.summary}}</p>
+                    <a href="#">Edit</a>
                 </div>
             </div>
 
@@ -51,12 +52,12 @@
 
                     <input type="text"
                            name="hash"
-                           placeholder="tag your comment #letsdoit to participate"
+                           placeholder="tag your comment #letsdothis to participate"
                            ng-model="commentText"
                            ng-enter="PostComment()"
                            required />
 
-                    <button ng-click="PostComment()">Lets do it</button>
+                    <button ng-click="PostComment()">Lets do this!</button>
 
                 </form>
             </div>

@@ -8,7 +8,7 @@
 
         <div class="tagline">{{profile.tagline}}</div>
 
-        <a ng-show="profile.username" href="#/edit-profile">Edit profile</a>
+        <a ng-show="profile.username" href="#/edit-profile">Edit tagline</a>
         <a style="cursor:pointer;text-decoration:underline;" ng-show="profile.username" ng-click="Logout()">Log out</a>
 
     </div>
@@ -41,6 +41,7 @@
                         <li>{{idea.members}} participants</li>
                     </ul>
                 </a>
+                <div class="controls"><a href="#">Edit your idea</a><a href="#">Delete</a></div>
 
             </li>
 
