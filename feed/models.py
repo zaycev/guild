@@ -23,6 +23,9 @@ except ImportError:
     import Image
 
 
+MAGICAL_TEXT = "#letsdothis"
+
+
 ALPHABET = string.letters + string.digits
 PIC_PATH_SIZE = 8
 
@@ -155,9 +158,11 @@ class IdeaEntry(models.Model):
             self.save()
 
     def add_comment(self, profile, text):
-        contains_hashtag = "#letsdoit" in text
+        contains_hashtag = MAGICAL_TEXT in text
+        members = {m["user_id"] for m in self.members.all().values("user_id")}
+        from_member = profile.user_id in members
         from_creator = profile.user_id == self.creator_id
-        status = "I" if from_creator or contains_hashtag else "N"
+        status = "I" if (from_creator or contains_hashtag or from_member) else "N"
         comment = Comment(creator=profile, idea=self, text=text, status=status)
         comment.save()
         if contains_hashtag:

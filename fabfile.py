@@ -120,6 +120,7 @@ def deploy():
         run("pwd")
 
         print(green("Switching branch."))
+        run("git reset --hard".format(**config))
         run("git checkout {branch}".format(**config))
 
         print(green("Pulling from GitHub."))
