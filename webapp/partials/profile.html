@@ -41,7 +41,7 @@
                         <li>{{idea.members}} participants</li>
                     </ul>
                 </a>
-                <div class="controls"><a href="#/edit-idea/?i={{idea.iid}}">Edit your idea</a><a href="#">Delete</a></div>
+                <div ng-show="profile.username" class="controls"><a href="#/edit-idea/?i={{idea.iid}}">Edit your idea</a><a href="#">Delete</a></div>
 
             </li>
 
