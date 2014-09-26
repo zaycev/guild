@@ -25,7 +25,7 @@ from feed.models import IDEA_STATUS
 from feed.models import COMMENT_STATUS
 
 
-PAGE_SIZE = 50
+PAGE_SIZE = 3
 
 
 # ########################
