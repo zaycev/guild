@@ -2,6 +2,7 @@
 # Author: Vova Zaytsev <zaytsev@usc.edu>
 
 from django.db.models import F
+from django.db.models import Q
 from django.db import connection
 from django.core.exceptions import ObjectDoesNotExist
 
@@ -40,7 +41,7 @@ def idea_get(request):
     idea_iid = request.GET.get("iid")
     if idea_iid is not None:
         try:
-            idea = IdeaEntry.objects.select_related("creator").get(iid=idea_iid)
+            idea = IdeaEntry.objects.select_related("creator").filter(~Q(status="D")).get(iid=idea_iid)
         except ObjectDoesNotExist:
             idea = None
     else:
@@ -62,22 +63,20 @@ def idea_get(request):
 @authentication_classes([Auth0Authentication])
 @permission_classes([IsAuthenticatedOrReadOnly])
 def idea_list(request):
-
     skip_size = request.GET.get("skipSize", None)
     text_query = request.GET.get("textQuery", None)
-
     if skip_size is not None and len(skip_size) > 0:
         skip_size = int(skip_size)
     else:
         skip_size = 0
-
     if text_query is not None and len(text_query) > 0:
-        ideas = IdeaEntry.objects.select_related("creator").search(text_query)[skip_size:(skip_size + PAGE_SIZE)]
+        ideas = IdeaEntry.objects.select_related("creator") \
+            .filter(~Q(status="D")) \
+            .search(text_query)[skip_size:(skip_size + PAGE_SIZE)]
     else:
-        ideas = IdeaEntry.objects.select_related("creator").all()[skip_size:(skip_size + PAGE_SIZE)]
-
+        ideas = IdeaEntry.objects.select_related("creator") \
+            .filter(~Q(status="D"))[skip_size:(skip_size + PAGE_SIZE)]
     ideas = [idea.json(creator=True) for idea in ideas]
-
     return Response(ideas)
 
 
@@ -88,23 +87,19 @@ def idea_vote(request):
     profile = UserProfile.objects.get(user=request.user)
     iid = request.GET.get("iid")
     try:
-        idea = IdeaEntry.objects.get(iid=iid)
+        idea = IdeaEntry.objects.filter(~Q(status="D")).get(iid=iid)
     except ObjectDoesNotExist:
         idea = None
-
     if idea is not None:
         idea.add_vote(profile)
         return Response({
             "iid": iid,
             "uid": profile.user_id,
         })
-
     return Response({
         "iid": None,
         "details": "Idea not found",
     }, status=status.HTTP_404_NOT_FOUND)
-
-
 def idea_part(request):
     pass
 
@@ -128,13 +123,61 @@ def idea_create(request):
     })
 
 
+@api_view(["POST"])
+@authentication_classes([Auth0Authentication])
+@permission_classes([IsAuthenticated])
 def idea_update(request):
-    pass
+    user = request.user
+    profile = UserProfile.objects.get(user=user)
+    iid = request.GET.get("iid")
+    try:
+        idea = IdeaEntry.objects.filter(~Q(status="D")).get(iid=iid)
+        pic_id = request.GET.get("pictureId")
+        print "PIC ID", pic_id
+        if idea.creator_id != user.id:
+            return Response({
+                "iid": iid,
+                "details": "Idea not belong this user",
+            }, status=status.HTTP_400_BAD_REQUEST)
+        idea.title = request.GET.get("title")
+        idea.summary = request.GET.get("summary")
+        if pic_id:
+            idea.pic_id = pic_id
+        idea.save()
+        return Response({
+            "iid": idea.iid,
+        })
+    except ObjectDoesNotExist:
+        return Response({
+            "iid": None,
+            "details": "Idea not found",
+        }, status=status.HTTP_400_NOT_FOUND)
 
 
+@api_view(["POST"])
+@authentication_classes([Auth0Authentication])
+@permission_classes([IsAuthenticated])
 def idea_remove(request):
-    pass
-
+    user = request.user
+    profile = UserProfile.objects.get(user=user)
+    iid = request.GET.get("iid")
+    try:
+        idea = IdeaEntry.objects.filter(~Q(status="D")).get(iid=iid)
+        if idea.creator_id != user.id:
+            return Response({
+                "iid": iid,
+                "details": "Idea not belong this user",
+            }, status=status.HTTP_400_BAD_REQUEST)
+        idea.status = "D"
+        idea.save()
+        return Response({
+            "iid": idea.iid,
+        })
+    except ObjectDoesNotExist:
+        return Response({
+            "iid": None,
+            "details": "Idea not found",
+        }, status=status.HTTP_400_NOT_FOUND)
 
 #########################
 # PIC API
@@ -247,7 +290,7 @@ def comment_create(request):
     iid = request.GET.get("iid")
     text = request.GET.get("text")
     try:
-        idea = IdeaEntry.objects.get(iid=iid)
+        idea = IdeaEntry.objects.filter(~Q(status="D")).get(iid=iid)
     except ObjectDoesNotExist:
         idea = None
 

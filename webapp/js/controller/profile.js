@@ -18,14 +18,33 @@ app.controller("ProfileController", ["$scope", "$rootScope", "$location", "LdtAp
 
 
         // Load Profile
-        ngProgress.start();
-        LdtApi.ProfileGet($scope.profileId)
-            .success(function(profileData) {
-                $scope.profile = profileData;
-                ngProgress.complete();
-            })
-            .error(function() {
-                $rootScope.ShowError("Load Profile");
-            });
+        var LoadProfile = function() {
+            ngProgress.start();
+            LdtApi.ProfileGet($scope.profileId)
+                .success(function(profileData) {
+                    $scope.profile = profileData;
+                    ngProgress.complete();
+                })
+                .error(function() {
+                    $rootScope.ShowError("Load Profile");
+                });
+        };
+        LoadProfile();
+
+        // Delete Idea
+        $scope.DeleteIdea = function(iid) {
+            var deleteIdea = window.confirm("Are you absolutely sure you want to delete?");
+            if (deleteIdea) {
+                LdtApi.IdeaRemove(iid)
+                    .success(function(response) {
+                        console.log(response);
+                        ngProgress.complete();
+                        LoadProfile();
+                    })
+                    .error(function() {
+                        $rootScope.ShowError("Load Profile");
+                    });
+            }
+        };
 
 }]);

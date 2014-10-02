@@ -3,18 +3,26 @@
  */
 
 
-app.controller("EditIdeaController", ["$scope", "$rootScope", "$location", "LdtApi", "NavApi", "auth", "ngProgress",
-    function ($scope, $rootScope, $location, LdtApi, NavApi, auth, ngProgress) {
+app.controller("EditIdeaController", ["$scope", "$rootScope", "$location", "LdtApi", "NavApi", "auth", "FileUploader", "ngProgress",
+    function ($scope, $rootScope, $location, LdtApi, NavApi, auth, FileUploader, ngProgress) {
 
         //
         $rootScope.controller = "edit-idea";
         NavApi.Init($rootScope, $location);
 
-        //
+
         //
         $scope.auth = auth;
-        $scope.idea = null;
+        $scope.idea = {
+            "title": "",
+            "summary": ""
+        };
         $scope.ideaId = $location.search().i;
+        var pictureId = null;
+        var uploader = $scope.uploader = new FileUploader({
+            url: "/api/pic/upload/"
+        });
+
 
         // Load Idea
         ngProgress.start();
@@ -29,6 +37,46 @@ app.controller("EditIdeaController", ["$scope", "$rootScope", "$location", "LdtA
                 });
         };
         LoadIdea();
+
+        // Update Idea
+        var UpdateIdea = function() {
+            if ($scope.idea.title.length == 0)
+                return;
+            ngProgress.start();
+            LdtApi.IdeaUpdate($scope.idea.iid, $scope.idea.title, $scope.idea.summary, pictureId)
+                .success(function(response) {
+                    $location.path("idea").search("i", response.iid);
+                })
+                .error(function(data) {
+                    $rootScope.ShowError("UpdateIdea");
+                });
+        };
+
+
+
+        // Update Idea button event
+        $scope.IdeaUpdate = function() {
+            if ($scope.idea.title.length == 0)
+                return;
+            if ($("#fileUploadInput").val()) {
+                ngProgress.start();
+                uploader.uploadAll();
+            } else {
+                UpdateIdea();
+            }
+        };
+
+
+        // Upload Callbacks
+        uploader.onCompleteItem = function(fileItem, response, status, headers) {
+            if (response.pid) {
+                pictureId = response.pid;
+                ngProgress.set(50);
+                UpdateIdea();
+            } else {
+                $rootScope.ShowError("UploadImage");
+            }
+        };
 
 
 }]);

@@ -11,6 +11,7 @@ import requests
 
 from datetime import datetime
 from django.db import models
+from django.db.models import Q
 from api.common import format_iso_datetime
 from django.contrib.auth.models import User
 from django.core.exceptions import ObjectDoesNotExist
@@ -67,7 +68,9 @@ class UserProfile(models.Model):
     def json(self, max_ideas=0, ideas=False, activity=False, comments=False, username=False):
 
         if ideas:
-            ideas = IdeaEntry.objects.select_related("creator").filter(creator=self)[:max_ideas]
+            ideas = IdeaEntry.objects.select_related("creator") \
+                .filter(~Q(status="D")) \
+                .filter(creator=self)[:max_ideas]
             ideas = [idea.json(creator=True) for idea in ideas]
         else:
             ideas = None

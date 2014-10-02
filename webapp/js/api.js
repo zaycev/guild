@@ -21,6 +21,19 @@ app.factory("LdtApi", ["$http", "$location",
                 });
             },
 
+            IdeaUpdate: function(iid, title, summary, pictureId) {
+                return $http({
+                    url:    "/api/idea/update/",
+                    method: "POST",
+                    params: {
+                        "iid": iid,
+                        "title": title,
+                        "summary": summary,
+                        "pictureId": pictureId
+                    }
+                });
+            },
+
             IdeaGet: function(iid) {
                 return $http({
                     url:    "/api/idea/get/",
@@ -46,6 +59,17 @@ app.factory("LdtApi", ["$http", "$location",
             IdeaVote: function(iid) {
                 return $http({
                     url:    "/api/idea/vote/",
+                    method: "POST",
+                    params: {
+                        "iid": iid
+                    }
+                });
+            },
+
+
+            IdeaRemove: function(iid) {
+                return $http({
+                    url:    "/api/idea/remove/",
                     method: "POST",
                     params: {
                         "iid": iid

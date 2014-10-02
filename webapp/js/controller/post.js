@@ -20,7 +20,7 @@ app.controller("PostController", ["$scope", "$rootScope", "$location", "LdtApi",
         });
 
         // CreateIdea
-        var createIdea = function() {
+        var CreateIdea = function() {
             if ($scope.ideaTitle.length == 0)
                 return;
             ngProgress.start();
@@ -45,7 +45,7 @@ app.controller("PostController", ["$scope", "$rootScope", "$location", "LdtApi",
 
             } else {
 
-                createIdea();
+                CreateIdea();
             }
         };
 
@@ -55,7 +55,7 @@ app.controller("PostController", ["$scope", "$rootScope", "$location", "LdtApi",
             if (response.pid) {
                 pictureId = response.pid;
                 ngProgress.set(50);
-                createIdea();
+                CreateIdea();
             } else {
                 $rootScope.ShowError("UploadImage");
             }

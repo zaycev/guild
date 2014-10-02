@@ -41,7 +41,10 @@
                         <li>{{idea.members}} participants</li>
                     </ul>
                 </a>
-                <div ng-show="profile.username" class="controls"><a href="#/edit-idea/?i={{idea.iid}}">Edit your idea</a><a href="#">Delete</a></div>
+                <div ng-show="profile.username" class="controls">
+                    <a href="#/edit-idea/?i={{idea.iid}}">Edit your idea</a>
+                    <a style="cursor:pointer;" ng-click="DeleteIdea(idea.iid)">Delete</a>
+                </div>
 
             </li>
 
