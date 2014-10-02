@@ -69,4 +69,12 @@ app.controller("ListController", ["$scope", "$rootScope", "$location", "LdtApi",
         };
 
 
+        // Search Hashtag
+        $scope.SeachHashtag = function(hashtag) {
+            $rootScope.textQuery = hashtag;
+            $location.path("list").search({"q": $rootScope.textQuery});
+            $rootScope.tQ = $rootScope.textQuery;
+        };
+
+
 }]);
