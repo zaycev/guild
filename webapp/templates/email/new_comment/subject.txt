@@ -1,1 +1,1 @@
-Someone commented your idea
+{{initiator.nickname}} commented your idea

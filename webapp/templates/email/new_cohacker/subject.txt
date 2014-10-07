@@ -1,1 +1,1 @@
-Wow! You have a new CO-CHACKER!
+Wow! {{initiator.nickname}} is your new CO-HACKER!
