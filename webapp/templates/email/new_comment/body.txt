@@ -1,0 +1,10 @@
+Hi {{creator.nickname}}!
+
+You have a new comment from {{initiator.nickname}}:
+
+"{{comment.text}}"
+
+Visit your idea page to answer:
+http://dev.letshackthis.com/#/idea?i={{idea.iid}}
+
+#LETSDOTHIS

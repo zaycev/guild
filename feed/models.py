@@ -24,6 +24,9 @@ try:
 except ImportError:
     import Image
 
+from django.core.mail import EmailMultiAlternatives
+from django.template.loader import render_to_string
+
 
 MAGICAL_TEXT = "#letsdothis"
 
@@ -44,6 +47,16 @@ COMMENT_STATUS = {
     "D": "Deleted",
 }
 
+
+# def send_email(to_address, subject, html_body, txt_body):
+def send_email(to_address, template, context):
+    txt_body = render_to_string("email/%s/body.txt" % template, context)
+    html_body = render_to_string("email/%s/body.html" % template, context)
+    subject = render_to_string("email/%s/subject.txt" % template, context)
+    subject = subject.replace("\n", " ")
+    msg = EmailMultiAlternatives(subject, txt_body, "ninja@mail.letshackthis.com", (to_address, ))
+    msg.attach_alternative(html_body, "text/html")
+    msg.send()
 
 class UserProfile(models.Model):
 
@@ -176,6 +189,26 @@ class IdeaEntry(models.Model):
             self.add_member(profile)
         self.num_comments = Comment.objects.filter(idea=self).count()
         self.save()
+
+        try:
+            # Send email
+            if self.creator.email is not None and len(self.creator.email) > 0:
+                # 1) If comment is from new co-hacker
+                context = {
+                    "creator": self.creator,
+                    "initiator": profile,
+                    "comment": comment,
+                    "idea": self,
+                }
+                if contains_hashtag and not from_member:
+                    send_email(self.creator.email, "new_cohacker", context)
+                # 2) If regular comment posted
+                else:
+                    send_email(self.creator.email, "new_comment", context)
+        except:
+            import traceback
+            traceback.print_exc()
+
         return comment
 
 

@@ -106,6 +106,17 @@ def update():
     run("pypy -m pip install -r {path}/requirements.txt --upgrade".format(**config))
     run("curl http://uwsgi.it/install | bash -s pypy /tmp/uwsgi")
 
+def mail_init():
+    print(green("Installing mail server packages."))
+    config = env.config
+    run("sudo apt-get update && " \
+        "sudo apt-get -y upgrade && " \
+        "sudo apt-get -y dist-upgrade && " \
+        "sudo apt-get -y autoremove")
+    run("sudo apt-get -y install exim4")
+
+def mail_config():
+    print(red("Do it manually: sudo dpkg-reconfigure exim4-config"))
 
 def deploy():
 

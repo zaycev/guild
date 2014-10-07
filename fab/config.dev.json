@@ -16,7 +16,7 @@
     "DJANGO_DB_PASS":           "Cefaigfilj#twuc5",
 
     "NGINX_PORT":               80,
-    "NGINX_SERVER_NAME":        "dev.letsdothis.cc",
+    "NGINX_SERVER_NAME":        "dev.letshackthis.com",
 
     "NGINX_LOG_ACCESS":         "/root/logs/dev/nginx.access.log",
     "NGINX_LOG_ERROR":          "/root/logs/dev/nginx.error.log",
