@@ -190,24 +190,20 @@ class IdeaEntry(models.Model):
         self.num_comments = Comment.objects.filter(idea=self).count()
         self.save()
 
-        try:
-            # Send email
-            if self.creator.email is not None and len(self.creator.email) > 0:
-                # 1) If comment is from new co-hacker
-                context = {
-                    "creator": self.creator,
-                    "initiator": profile,
-                    "comment": comment,
-                    "idea": self,
-                }
-                if contains_hashtag and not from_member:
-                    send_email(self.creator.email, "new_cohacker", context)
-                # 2) If regular comment posted
-                else:
-                    send_email(self.creator.email, "new_comment", context)
-        except:
-            import traceback
-            traceback.print_exc()
+        # Send email
+        if self.creator.email is not None and len(self.creator.email) > 0:
+            # 1) If comment is from new co-hacker
+            context = {
+                "creator": self.creator,
+                "initiator": profile,
+                "comment": comment,
+                "idea": self,
+            }
+            if contains_hashtag and not from_member:
+                send_email(self.creator.email, "new_cohacker", context)
+            # 2) If regular comment posted
+            else:
+                send_email(self.creator.email, "new_comment", context)
 
         return comment
 
