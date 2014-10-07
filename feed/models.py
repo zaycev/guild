@@ -54,7 +54,7 @@ def send_email(to_address, template, context):
     html_body = render_to_string("email/%s/body.html" % template, context)
     subject = render_to_string("email/%s/subject.txt" % template, context)
     subject = subject.replace("\n", " ")
-    msg = EmailMultiAlternatives(subject, txt_body, "ninja@mail.letshackthis.com", (to_address, ))
+    msg = EmailMultiAlternatives(subject, txt_body, "#LETSDOTHIS <do.not.reply@mail.letshackthis.com>", (to_address, ))
     msg.attach_alternative(html_body, "text/html")
     msg.send()
 
