@@ -10,6 +10,7 @@ app.controller("EditProfileController", ["$scope", "$rootScope", "$location", "L
         $rootScope.controller = "profile";
         NavApi.Init($rootScope, $location);
 
+
         //
         $scope.auth = auth;
         $scope.profile = null;

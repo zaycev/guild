@@ -134,6 +134,8 @@ app.factory("NavApi", [function() {
 
             var searchQuery = $location.search().q;
 
+            // console.log(searchQuery);
+
             if ($root.controller != "list") {
                 $root.textQuery    = "";
                 $root.skipSize     = 0;
@@ -143,6 +145,13 @@ app.factory("NavApi", [function() {
                 $root.skipSize     = 0;
                 $root.tQ           = searchQuery;
             }
+
+            $root.showBack = ! (
+                $root.controller == "list"
+                && !Boolean(searchQuery)
+            );
+
+            console.log([searchQuery, $root.showBack]);
 
             $(document).ready(function($) {
                 $("#header .search input[type='text']")
@@ -205,8 +214,6 @@ app.factory("NavApi", [function() {
                     $("#header .search-placeholder").show();
                 }
 
-                $root.showBack = $root.controller != "list" || searchQuery !== true || typeof searchQuery !== "undefined";
-
             });
 
             if (searchQuery !== true && typeof searchQuery !== "undefined") {
@@ -215,9 +222,6 @@ app.factory("NavApi", [function() {
             } else {
                 $("#header .search-placeholder").show();
             }
-
-            $root.showBack = $root.controller != "list" || searchQuery !== true || typeof searchQuery !== "undefined";
-
         }
 
     };

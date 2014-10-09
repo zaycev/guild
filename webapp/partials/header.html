@@ -1,5 +1,4 @@
-<header id="header" class="logged clearfix">
-
+<header id="header" class="logged clearfix" ng-class="{'have-back': $root.showBack}">
     <a ng-show="$root.Auth.isAuthenticated"
        href="#/profile"
        style="cursor:pointer;"
@@ -23,13 +22,13 @@
        Add thing
     </a>
 
-    <a ng-show="$root.controller!='list'||$root.tQ"
-       ng-click="$root.Back()"
+    <a ng-click="$root.Back()"
        style="cursor:pointer;"
        class="back h-btn ir"
        title="Back">
         Back
     </a>
+
 
     <div class="search">
         <form>

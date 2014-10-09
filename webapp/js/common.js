@@ -8,11 +8,14 @@ app.run(["auth", "$rootScope", "$location", "LdtApi", "ngProgress",
          function(auth, $rootScope, $location, LdtApi, ngProgress) {
 
     auth.hookEvents();
-    $rootScope.Auth         = auth;
-    $rootScope.textQuery    = "";
-    $rootScope.skipSize     = 0;
-    $rootScope.tQ           = "";
-    $rootScope.showBack     = false;
+
+    $rootScope.Auth             = auth;
+    $rootScope.textQuery        = "";
+    $rootScope.skipSize         = 0;
+    $rootScope.tQ               = "";
+
+    $rootScope.showSearch       = false;
+    $rootScope.showBack         = false;
 
 
     //

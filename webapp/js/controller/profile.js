@@ -10,6 +10,7 @@ app.controller("ProfileController", ["$scope", "$rootScope", "$location", "LdtAp
         $rootScope.controller = "profile";
         NavApi.Init($rootScope, $location);
 
+
         //
         $scope.auth = auth;
         $scope.profile = null;
