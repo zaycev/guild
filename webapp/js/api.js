@@ -133,6 +133,8 @@ app.factory("NavApi", [function() {
         Init: function($root, $location) {
 
             var searchQuery = $location.search().q;
+            var searchHolder = $("#header .search input[type='text']");
+            // var commentHolder = ;
 
             // console.log(searchQuery);
 
@@ -151,77 +153,68 @@ app.factory("NavApi", [function() {
                 && !Boolean(searchQuery)
             );
 
-            console.log([searchQuery, $root.showBack]);
+            $("#header .search input[type='text']")
+                .on("focusin", function(){
+                    $("#header .search-placeholder").hide();
+                })
+                .on("focusout", function(){
+                    if( !$(this).val()) {
+                        $("#header .search-placeholder").show();
+                    }
+                });
 
-            $(document).ready(function($) {
-                $("#header .search input[type='text']")
-                    .on("focusin", function(){
-                        $("#header .search-placeholder").hide();
-                    })
-                    .on("focusout", function(){
-                        if( !$(this).val() && searchQuery !== true && typeof searchQuery !== "undefined" ) {
-                            $("#header .search-placeholder").show();
-                        }
-                    });
-                var hashtag = "#letsdothis ";
-                checkValue($("#lets-do-it input[type='text']").val());
-                $("#lets-do-it input[type='text']")
-                    .on("keyup", function(){
-                        checkValue($("#lets-do-it input[type='text']").val());
-                    })
-                    .on("focusin", function(){
-                        if( !$(this).val() ) {
-                            $(this).val(hashtag);
-                        }
-                    })
-                    .on("focusout", function(){
-                        if( !$(this).val() ) {
-                            $("#lets-do-it.comment")
-                                .removeClass("comment")
-                                .addClass("join")
-                                    .find("button")
-                                        .text("Let's do this!");
-                        }
-                    });
-                function checkValue(str){
-                    if(str) {
-                        if(str.indexOf(hashtag) >= 0) {
-                            $("#lets-do-it")
-                                .removeClass("comment")
-                                .addClass("join")
-                                    .find("button")
-                                        .text("Let's do this!");
-                        } else {
-                            $("#lets-do-it")
-                                .removeClass("join")
-                                .addClass("comment")
-                                    .find("button")
-                                        .text("Comment");
-                        }
-                    } else {
-                        $("#lets-do-it")
+
+            var hashtag = "#letsdothis ";
+            checkValue($("#lets-do-it input[type='text']").val());
+            $("#lets-do-it input[type='text']")
+                .on("keyup", function(){
+                    checkValue($("#lets-do-it input[type='text']").val());
+                })
+                .on("focusin", function(){
+                    if( !$(this).val() ) {
+                        $(this).val(hashtag);
+                    }
+                })
+                .on("focusout", function(){
+                    if( !$(this).val() ) {
+                        $("#lets-do-it.comment")
                             .removeClass("comment")
                             .addClass("join")
                                 .find("button")
                                     .text("Let's do this!");
                     }
-                }
+                });
 
-                if (searchQuery !== true && typeof searchQuery !== "undefined") {
-                    $root.searchQuery = searchQuery;
-                    $("#header .search-placeholder").hide();
+            function checkValue(str){
+                if(str) {
+                    if(str.indexOf(hashtag) >= 0) {
+                        $("#lets-do-it")
+                            .removeClass("comment")
+                            .addClass("join")
+                                .find("button")
+                                    .text("Let's do this!");
+                    } else {
+                        $("#lets-do-it")
+                            .removeClass("join")
+                            .addClass("comment")
+                                .find("button")
+                                    .text("Comment");
+                    }
                 } else {
-                    $("#header .search-placeholder").show();
+                    $("#lets-do-it")
+                        .removeClass("comment")
+                        .addClass("join")
+                            .find("button")
+                                .text("Let's do this!");
                 }
+            }
 
-            });
-
-            if (searchQuery !== true && typeof searchQuery !== "undefined") {
-                $root.searchQuery = searchQuery;
+            if (Boolean(searchQuery)) {
                 $("#header .search-placeholder").hide();
             } else {
                 $("#header .search-placeholder").show();
             }
+
         }
 
     };
