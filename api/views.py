@@ -227,12 +227,13 @@ def profile_get(request):
         except ObjectDoesNotExist:
             profile = None
     if profile is not None:
-
+        editable = profile.user_id == user_id or (user_id is None and request.user.is_authenticated())
         profile = profile.json(max_ideas=7,
                                ideas=True,
                                activity=True,
                                comments=False,
                                username=request.user.is_authenticated())
+        profile["editable"] = editable
 
         return Response(profile)
 
