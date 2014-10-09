@@ -31,6 +31,10 @@ app.run(["auth", "$rootScope", "$location", "LdtApi", "ngProgress",
 
     //
     $rootScope.Create = function() {
+        if (!auth.isAuthenticated) {
+            $rootScope.Login();
+            return;
+        }
         $location.path("post");
     };
 
@@ -45,7 +49,7 @@ app.run(["auth", "$rootScope", "$location", "LdtApi", "ngProgress",
             LdtApi.ProfileCreate(auth.profile)
                 .success(function(data) {
                     ngProgress.complete();
-                    window.location = location.protocol + "//" + location.host + location.pathname + "#profile";
+                    window.location.reload();
                 })
                 .error(function(data) {
                     $rootScope.ShowError("LogIn");

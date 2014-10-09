@@ -35,6 +35,10 @@ app.controller("IdeaController", ["$scope", "$rootScope", "$location", "LdtApi",
 
         // Post Comment
         $scope.PostComment = function() {
+            if (!auth.isAuthenticated) {
+                $rootScope.Login();
+                return;
+            }
             if (!$scope.commentText)
                 return;
             ngProgress.start();
@@ -52,6 +56,10 @@ app.controller("IdeaController", ["$scope", "$rootScope", "$location", "LdtApi",
         // UpVote
         ngProgress.start();
         $scope.UpVote = function() {
+            if (!auth.isAuthenticated) {
+                $rootScope.Login();
+                return;
+            }
             LdtApi.IdeaVote($scope.idea.iid)
                 .success(function(data) {
                     LoadIdea();

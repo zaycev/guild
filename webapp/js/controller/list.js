@@ -54,10 +54,15 @@ app.controller("ListController", ["$scope", "$rootScope", "$location", "LdtApi",
                 });
         };
 
+        console.log(auth);//$rootScope.Login
 
 
         // Up Vote
         $scope.UpVote = function(iid) {
+            if (!auth.isAuthenticated) {
+                $rootScope.Login();
+                return;
+            }
             ngProgress.start();
             LdtApi.IdeaVote(iid)
                 .success(function(data) {
