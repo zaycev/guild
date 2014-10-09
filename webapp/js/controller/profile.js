@@ -57,7 +57,7 @@ app.controller("ProfileController", ["$scope", "$rootScope", "$location", "LdtAp
             ngProgress.start();
             LdtApi.IdeaVote(iid)
                 .success(function(data) {
-                    LoadList();
+                    LoadProfile();
                 })
                 .error(function() {
                     $rootScope.ShowError("IdeaVote");
