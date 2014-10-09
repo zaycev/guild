@@ -48,4 +48,20 @@ app.controller("ProfileController", ["$scope", "$rootScope", "$location", "LdtAp
             }
         };
 
+        // Up Vote
+        $scope.UpVote = function(iid) {
+            if (!auth.isAuthenticated) {
+                $rootScope.Login();
+                return;
+            }
+            ngProgress.start();
+            LdtApi.IdeaVote(iid)
+                .success(function(data) {
+                    LoadList();
+                })
+                .error(function() {
+                    $rootScope.ShowError("IdeaVote");
+                });
+        };
+
 }]);
