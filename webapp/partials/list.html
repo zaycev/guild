@@ -14,17 +14,17 @@
                 <a style="cursor:pointer;" ng-click="UpVote(idea.iid)" class="vote ir" title="Vote"></a>
                 <div class="score">{{idea.num_votes}}</div>
             </div>
-            <a href="#/idea/?i={{idea.iid}}" class="link">
+            <div onclick="document.location.href = '#/idea/?i={{idea.iid}}'; return false" class="link">
                 <h2>
                     <span ng-repeat="c in idea.titleChunks">
-                        <span ng-show="!c.hw">{{c.t}}</span><span style="color:red;text-decoration:underline;" ng-click="SeachHashtag(c.hw)" ng-show="c.hw">{{c.t}}</span>
+                        <span ng-show="!c.hw">{{c.t}}</span><span class="hash" ng-click="SeachHashtag(c.hw)" ng-show="c.hw">{{c.t}}</span>
                     </span>
                 </h2>
                 <ul class="bottom clearfix">
                     <!-- <li>10 talking</li> -->
                     <li>{{idea.num_members}} participants</li>
                 </ul>
-            </a>
+            </div>
         </li>
     </ul>
 

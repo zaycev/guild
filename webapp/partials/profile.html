@@ -8,14 +8,14 @@
 
         <div class="tagline">{{profile.tagline}}</div>
 
-        <a ng-show="profile.username" href="#/edit-profile">Edit tagline</a>
-        <a style="cursor:pointer;text-decoration:underline;" ng-show="profile.username" ng-click="Logout()">Log out</a>
+        <a ng-show="profile.editable" href="#/edit-profile">Edit tagline</a>
+        <a style="cursor:pointer;text-decoration:underline;" ng-show="profile.editable" ng-click="Logout()">Log out</a>
 
     </div>
 
     <div id="breadcrumbs" ng-show="profile.ideas">
         <div class="wrap">
-            <h3>Your ideas</h3>
+            <h3>Ideas</h3>
         </div>
     </div>
 
@@ -31,7 +31,7 @@
                 </a>
 
                 <div class="rating">
-                    <a style="cursor:pointer;" class="vote ir" title="Vote"></a>
+                    <a style="cursor:pointer;" class="vote ir" title="Vote" ng-click="UpVote(idea.iid)"></a>
                     <div class="score">{{idea.num_votes}}</div>
                 </div>
 
@@ -41,7 +41,7 @@
                         <li>{{idea.num_members}} participants</li>
                     </ul>
                 </a>
-                <div ng-show="profile.username" class="controls">
+                <div ng-show="profile.editable" class="controls">
                     <a href="#/edit-idea/?i={{idea.iid}}">Edit your idea</a>
                     <a style="cursor:pointer;" ng-click="DeleteIdea(idea.iid)">Delete</a>
                 </div>
@@ -54,7 +54,7 @@
 
     <div id="breadcrumbs" ng-show="profile.activity">
         <div class="wrap">
-            <h3>Your activity</h3>
+            <h3>Activity</h3>
         </div>
     </div>
 
