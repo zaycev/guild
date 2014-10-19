@@ -1,20 +1,19 @@
 <p>
-    Hi {{creator.nickname}}!
+    {{creator.nickname}},
 </p>
 
-<p>
-    You have a new comment from
+<p>    
     <a href="http://dev.letshackthis.com/#/profile?u={{initiator.user_id}}">
         {{initiator.nickname}}
-    </a>:
+    </a>  commented on your idea:
 </p>
 <p>
-    <span style="font-style:italic;"><b>{{comment.text}}</b></span>
+    <span style="font-style:italic;">{{comment.text}}</span>
 </p>
 <p>
-    Visit your <a href="http://dev.letshackthis.com/#/idea?i={{idea.iid}}">idea</a>
-    page to answer.
+    To reply, open <a href="http://dev.letshackthis.com/#/idea?i={{idea.iid}}">the idea page</a>.
 </p>
 <p>
+	<br />
     <a href="dev.letshackthis.com">#LETSDOTHIS</a>
 </p>

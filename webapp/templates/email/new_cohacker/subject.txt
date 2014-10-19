@@ -1,1 +1,1 @@
-Wow! {{initiator.nickname}} is your new CO-HACKER!
+{{initiator.nickname}} wants to be your co-hacker!

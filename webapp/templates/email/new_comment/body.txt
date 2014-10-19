@@ -1,10 +1,10 @@
-Hi {{creator.nickname}}!
+{{creator.nickname}},
 
-You have a new comment from {{initiator.nickname}}:
+{{initiator.nickname}} commented on your idea:
 
 "{{comment.text}}"
 
-Visit your idea page to answer:
+To reply, open the idea page:
 http://dev.letshackthis.com/#/idea?i={{idea.iid}}
 
 #LETSDOTHIS
