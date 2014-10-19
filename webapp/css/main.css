@@ -66,7 +66,8 @@ body {
 		height: 59px;
 	}
 	#header .h-btn:hover {
-		background-color: #fe4738;
+		background-color: #FF9E35;
+		border-radius: 4px;
 	}
 	#header .join {
 		float: right;
@@ -197,21 +198,28 @@ body {
 }
 	#things .thing {
 		margin-bottom: 5px;
+		border-radius: 3px;
 	}
 	#things .thing:hover {
-		background-color: #F9FFB2;
+		background-color: #FBFFD2;
 	}
 		#things .user-profile {
 			float: right;
 			border-radius: 50%;
 			overflow: hidden;
 			margin: 14px 23px 0 0;
+			border: solid 2px transparent;
 		}
 		#things .user-profile,
 		#things .user-profile img {
 			width: 38px;
 			height: 38px;
 		}
+
+		#things .user-profile:hover {
+			border: solid 2px yellow;
+		}
+
 		#things .rating {
 			float: left;
 			margin: 16px 0 0 10px;
@@ -237,6 +245,8 @@ body {
 			padding: 20px 95px 12px 54px;
 			display: block;
 			text-decoration: none;
+			cursor: pointer;
+
 		}
 			#things .link h2 {
 				font-size: 25px;
@@ -249,9 +259,27 @@ body {
 				overflow: hidden;
 				text-overflow: ellipsis;
 			}
+
+
+			#things .link h2 .hash {
+				color: #292929;
+				display:inline-block;
+				padding: 0px;
+				border-bottom: solid 1px #ccc;
+				/*text-decoration: underline;*/
+			}
+
+			#things .link h2 .hash:hover {
+				color: #555;
+				border-bottom: solid 1px #555;
+				/*text-decoration: underline;*/
+			}
+
+
 			#things .thing:hover .link h2 {
 				color: #000;
 			}
+
 			#things .link .bottom {
 				font-size: 12px;
 				color: rgba(41,41,41, .4);
@@ -447,7 +475,7 @@ body {
 				margin-bottom: 20px;
 			}
 			#comments .active {
-				margin-bottom: 12px;
+				margin-bottom: 21px;
 			}
 				#comments .user-profile {
 					float: left;
@@ -504,7 +532,7 @@ body {
 #footer {
 	text-align: center;
 	padding: 34px 0 23px;
-	background-color: #e9e9e9;
+	background-color: #F8F8F8;
 	text-transform: uppercase;
 	margin-top: 50px;
 	height: 55px;
@@ -529,6 +557,12 @@ body {
 .newpost.wrap form input[type="text"], textarea {
 	width: 100%;
 	margin: 7px 0 5px;
+}
+
+.newpost h1 {
+	margin: 40px 0 60px;
+	font-size: 28px;
+	color: #ccc;
 }
 
 form input[type="file"] {
@@ -609,6 +643,10 @@ form .hint {
 	color: lightblue;
  }
 
+ .profile .rating a { 
+ 	margin: 0;
+ }
+
 
  .editprofile.userdata {
  	padding-top: 50px;
@@ -637,11 +675,11 @@ float: right;
 	text-align: center ; 
 	margin-top: 20px;
 	border-radius: 2px;
-	background-color: #eee;
+	background-color: #F7F7F7;
 }
 
 .paginator:hover {
-	background-color: #e9e9e9;
+	background-color: #eee;
 }
 
 .paginator a { 
@@ -689,4 +727,22 @@ Progress bar
 	text-align: center;
 	padding: 50px 0;
 	min-height: 300px;
+}
+
+.email-warn {
+
+	color: #8a6d3b;
+	background-color: #fcf8e3;
+	border-color: #faebcc;
+	padding: 15px;
+	border: 1px solid transparent;
+	border-radius: 4px;
+	margin: 15px;
+	text-align: center;
+	font-size: 14px;
+}
+
+.email-warn .dismiss {
+	float: right;
+	opacity: 0.5;
 }
