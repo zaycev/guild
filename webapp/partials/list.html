@@ -14,7 +14,7 @@
                 <a style="cursor:pointer;" ng-click="UpVote(idea.iid)" class="vote ir" title="Vote"></a>
                 <div class="score">{{idea.num_votes}}</div>
             </div>
-            <div onclick="document.location.href = '#/idea/?i={{idea.iid}}'; return false" class="link">
+            <div ng-click="$root.OpenIdea(idea.iid)" class="link">
                 <h2>
                     <span ng-repeat="c in idea.titleChunks">
                         <span ng-show="!c.hw">{{c.t}}</span><span class="hash" ng-click="SeachHashtag(c.hw)" ng-show="c.hw">{{c.t}}</span>

@@ -19,6 +19,12 @@ app.run(["auth", "$rootScope", "$location", "LdtApi", "ngProgress",
 
 
     //
+    $rootScope.OpenIdea = function(iid) {
+        $location.path("idea").search({"i": iid});
+    }
+
+
+    //
     $rootScope.Back = function() {
         $location.path("list");
         $location.url($location.path());
