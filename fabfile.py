@@ -88,14 +88,11 @@ def init():
         run("chown root:root -R {path}".format(**config))
 
 
-
-
 def update_ubuntu():
     with open("ubuntu.txt", "r") as i_fl:
         ubuntu_packages = i_fl.read().split("\n")
     sudo("aptitude update")
     sudo("aptitude install %s" % " ".join(ubuntu_packages))
-
 
 
 def update():
@@ -108,15 +105,16 @@ def update():
 
 def mail_init():
     print(green("Installing mail server packages."))
-    config = env.config
-    run("sudo apt-get update && " \
-        "sudo apt-get -y upgrade && " \
-        "sudo apt-get -y dist-upgrade && " \
+    run("sudo apt-get update && "
+        "sudo apt-get -y upgrade && "
+        "sudo apt-get -y dist-upgrade && "
         "sudo apt-get -y autoremove")
     run("sudo apt-get -y install exim4")
 
+
 def mail_config():
     print(red("Do it manually: sudo dpkg-reconfigure exim4-config"))
+
 
 def deploy():
 
