@@ -37,10 +37,10 @@
                     class="h-btn ir">
                 Search
             </button>
-            <input type="text" name="search" ng-model="$root.textQuery" ng-enter="$root.Search()"/>
-            <div class="search-placeholder"><em>#letsdothis</em> find things to build</div>
+            <input id="HeaderSearch" type="text" name="search" ng-model="$root.textQuery" ng-enter="$root.Search()"/>
+            <div id="HeaderSearchPlaceholder" class="search-placeholder"><em>#letsdothis</em> find things to build</div>
         </form>
     </div>
 </header>
-<div class="email-warn">Please <a href="#/profile/"> add your e-mail address</a> so we can notify you on your idea activity. <a class="dismiss" href="#">Dismiss</a></div>
-<br/>
+<div class="email-warn" ng-show="$root.showEmailWarning">Please <a href="#/edit-profile/"> add your e-mail address</a> so we can notify you on your idea activity. <a class="dismiss" style="cursor:pointer;" ng-click="$root.DissmissEmailWarning()">Dismiss</a></div>
+<br ng-show="$root.showEmailWarning"/>

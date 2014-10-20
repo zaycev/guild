@@ -107,7 +107,7 @@ LOGGING = {
             "maxBytes":     1024 * 1024 * 128,
         },
 
-        "apilog-file": {
+        "ldt-file": {
             "class":        "logging.handlers.RotatingFileHandler",
             "filename":     "{{LOGGING_APILOG_FILE}}",
             "formatter":    "verbose",
@@ -125,7 +125,7 @@ LOGGING = {
             "propagate":    True,
         },
 
-        "apilog": {
+        "ldt": {
             "handlers":     ["apilog-file"],
             "level":        "INFO",
             "propagate":    True

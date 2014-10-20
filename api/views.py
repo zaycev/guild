@@ -58,7 +58,6 @@ def idea_get(request):
     }, status=status.HTTP_404_NOT_FOUND)
 
 
-
 @api_view(["GET"])
 @authentication_classes([Auth0Authentication])
 @permission_classes([IsAuthenticatedOrReadOnly])
@@ -92,14 +91,17 @@ def idea_vote(request):
         idea = None
     if idea is not None:
         idea.add_vote(profile)
-        return Response({
-            "iid": iid,
-            "uid": profile.user_id,
-        })
+        return Response(idea.json(creator=True,
+                                  comments=False,
+                                  votes=False,
+                                  members=False,
+                                  pic=True))
     return Response({
         "iid": None,
         "details": "Idea not found",
     }, status=status.HTTP_404_NOT_FOUND)
+
+
 def idea_part(request):
     pass
 
@@ -232,19 +234,17 @@ def profile_get(request):
                                ideas=True,
                                activity=True,
                                comments=False,
+                               email=editable,
                                username=request.user.is_authenticated())
         profile["editable"] = editable
-
         return Response(profile)
-
     return Response({
         "uid": None,
         "details": "User not found",
     }, status=status.HTTP_404_NOT_FOUND)
 
 
-# @permission_classes([IsAuthenticated])
-@api_view(["GET"])
+@api_view(["POST"])
 @authentication_classes([Auth0Authentication])
 @permission_classes([IsAuthenticatedOrReadOnly])
 def profile_create(request):
@@ -252,14 +252,24 @@ def profile_create(request):
     profile.nickname = request.GET.get("nickname")
     profile.email = request.GET.get("email")
     profile.email_verified = request.GET.get("email_verified", False)
+
     if request.GET.get("picture") is not None:
         pic_url = request.GET.get("picture")
+        # Hack for twitter larger image
+        if profile.realm == "twitter":
+            try:
+                large_pic_url = pic_url[:(-(len("_normal.jpeg")))]+"_400x400.jpeg"
+                print "LARGE PIC USED", large_pic_url
+                pic_url = large_pic_url
+            except:
+                pass
         download_path = Picture.download(pic_url)
         dir_name, pic_name = profile.gen_pic_path()
         pic_id, _ = Picture.store(download_path, profile, save_to=(dir_name, pic_name), resize=(256, 256))
         profile.pic_id = pic_id
+
     profile.save()
-    return Response(profile.json(max_ideas=0, ideas=False, activity=False, comments=False))
+    return Response(profile.json(max_ideas=0, ideas=False, activity=False, comments=False, email=True))
 
 
 @api_view(["POST"])
@@ -268,7 +278,13 @@ def profile_create(request):
 def profile_update(request):
     profile = UserProfile.objects.get(user=request.user)
     tagline = request.GET.get("tagline")
+    email = request.GET.get("email")
     profile.tagline = tagline
+    if email is not None and len(email) > 0:
+        try:
+            profile.email = email
+        except:
+            pass
     profile.save()
     profile = profile.json()
     return Response(profile)

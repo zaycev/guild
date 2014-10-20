@@ -3,12 +3,12 @@
  */
 
 
-app.controller("ListController", ["$scope", "$rootScope", "$location", "LdtApi", "NavApi", "auth", "ngProgress",
-    function ($scope, $rootScope, $location, LdtApi, NavApi, auth, ngProgress) {
+app.controller("ListController", ["$scope", "$rootScope", "$location", "$cookies", "LdtApi", "NavApi", "auth", "ngProgress",
+    function ($scope, $rootScope, $location, $cookies, LdtApi, NavApi, auth, ngProgress) {
 
         //
         $rootScope.controller = "list";
-        NavApi.Init($rootScope, $location);
+        NavApi.Init($rootScope, $location, $cookies);
 
 
         //
@@ -54,8 +54,6 @@ app.controller("ListController", ["$scope", "$rootScope", "$location", "LdtApi",
                 });
         };
 
-        console.log(auth);//$rootScope.Login
-
 
         // Up Vote
         $scope.UpVote = function(iid) {
@@ -65,8 +63,12 @@ app.controller("ListController", ["$scope", "$rootScope", "$location", "LdtApi",
             }
             ngProgress.start();
             LdtApi.IdeaVote(iid)
-                .success(function(data) {
-                    LoadList();
+                .success(function(idea) {
+                    for (var i in $scope.ideas)
+                        if ($scope.ideas[i].iid == idea.iid)
+                            $scope.ideas[i] = idea;
+                    ngProgress.complete();
+
                 })
                 .error(function() {
                     $rootScope.ShowError("IdeaVote");
@@ -75,7 +77,7 @@ app.controller("ListController", ["$scope", "$rootScope", "$location", "LdtApi",
 
 
         // Search Hashtag
-        $scope.SeachHashtag = function(hashtag) {
+        $scope.SearchHashtag = function(hashtag) {
             $rootScope.textQuery = hashtag;
             $location.path("list").search({"q": $rootScope.textQuery});
             $rootScope.tQ = $rootScope.textQuery;

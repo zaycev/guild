@@ -8,7 +8,7 @@
 
         <div class="tagline">{{profile.tagline}}</div>
 
-        <a ng-show="profile.editable" href="#/edit-profile">Edit tagline</a>
+        <a ng-show="profile.editable" href="#/edit-profile">Edit profile</a>
         <a style="cursor:pointer;text-decoration:underline;" ng-show="profile.editable" ng-click="Logout()">Log out</a>
 
     </div>
@@ -35,12 +35,19 @@
                     <div class="score">{{idea.num_votes}}</div>
                 </div>
 
-                <a href="#/idea/?i={{idea.iid}}" class="link">
-                    <h2>{{idea.title}}</h2>
+                <div ng-click="$root.OpenIdea(idea.iid)" class="link">
+
+                    <h2>
+                        <span ng-repeat="c in idea.titleChunks">
+                            <span ng-show="!c.hw">{{c.t}}</span><span class="hash" ng-click="SearchHashtag(c.hw)" ng-show="c.hw">{{c.t}}</span>
+                        </span>
+                    </h2>
+
                     <ul class="bottom clearfix">
                         <li>{{idea.num_members}} participants</li>
                     </ul>
-                </a>
+                </div>
+
                 <div ng-show="profile.editable" class="controls">
                     <a href="#/edit-idea/?i={{idea.iid}}">Edit your idea</a>
                     <a style="cursor:pointer;" ng-click="DeleteIdea(idea.iid)">Delete</a>

@@ -3,12 +3,12 @@
  */
 
 
-app.controller("IdeaController", ["$scope", "$rootScope", "$location", "LdtApi", "NavApi", "auth", "ngProgress",
-    function ($scope, $rootScope, $location, LdtApi, NavApi, auth, ngProgress) {
+app.controller("IdeaController", ["$scope", "$rootScope", "$location", "$cookies", "LdtApi", "NavApi", "auth", "ngProgress",
+    function ($scope, $rootScope, $location, $cookies, LdtApi, NavApi, auth, ngProgress) {
 
         //
         $rootScope.controller = "idea";
-        NavApi.Init($rootScope, $location);
+        NavApi.Init($rootScope, $location, $cookies);
 
 
         //

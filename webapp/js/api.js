@@ -81,7 +81,7 @@ app.factory("LdtApi", ["$http", "$location",
             ProfileCreate: function(profileData) {
                 return $http({
                     url:    "/api/profile/create/",
-                    method: "GET",
+                    method: "POST",
                     params: profileData
                 });
             },
@@ -98,12 +98,13 @@ app.factory("LdtApi", ["$http", "$location",
             },
 
 
-            ProfileUpdate: function(tagline) {
+            ProfileUpdate: function(tagline, email) {
                 return $http({
                     url:    "/api/profile/update/",
                     method: "POST",
                     params: {
-                        "tagline": tagline
+                        "tagline": tagline,
+                        "email": email
                     }
                 });
             },
@@ -130,13 +131,12 @@ app.factory("NavApi", [function() {
 
     return {
 
-        Init: function($root, $location) {
+        Init: function($root, $location, $cookies) {
 
             var searchQuery = $location.search().q;
             var searchHolder = $("#header .search input[type='text']");
-            // var commentHolder = ;
 
-            // console.log(searchQuery);
+            $root.showEmailWarning = $root.Auth.isAuthenticated && !Boolean($cookies.dissmissWarning) && !Boolean($cookies.emailSet);
 
             if ($root.controller != "list") {
                 $root.textQuery    = "";
@@ -153,13 +153,15 @@ app.factory("NavApi", [function() {
                 && !Boolean(searchQuery)
             );
 
-            $("#header .search input[type='text']")
-                .on("focusin", function(){
-                    $("#header .search-placeholder").hide();
+            $("#HeaderSearch")
+                .focusin(function(){
+                    console.log("FOCUSIN");
+                    $("#HeaderSearchPlaceholder").hide();
                 })
-                .on("focusout", function(){
+                .focusout(function(){
+                    console.log("FOCUSOUT");
                     if( !$(this).val()) {
-                        $("#header .search-placeholder").show();
+                        $("#HeaderSearchPlaceholder").show();
                     }
                 });
 
@@ -210,9 +212,11 @@ app.factory("NavApi", [function() {
             }
 
             if (Boolean(searchQuery)) {
-                $("#header .search-placeholder").hide();
+                console.log("HIDE");
+                $("#HeaderSearchPlaceholder").hide();
             } else {
-                $("#header .search-placeholder").show();
+                console.log("SHOW");
+                $("#HeaderSearchPlaceholder").show();
             }
 
         }

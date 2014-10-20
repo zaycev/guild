@@ -3,12 +3,12 @@
  */
 
 
-app.controller("ProfileController", ["$scope", "$rootScope", "$location", "LdtApi", "NavApi", "auth", "ngProgress",
-    function ($scope, $rootScope, $location, LdtApi, NavApi, auth, ngProgress) {
+app.controller("ProfileController", ["$scope", "$rootScope", "$location", "$cookies", "LdtApi", "NavApi", "auth", "ngProgress",
+    function ($scope, $rootScope, $location, $cookies, LdtApi, NavApi, auth, ngProgress) {
 
         //
         $rootScope.controller = "profile";
-        NavApi.Init($rootScope, $location);
+        NavApi.Init($rootScope, $location, $cookies);
 
 
         //
@@ -32,6 +32,7 @@ app.controller("ProfileController", ["$scope", "$rootScope", "$location", "LdtAp
         };
         LoadProfile();
 
+
         // Delete Idea
         $scope.DeleteIdea = function(iid) {
             var deleteIdea = window.confirm("Are you absolutely sure you want to delete?");
@@ -48,6 +49,7 @@ app.controller("ProfileController", ["$scope", "$rootScope", "$location", "LdtAp
             }
         };
 
+
         // Up Vote
         $scope.UpVote = function(iid) {
             if (!auth.isAuthenticated) {
@@ -62,6 +64,14 @@ app.controller("ProfileController", ["$scope", "$rootScope", "$location", "LdtAp
                 .error(function() {
                     $rootScope.ShowError("IdeaVote");
                 });
+        };
+
+
+        // Search for hashtag
+        $scope.SearchHashtag = function(hashtag) {
+            $rootScope.textQuery = hashtag;
+            $location.path("list").search({"q": $rootScope.textQuery});
+            $rootScope.tQ = $rootScope.textQuery;
         };
 
 }]);

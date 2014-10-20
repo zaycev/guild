@@ -3,13 +3,17 @@
 
 import jwt
 import base64
+import logging
 
-from feed.models import UserProfile
+from django.contrib.auth.models import User
+from django.core.exceptions import ObjectDoesNotExist
 
 from rest_framework import authentication
 from rest_framework.exceptions import AuthenticationFailed
 
-from django.contrib.auth.models import User
+from feed.models import UserProfile
+
+logger = logging.getLogger("ldt")
 
 
 class Auth0Authentication(authentication.BaseAuthentication):
@@ -22,7 +26,7 @@ class Auth0Authentication(authentication.BaseAuthentication):
 
         parts = auth.split()
 
-        if parts[0].lower() != 'bearer':
+        if parts[0].lower() != "bearer":
             raise AuthenticationFailed("Authorization header must start with Bearer")
         elif len(parts) == 1:
             raise AuthenticationFailed("Token not found")
@@ -53,14 +57,29 @@ class Auth0Authentication(authentication.BaseAuthentication):
             raise AuthenticationFailed("subject is invalid")
 
         if subject is None:
+            logger.warn("Subject not found")
             return None
         try:
             user = User.objects.get(username=subject)
+            try:
+                profile = UserProfile.objects.get(user=user)
+            except ObjectDoesNotExist:
+                logger.warn("User '%s' found, but profile does not exist." % user.username)
+                logger.warn("Creating profile for '%s'." % user.username)
+                profile = UserProfile(user=user,
+                                      realm=realm,
+                                      realm_id=realm_id)
+                profile.save()
+                logger.warn("Profile '%s' was created." % user.username)
+
         except User.DoesNotExist:
+            logger.warn("User '%s' not found, creating." % subject)
             user = User.objects.create_user(subject)
             profile = UserProfile(user=user,
                                   realm=realm,
                                   realm_id=realm_id)
+            user.save()
             profile.save()
+            logger.warn("User and profile for '%s' were created." % subject)
 
         return user, None

@@ -3,12 +3,12 @@
  */
 
 
-app.controller("PostController", ["$scope", "$rootScope", "$location", "LdtApi", "NavApi", "auth", "FileUploader", "ngProgress",
-    function ($scope, $rootScope, $location, LdtApi, NavApi, auth, FileUploader, ngProgress) {
+app.controller("PostController", ["$scope", "$rootScope", "$location", "$cookies", "LdtApi", "NavApi", "auth", "FileUploader", "ngProgress",
+    function ($scope, $rootScope, $location, $cookies, LdtApi, NavApi, auth, FileUploader, ngProgress) {
 
         //
         $rootScope.controller = "create";
-        NavApi.Init($rootScope, $location);
+        NavApi.Init($rootScope, $location, $cookies);
 
 
         //

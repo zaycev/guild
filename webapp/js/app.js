@@ -5,7 +5,7 @@ Author: Vova Zaytsev <zaytsev@usc.edu>
 "use strict";
 
 
-var app = angular.module("LdtApp", ["ngRoute", "ngSanitize", "angularFileUpload", "auth0", "ngProgress"])
+var app = angular.module("LdtApp", ["ngRoute", "ngSanitize", "ngCookies", "angularFileUpload", "auth0", "ngProgress"])
     .config(["$routeProvider", "$locationProvider", "authProvider", "$httpProvider",
 
 
