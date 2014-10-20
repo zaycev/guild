@@ -3,6 +3,7 @@
 
 import os
 import re
+import gzip
 import uuid
 import shutil
 import imghdr
@@ -336,7 +337,11 @@ class Picture(models.Model):
         save_path = os.path.join(save_dir, pic_name)
 
         pic_format = imghdr.what(origin)
-        im = Image.open(origin)
+        try:
+            im = Image.open(origin)
+        except IOError:
+            with gzip.GzipFile(origin, "r") as stream:
+                im = Image.open(stream)
 
         if resize:
             im.thumbnail(resize, Image.ANTIALIAS)
