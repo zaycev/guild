@@ -126,7 +126,7 @@ LOGGING = {
         },
 
         "ldt": {
-            "handlers":     ["apilog-file"],
+            "handlers":     ["ldt-file"],
             "level":        "INFO",
             "propagate":    True
         },
