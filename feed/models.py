@@ -11,6 +11,8 @@ import string
 import requests
 
 from datetime import datetime
+from cStringIO import StringIO
+
 from django.db import models
 from django.db.models import Q
 from api.common import format_iso_datetime
@@ -337,11 +339,13 @@ class Picture(models.Model):
         save_path = os.path.join(save_dir, pic_name)
 
         pic_format = imghdr.what(origin)
+
         try:
             im = Image.open(origin)
         except IOError:
             with gzip.GzipFile(origin, "r") as stream:
-                im = Image.open(stream)
+                file_data = stream.read()
+            im = Image.open(StringIO(file_data))
 
         if resize:
             im.thumbnail(resize, Image.ANTIALIAS)
