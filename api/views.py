@@ -28,6 +28,8 @@ from feed.models import COMMENT_STATUS
 
 PAGE_SIZE = 3
 
+ldt_logger = logging.getLogger("ldt")
+bhv_logger = logging.getLogger("bhv")
 
 # ########################
 # IDEA API
@@ -42,16 +44,18 @@ def idea_get(request):
     if idea_iid is not None:
         try:
             idea = IdeaEntry.objects.select_related("creator").filter(~Q(status="D")).get(iid=idea_iid)
+            bhv_logger.info("GET_IDEA\tFOUND\t%s" % idea_iid)
         except ObjectDoesNotExist:
+            bhv_logger.info("GET_IDEA\tNO_FOUND\t%s" % idea_iid)
             idea = None
     else:
+        bhv_logger.info("GET_IDEA\tNO_IID\t<NONE>")
         idea = None
     if idea is not None:
         editable = idea.creator_id == request.user.id # TODO: remove this legacy
         idea = idea.json(creator=True, comments=True, votes=True, members=True, pic=True)
         idea["editable"] = editable
         return Response(idea)
-
     return Response({
         "iid": None,
         "details": "Idea not found.",
@@ -64,6 +68,10 @@ def idea_get(request):
 def idea_list(request):
     skip_size = request.GET.get("skipSize", None)
     text_query = request.GET.get("textQuery", None)
+    bhv_logger.info("LIST_IDEA\t%s\t%s" % (
+        skip_size if skip_size is not None else "<NONE>",
+        text_query if text_query is not None else "<NONE>"
+    ))
     if skip_size is not None and len(skip_size) > 0:
         skip_size = int(skip_size)
     else:

@@ -90,7 +90,7 @@ LOGGING = {
 
     "formatters": {
         "verbose": {
-            "format": "%(levelname)s %(asctime)s %(module)s %(process)d %(thread)d %(message)s"
+            "format": "%(levelname)s\t%(asctime)s\t%(module)s\t%(message)s"
         },
         "simple": {
             "format": "%(levelname)s %(message)s"
@@ -115,6 +115,14 @@ LOGGING = {
             "maxBytes":     1024 * 1024 * 128,
         },
 
+        "behaviour-file": {
+            "class":        "logging.handlers.RotatingFileHandler",
+            "filename":     "{{LOGGING_BEHAVIOUR_FILE}}",
+            "formatter":    "verbose",
+            "backupCount":  32,
+            "maxBytes":     1024 * 1024 * 128,
+        },
+
     },
 
     "loggers": {
@@ -127,6 +135,12 @@ LOGGING = {
 
         "ldt": {
             "handlers":     ["ldt-file"],
+            "level":        "INFO",
+            "propagate":    True
+        },
+
+        "bhv": {
+            "handlers":     ["behaviour-file"],
             "level":        "INFO",
             "propagate":    True
         },
