@@ -258,19 +258,21 @@ def profile_get(request):
 def profile_create(request):
     profile = UserProfile.objects.get(user=request.user)
     profile.nickname = request.GET.get("nickname")
-    profile.email = request.GET.get("email")
-    profile.email_verified = request.GET.get("email_verified", False)
+
+    if profile.email is None or len(profile.email) == 0:
+        profile.email = request.GET.get("email")
+        profile.email_verified = request.GET.get("email_verified", False)
 
     if request.GET.get("picture") is not None:
         pic_url = request.GET.get("picture")
         # Hack for twitter larger image
-        if profile.realm == "twitter":
-            try:
-                large_pic_url = pic_url[:(-(len("_normal.jpeg")))]+"_400x400.jpeg"
-                print "LARGE PIC USED", large_pic_url
-                pic_url = large_pic_url
-            except:
-                pass
+        # if profile.realm == "twitter":
+        #     try:
+        #         large_pic_url = pic_url[:(-(len("_normal.jpeg")))]+"_400x400.jpeg"
+        #         print "LARGE PIC USED", large_pic_url
+        #         pic_url = large_pic_url
+        #     except:
+        #         pass
         download_path = Picture.download(pic_url)
         dir_name, pic_name = profile.gen_pic_path()
         pic_id, _ = Picture.store(download_path, profile, save_to=(dir_name, pic_name), resize=(256, 256))
