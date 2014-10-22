@@ -1,6 +1,8 @@
 # coding: utf-8
 # Author: Vova Zaytsev <zaytsev@usc.edu>
 
+import logging
+
 from django.db.models import F
 from django.db.models import Q
 from django.db import connection
