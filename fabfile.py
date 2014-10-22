@@ -68,9 +68,9 @@ def init():
     if not env.local:
 
         print(green("Installing packages."))
-        run("aptitude update > /dev/null")
-        run("aptitude upgrade > /dev/null")
-        run("aptitude -f install %s > /dev/null" % " ".join(UBUNTU_PACKAGES))
+        run("aptitude update")
+        run("aptitude upgrade")
+        run("aptitude -f install %s" % " ".join(UBUNTU_PACKAGES))
 
         if not fabric.contrib.files.exists(env.config["path"]):
             print(green("Clonning repository."))
