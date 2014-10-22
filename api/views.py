@@ -28,7 +28,7 @@ from feed.models import IDEA_STATUS
 from feed.models import COMMENT_STATUS
 
 
-PAGE_SIZE = 3
+PAGE_SIZE = 30
 
 ldt_logger = logging.getLogger("ldt")
 bhv_logger = logging.getLogger("bhv")
