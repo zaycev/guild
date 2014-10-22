@@ -115,7 +115,7 @@ LOGGING = {
             "maxBytes":     1024 * 1024 * 128,
         },
 
-        "behaviour-file": {
+        "bhv-file": {
             "class":        "logging.handlers.RotatingFileHandler",
             "filename":     "{{LOGGING_BEHAVIOUR_FILE}}",
             "formatter":    "verbose",
@@ -140,7 +140,7 @@ LOGGING = {
         },
 
         "bhv": {
-            "handlers":     ["behaviour-file"],
+            "handlers":     ["bhv-file"],
             "level":        "INFO",
             "propagate":    True
         },
