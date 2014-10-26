@@ -75,6 +75,10 @@ class UserProfile(models.Model):
     created = models.DateTimeField(default=datetime.now, auto_now_add=True, null=True)
     pic_id = models.IntegerField(null=True)
 
+    def votes(self):
+        votes = self.t_votes.values("iid")
+        return set((idea["iid"] for idea in votes))
+
     def gen_pic_path(self):
         dir_name = "%02x" % (self.user_id % 255)
         pic_name = "u__%08x.jpg" % self.user_id

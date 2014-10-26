@@ -92,6 +92,14 @@ def idea_list(request):
     else:
         load_more = False
 
+    if request.user.is_authenticated():
+        try:
+            votes = UserProfile.objects.get(user=request.user).votes()
+            for idea in ideas:
+                idea["voted"] = idea["iid"] in votes
+        except:
+            pass
+
     return Response({
         "loadMore": load_more,
         "ideas": ideas,
@@ -110,11 +118,18 @@ def idea_vote(request):
         idea = None
     if idea is not None:
         idea.add_vote(profile)
-        return Response(idea.json(creator=True,
-                                  comments=False,
-                                  votes=False,
-                                  members=False,
-                                  pic=True))
+        idea = idea.json(creator=True,
+                         comments=False,
+                         votes=False,
+                         members=False,
+                         pic=True)
+
+        try:
+            votes = UserProfile.objects.get(user=request.user).votes()
+            idea["voted"] = idea["iid"] in votes
+        except:
+            pass
+        return Response()
     return Response({
         "iid": None,
         "details": "Idea not found",
@@ -154,7 +169,6 @@ def idea_update(request):
     try:
         idea = IdeaEntry.objects.filter(~Q(status="D")).get(iid=iid)
         pic_id = request.GET.get("pictureId")
-        print "PIC ID", pic_id
         if idea.creator_id != user.id:
             return Response({
                 "iid": iid,
