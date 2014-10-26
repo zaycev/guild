@@ -28,7 +28,10 @@
         </li>
     </ul>
 
-    <div class="paginator"><a style="cursor:pointer;" ng-click="LoadMore()">Load more</a></div>
+    <div class="paginator" ng-show="loadMore">
+        <a style="cursor:pointer;" ng-click="LoadMore()">Load more</a>
+    </div>
+
 </div>
 
 

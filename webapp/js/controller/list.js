@@ -20,10 +20,13 @@ app.controller("ListController", ["$scope", "$rootScope", "$location", "$cookies
         ngProgress.start();
         var LoadList = function () {
             LdtApi.IdeaList(0, $rootScope.textQuery)
-                .success(function(ideasList) {
-                    $scope.ideas = ideasList;
-                    $scope.nextSkip = ideasList.length;
+                .success(function(data) {
+
+                    $scope.ideas = data.ideas;
+                    $scope.nextSkip = data.ideas.length;
+                    $scope.loadMore = data.loadMore;
                     ngProgress.complete();
+
                 })
                 .error(function() {
                     $rootScope.ShowError("IdeaList");
@@ -36,18 +39,17 @@ app.controller("ListController", ["$scope", "$rootScope", "$location", "$cookies
         $scope.LoadMore = function () {
             ngProgress.start();
             LdtApi.IdeaList($scope.nextSkip, $rootScope.textQuery)
-                .success(function(ideasList) {
+                .success(function(data) {
 
-                    console.log(ideasList);
-
-                    if(ideasList.length == 0)
-                        alert("FIXME: No more ideas to load :-(")
-
-                    for (var i in ideasList) {
-                        $scope.ideas.push(ideasList[i]);
+                    for (var i in data.ideas) {
+                        var idea = data.ideas[i];
+                        $scope.ideas.push(idea);
                         $scope.nextSkip += 1;
                     }
+                    $scope.loadMore = data.loadMore;
                     ngProgress.complete();
+
+
                 })
                 .error(function() {
                     $rootScope.ShowError("IdeaList");

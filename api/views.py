@@ -81,12 +81,21 @@ def idea_list(request):
     if text_query is not None and len(text_query) > 0:
         ideas = IdeaEntry.objects.select_related("creator") \
             .filter(~Q(status="D")) \
-            .search(text_query)[skip_size:(skip_size + PAGE_SIZE)]
+            .search(text_query)[skip_size:(skip_size + PAGE_SIZE + 1)]
     else:
         ideas = IdeaEntry.objects.select_related("creator") \
-            .filter(~Q(status="D"))[skip_size:(skip_size + PAGE_SIZE)]
+            .filter(~Q(status="D"))[skip_size:(skip_size + PAGE_SIZE + 1)]
     ideas = [idea.json(creator=True) for idea in ideas]
-    return Response(ideas)
+    if len(ideas) > PAGE_SIZE:
+        load_more = True
+        ideas = ideas[:PAGE_SIZE]
+    else:
+        load_more = False
+
+    return Response({
+        "loadMore": load_more,
+        "ideas": ideas,
+    })
 
 
 @api_view(["POST"])
