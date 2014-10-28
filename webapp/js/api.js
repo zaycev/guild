@@ -133,6 +133,8 @@ app.factory("NavApi", [function() {
 
         Init: function($root, $location, $cookies) {
 
+            $window._gaq.push(["_trackPageView", $location.path()]);
+
             var searchQuery = $location.search().q;
             var searchHolder = $("#header .search input[type='text']");
 
