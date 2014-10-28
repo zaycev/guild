@@ -3,12 +3,12 @@
  */
 
 
-app.controller("EditProfileController", ["$scope", "$rootScope", "$location", "$cookies", "LdtApi", "NavApi", "auth", "ngProgress",
-    function ($scope, $rootScope, $location, $cookies, LdtApi, NavApi, auth, ngProgress) {
+app.controller("EditProfileController", ["$scope", "$rootScope", "$location", "$window", "$cookies", "LdtApi", "NavApi", "auth", "ngProgress",
+    function ($scope, $rootScope, $location, $window, $cookies, LdtApi, NavApi, auth, ngProgress) {
 
         //
         $rootScope.controller = "profile";
-        NavApi.Init($rootScope, $location, $cookies);
+        NavApi.Init($rootScope, $location, $cookies, $window);
 
 
         //

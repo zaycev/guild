@@ -3,12 +3,12 @@
  */
 
 
-app.controller("EditIdeaController", ["$scope", "$rootScope", "$location", "$cookies", "LdtApi", "NavApi", "auth", "FileUploader", "ngProgress",
-    function ($scope, $rootScope, $location, $cookies, LdtApi, NavApi, auth, FileUploader, ngProgress) {
+app.controller("EditIdeaController", ["$scope", "$rootScope", "$location", "$window", "$cookies", "LdtApi", "NavApi", "auth", "FileUploader", "ngProgress",
+    function ($scope, $rootScope, $location, $window, $cookies, LdtApi, NavApi, auth, FileUploader, ngProgress) {
 
         //
         $rootScope.controller = "edit-idea";
-        NavApi.Init($rootScope, $location, $cookies);
+        NavApi.Init($rootScope, $location, $cookies, $window);
 
 
         //
