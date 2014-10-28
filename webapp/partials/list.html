@@ -11,7 +11,7 @@
                 <img src="{{idea.creator.picture}}" alt="" />
             </a>
             <div class="rating">
-                <a style="cursor:pointer;" ng-click="UpVote(idea.iid)" class="vote ir" title="Vote"></a>
+                <a style="cursor:pointer;" ng-click="UpVote(idea.iid)" class="vote ir" ng-class="{voted:idea.voted}" title="Vote"></a>
                 <div class="score">{{idea.num_votes}}</div>
             </div>
             <div ng-click="$root.OpenIdea(idea.iid)" class="link">

@@ -66,6 +66,7 @@ app.controller("ListController", ["$scope", "$rootScope", "$location", "$cookies
             ngProgress.start();
             LdtApi.IdeaVote(iid)
                 .success(function(idea) {
+                    console.log(["idea", idea]);
                     for (var i in $scope.ideas)
                         if ($scope.ideas[i].iid == idea.iid)
                             $scope.ideas[i] = idea;

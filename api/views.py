@@ -123,13 +123,12 @@ def idea_vote(request):
                          votes=False,
                          members=False,
                          pic=True)
-
         try:
             votes = UserProfile.objects.get(user=request.user).votes()
             idea["voted"] = idea["iid"] in votes
         except:
             pass
-        return Response()
+        return Response(idea)
     return Response({
         "iid": None,
         "details": "Idea not found",
