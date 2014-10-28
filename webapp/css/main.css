@@ -66,8 +66,8 @@ body {
 		height: 59px;
 	}
 	#header .h-btn:hover {
-		/*background-color: #FF9E35;*/
-		background-color: rgba(255, 255, 255, 0.91);
+		background-color: #FF9E35;
+		border-radius: 4px;
 	}
 	#header .join {
 		float: right;
@@ -84,11 +84,6 @@ body {
 		overflow: hidden;
 		margin-left: 16px
 	}
-
-	#header .user-profile:hover {
-		opacity: 0.8;
-	}
-
 	#header .user-profile,
 	#header .user-profile img {
 		width: 57px;
@@ -203,10 +198,10 @@ body {
 }
 	#things .thing {
 		margin-bottom: 5px;
-		border-radius: 2px;
+		border-radius: 3px;
 	}
 	#things .thing:hover {
-		background-color: #F2F2F2;
+		background-color: #FBFFD2;
 	}
 		#things .user-profile {
 			float: right;
@@ -239,15 +234,9 @@ body {
 				background: url(/webapp/img/vote-arrow.png) no-repeat 7px 7px;
 			}
 			#things .vote:hover {
-				background-color: #FF3C3C;
+				background-color: #f6ff00;
 				background-position: 7px -12px;
-				border-radius: 50%;
 			}
-
-			#things .vote.voted {
-				background-color: rgba(255, 60, 60, 0.26);
-			}
-
 			#things .score {
 				color: rgba(41,41,41, .4);
 				font-size: 10px;
@@ -324,10 +313,8 @@ body {
 					margin-bottom: 4px;
 				}
 				#thing-page .story .rating .vote:hover {
-
+					background-color: #f6ff00;
 					background-position: 11px -32px;
-					background-color: #FF3C3C;
-					border-radius: 50%;
 				}
 				#thing-page .story .rating .score {
 					font-size: 15px;
@@ -359,7 +346,7 @@ body {
 			}
 
 		#thing-page .user-box {
-			margin: 0 0 0px -6px;
+			margin: 0 0 46px -6px;
 		}
 			#thing-page .user-box li {
 				float: left;
@@ -422,15 +409,15 @@ body {
 					margin-bottom: 17px;
 				}
 				#thing-page .user-box .upvoters .pics a {
-					margin: 0 5px 4px 0;
+					margin: 0 1px 4px 0;
 				}
 					#thing-page .user-box .upvoters .pics a img {
-						width: 23px;
-						height: 23px;
+						width: 21px;
+						height: 21px;
 					}
 
 		#lets-do-it {
-			margin-bottom: 30px;
+			margin-bottom: 75px;
 		}
 			#lets-do-it input[type="text"] {
 				padding: 0 0 0 20px;
@@ -670,16 +657,8 @@ form .hint {
 
  	font-size: 30px;
  	width: 100%;
- 	margin: 30px auto 5px;
+ 	margin: 50px auto 5px;
  }
-
- .editprofile.userdata .largeText {
-
- 	font-size: 27px;
- 	width: 40%;
- 	margin: 0px auto 35px;
- }
-
 
   .editprofile.userdata a {
 
@@ -757,7 +736,7 @@ Progress bar
 	border-color: #faebcc;
 	padding: 15px;
 	border: 1px solid transparent;
-	border-radius: 2px;
+	border-radius: 4px;
 	margin: 15px;
 	text-align: center;
 	font-size: 14px;
