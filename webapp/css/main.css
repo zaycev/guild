@@ -47,6 +47,7 @@ body {
 }*/
 .body-holder {
 	min-width: 800px;
+	min-height: 350px;
 }
 /* // Common styles - end */
 
@@ -54,35 +55,38 @@ body {
 /* Header
 ======================================================================== */
 #header {
-	background-color: #f6ff00;
+	background-color: white; /* #f6ff00 */
 	height: 59px;
 	padding: 15px;
+	margin: auto;
+	width: 980px;
 }
 	#header .h-btn {
-		border: none;
-		background-color: #f6ff00;
+		background-color: #fff;
 		background-repeat: no-repeat;
-		width: 83px;
-		height: 59px;
+		width: 65px;
+		margin: 0 14px;
+		height: 57px;
+		border: solid 1px #cfcfcf;
+
 	}
 	#header .h-btn:hover {
-		/*background-color: #FF9E35;*/
-		background-color: rgba(255, 255, 255, 0.91);
+		/*background-color: #fafafa;*/
 	}
 	#header .join {
 		float: right;
 		background-image: url(/webapp/img/header-profile.png);
-		background-position: 18px 6px;
+		background-position: 10px 6px;
 		margin-left: 3px;
 	}
 	#header .join:hover {
-		background-position: 18px -77px;
+		background-position: 10px -77px;
 	}
 	#header .user-profile {
 		float: right;
 		border-radius: 50%;
 		overflow: hidden;
-		margin-left: 16px
+		margin: 8px 30px 0 10px;
 	}
 
 	#header .user-profile:hover {
@@ -91,45 +95,46 @@ body {
 
 	#header .user-profile,
 	#header .user-profile img {
-		width: 57px;
-		height: 57px;
+		width: 40px;
+		height: 40px;
 	}
 	#header .add-thing {
 		float: right;
 		background-image: url(/webapp/img/header-add.png);
-		background-position: 23px 8px;
+		background-position: 13px 8px;
 	}
 	#header .add-thing:hover {
-		background-position: 23px -82px;
+		background-position: 13px -82px;
 	}
 	#header .back {
 		float: left;
 		background-image: url(/webapp/img/header-back.png);
-		background-position: 33px 20px;
-		width: 72px;
-		height: 59px;
-		margin-left: -81px;
+		background-position: 14px 19px;
+		width: 65px;
+		height: 57px;
+		margin: 0 14 0 0px;
 	}
 	#header .back:hover {
-		background-position: 33px -61px;
+		background-position: 14px -62px;
 	}
 	#header .search {
 		position: relative;
-		border: 1px solid #fb9d1e;
+		border: 1px solid #cfcfcf;
 		height: 57px;
 		margin-right: 200px;
 		overflow: hidden;
 	}
 		#header .search button {
 			float: right;
-			margin: -1px -1px 0 0;
+			margin: 0;
 			background-image: url(/webapp/img/header-search.png);
-			background-position: 24px 9px;
+			background-position: 14px 9px;
 			position: relative;
 			z-index: 2;
+			border: 0;
 		}
 		#header .search button:hover {
-			background-position: 24px -81px;
+			background-position: 14px -81px;
 		}
 		#header .search input[type="text"] {
 			position: relative;
@@ -139,27 +144,25 @@ body {
 			border: none !important;
 			outline: none !important;
 			box-shadow: none !important;
-			color: #ff3c3c;
-			padding: 0 0 0 6px;
+			color: #cfcfcf;
+			padding: 0 0 0 19px;
 			width: 80%;
 			line-height: 0;
 		}
 		#header .search input[type="text"],
 		#header .search-placeholder {
-			font-weight: 700;
-			text-transform: uppercase;
-			font-size: 51px;
-			letter-spacing: -1px;
+			font-weight: 400;
+			font-size: 25px;
+			letter-spacing: 0px;
 		}
 		#header .search-placeholder {
 			position: absolute;
 			top: -3px;
-			left: 6px;
+			left: 19px;
 			padding: 20px 0;
-			color: #f9e307;
-			font-weight: 700;
-			text-transform: uppercase;
-			font-size: 51px;
+			color: #eaeaea;
+			font-weight: 400;
+			font-size: 25px;
 			overflow: hidden;
 			white-space: nowrap;
 
@@ -169,7 +172,7 @@ body {
 			user-select: none;
 		}
 			#header .search-placeholder em {
-				color: #ff3c3c;
+				color: #aaa;
 				font-style: normal;
 			}
 #header.logged {
@@ -177,9 +180,10 @@ body {
 }
 	#header.logged .search {
 		margin-right: 169px;
+		margin-left: 26px;
 	}
 #header.have-back {
-	padding-left: 81px;
+	padding-left: 0px;
 }
 /* // Header - end */
 
@@ -188,25 +192,24 @@ body {
 ======================================================================== */
 #breadcrumbs {
 	border-bottom: 1px solid #ececec;
-	padding: 30px 0;
+	padding: 30px 0 46px;
 	margin-bottom: 16px;
 }
 	#breadcrumbs h3 {
 		padding: 0 20px;
-		font-size: 16px;
+		font-size: 12px;
 		color: #aaa;
 		text-transform: uppercase;
-		letter-spacing: 1px;
+		letter-spacing: 3px;
 	}
 
 #things {
 }
 	#things .thing {
-		margin-bottom: 5px;
-		border-radius: 2px;
+		border-bottom: solid 1px #f5f5f5;
 	}
 	#things .thing:hover {
-		background-color: #F2F2F2;
+		background-color: #f9f9f9;
 	}
 		#things .user-profile {
 			float: right;
@@ -222,8 +225,16 @@ body {
 		}
 
 		#things .user-profile:hover {
-			border: solid 2px yellow;
+			/* border: solid 2px yellow; */
+			width: 40px;
+			height: 40px;
 		}
+
+		#things .user-profile:hover img {
+			/* border: solid 2px yellow; */
+			width: 40px;
+			height: 40px;
+		}		
 
 		#things .rating {
 			float: left;
@@ -231,6 +242,8 @@ body {
 			width: 22px;
 			text-align: center;
 			padding: 4px;
+			background: #f5f5f5;
+			border-radius: 8px;
 		}
 			#things .vote {
 				cursor: pointer;
@@ -239,17 +252,18 @@ body {
 				background: url(/webapp/img/vote-arrow.png) no-repeat 7px 7px;
 			}
 			#things .vote:hover {
-				background-color: #FF3C3C;
+				background-color: #DBDBDB;
 				background-position: 7px -12px;
-				border-radius: 50%;
+				border-radius: 3px;
 			}
 
 			#things .vote.voted {
-				background-color: rgba(255, 60, 60, 0.26);
+				background-color: rgba(95, 255, 60, 0.26);
+				border: 0;
 			}
 
 			#things .score {
-				color: rgba(41,41,41, .4);
+				color: rgba(41,41,41, .65);
 				font-size: 10px;
 			}
 		#things .link {
@@ -260,7 +274,7 @@ body {
 
 		}
 			#things .link h2 {
-				font-size: 25px;
+				font-size: 19px;
 				color: #292929;
 				height: 26px;
 				letter-spacing: -.5px;
@@ -282,7 +296,7 @@ body {
 
 			#things .link h2 .hash:hover {
 				color: #555;
-				border-bottom: solid 1px #555;
+				border-bottom: solid 1px #7e7e7e;
 				/*text-decoration: underline;*/
 			}
 
@@ -292,8 +306,10 @@ body {
 			}
 
 			#things .link .bottom {
-				font-size: 12px;
-				color: rgba(41,41,41, .4);
+				font-size: 9px;
+				letter-spacing: 1px;
+				text-transform: uppercase;
+				color: rgba(150,150,150,0.4);
 			}
 				#things .link .bottom li {
 					float: left;
@@ -318,16 +334,15 @@ body {
 				text-align: center;
 			}
 				#thing-page .story .rating .vote {
-					height: 28px;
-					border-bottom: 1px solid #000;
-					background: url(/webapp/img/vote-arrow-inner.png) no-repeat 11px 11px;
-					margin-bottom: 4px;
+					height: 25px;
+					background: url(/webapp/img/vote-arrow-inner.png) no-repeat 11px 8px;
+					margin-top: 4px;
+					border-radius: 3px;
 				}
 				#thing-page .story .rating .vote:hover {
 
-					background-position: 11px -32px;
-					background-color: rgba(255, 60, 60, 0.24);
-					border-radius: 50%;
+					background-position: 11px -35px;
+					background-color: #eee;
 				}
 				#thing-page .story .rating .score {
 					font-size: 15px;
@@ -341,17 +356,33 @@ body {
 					max-height: 350px;
 				}
 			#thing-page .story h1 {
-				font-size: 40px;
-				line-height: 48px;
+				font-size: 33px;
+				line-height: 42px;
 				letter-spacing: -1.5px;
-				margin-bottom: 37px;
+				margin-bottom: 27px;
+				color: #222;
 			}
+
+			#thing-page .story h1 a {
+				text-decoration: none;
+				border-bottom: solid 1px #bbb;
+				color: #222;
+			}
+
+			#thing-page .story h1 a:hover {
+				text-decoration: none;
+				border-bottom: solid 1px #888;
+				background: #f5f5f5;
+			}
+
 			#thing-page .story p {
-				margin: 27px 0;
-				font-size: 20px;
+				margin: 0px 0 25px;
+				font-size: 16px;
 				line-height: 27px;
 				overflow: hidden;
 				letter-spacing: -.7px;
+				border-bottom: solid 1px #f1f1f1;
+				padding-bottom: 12px;
 			}
 			#thing-page .story .content {
 				max-width: 660px;
@@ -404,16 +435,18 @@ body {
 				margin-right: 60px;
 			}
 				#thing-page .user-box .participants h4,
-				#thing-page .user-box .upvoters h4 {
+				#thing-page .user-box .upvoters h4,
+				#thing-page .user-box .author h4 {
 					color: #aaa;
-					font-size: 15px;
+					font-size: 10px;
+					text-transform: uppercase;
 					margin: -27px 0 5px;
-					letter-spacing: -.3px;
+					letter-spacing: 1px;
 				}
 				#thing-page .user-box .participants .pics {
 				}
 					#thing-page .user-box .participants .pics a {
-						margin: 0 10px 10px 0;
+						margin: 3px 10px 10px 0;
 					}
 			#thing-page .user-box .upvoters {
 				max-width: 150px;
@@ -430,18 +463,18 @@ body {
 					}
 
 		#lets-do-it {
-			margin-bottom: 30px;
+			margin-bottom: 70px;
 		}
 			#lets-do-it input[type="text"] {
 				padding: 0 0 0 20px;
-				width: 576px;
-				border: 1px solid #f6ff00;
+				width: 612px;
+				border: 1px solid #cfcfcf;
 				background-color: #f8f8fd;
 				height: 78px;
 				outline: none !important;
 				box-shadow: none !important;
 				float: left;
-				font-size: 27px;
+				font-size: 24px;
 				letter-spacing: -1.5px;
 			}
 			#lets-do-it.comment input[type="text"] {
@@ -457,29 +490,39 @@ body {
 				color: #b1b1b1;
 			}
 			#lets-do-it button {
-				background-color: #f6ff00;
+				background-color: #cfcfcf;
 				border: none;
 				height: 80px;
-				color: #ff3c3c;
-				font-size: 36px;
+				color: #333;
+				font-size: 24px;
 				text-transform: uppercase;
 				text-align: center;
-				font-weight: 700;
-				width: 323px;
+				font-weight: 600;
+				width: 250px;
 				word-spacing: -0.01em;
 			}
 			#lets-do-it button:hover {
-				background-color: #ff3c3c;
-				color: #f6ff00;
+				background-color: #222;
+				color: white;
 			}
 			#lets-do-it.comment button {
-				background-color: #d7d7d7;
-				color: #6a6a6c;
+				background-color: #cfcfcf;
+				color: #333;
 			}
 			#lets-do-it.comment button:hover {
-				background-color: #878787;
+				background-color: #c0c0c0;
 				color: #2c2c2d;
 			}
+
+		#comments:before {
+			content: "Responses & Comments";
+			top: -26px;
+			position: relative;
+			color: #aaa;
+			font-size: 10px;
+			text-transform: uppercase;
+			letter-spacing: 1px;
+		}
 
 		#comments {
 			width: 770px;
@@ -545,28 +588,31 @@ body {
 #footer {
 	text-align: center;
 	padding: 34px 0 23px;
-	background-color: #F8F8F8;
+	border-top: solid 1px #ECECEC;
 	text-transform: uppercase;
 	margin-top: 50px;
 }
 	#footer .logo {
 		text-decoration: none;
-		color: #ff3c3c;
+		color: #818181;
 		font-weight: 700;
-		font-size: 17px;
+		font-size: 13px;
 		margin-bottom: 10px;
 		display: inline-block;
 	}
 	#footer .slogan {
 		color: #999;
 		font-size: 10px;
+		margin-left: 10px;
+		line-height: 23px;
+		vertical-align: top;		
 	}
 
 	#footer .footerabout {
-		width: 96%;
+		width: 56%;
 		font-size: 11px;
 		text-transform: none;
-		line-height: 14px;
+		line-height: 16px;
 		margin: 20px auto;
 		text-align: justify;
 	}
@@ -577,17 +623,19 @@ body {
 
 .newpost.wrap form input[type="text"], textarea {
 	width: 100%;
-	margin: 7px 0 5px;
+	margin: 11px 0 5px;
 }
 
 .newpost h1 {
-	margin: 40px 0 60px;
-	font-size: 28px;
-	color: #ccc;
+	margin: 49px 0 60px;
+	font-size: 18px;
+	color: #7C7C7C;
 }
 
 form input[type="file"] {
-	margin: 18px 0 5px;
+	margin: 18px auto 5px;
+	display: block;
+	background: #eee;
 
 }
 
@@ -596,15 +644,15 @@ form button {
 	display: block;
 	padding: 10px 25px;
 	font-size: 40px;
-	background: #f6ff00;
+	background: #cfcfcf;
 	border: 0;
 	font-weight: 600;
-	color: #ff3c3c;
+	color: #333;
 }
 
 form button:hover {
-	color: #f6ff00;
-	background: #ff3c3c;
+	color: white;
+	background: #555;
 }
 
 
@@ -618,14 +666,18 @@ form button:hover {
 }
 
 form .hint {
-	font-size: 13px;
-	margin: 0 0 30px 0;
+	margin: 3px 0 40px 0;
 	display: block;
-	color: #999;
+	text-align: center;
+	color: #D22;
+	letter-spacing: -0.02em;
+	font-size: 12px;
 }
 
 .newpost.wrap h2 {
-	font-size: 24px;
+	font-size: 22px;
+	text-align: center;
+	margin: 0 0 20px;
 }
 
 
@@ -714,7 +766,9 @@ float: right;
 .paginator a { 
 	padding: 20px 0 ; 
 	display: block;
-	text-decoration: none
+	text-decoration: none;
+	font-size: 12px;
+	color: #bbb;
 }
 
 /*
@@ -755,7 +809,7 @@ Progress bar
 .noresults { 
 	text-align: center;
 	padding: 50px 0;
-	min-height: 300px;
+	min-height: 50px;
 }
 
 .email-warn {
