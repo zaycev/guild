@@ -16,7 +16,7 @@
     "DJANGO_DB_PASS":           "etjigsyom$omDaj4",
 
     "NGINX_PORT":               80,
-    "NGINX_SERVER_NAME":        "letshackthis.com",
+    "NGINX_SERVER_NAME":        "letsdothis.cc",
 
     "NGINX_LOG_ACCESS":         "/root/logs/prod/nginx.access.log",
     "NGINX_LOG_ERROR":          "/root/logs/prod/nginx.error.log",
