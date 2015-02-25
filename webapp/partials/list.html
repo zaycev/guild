@@ -1,6 +1,6 @@
 <div id="breadcrumbs">
     <div class="wrap">
-        <h3>latest ideas</h3>
+        <h3>Latest ideas</h3>
     </div>
 </div>
 
@@ -11,20 +11,30 @@
                 <img src="{{idea.creator.picture}}" alt="" />
             </a>
             <div class="rating">
-                <a style="cursor:pointer;" ng-click="UpVote(idea.iid)" class="vote ir" title="Vote"></a>
+                <a style="cursor:pointer;" ng-click="UpVote(idea.iid)" class="vote ir" ng-class="{voted:idea.voted}" title="Vote"></a>
                 <div class="score">{{idea.num_votes}}</div>
             </div>
-            <a href="#/idea/?i={{idea.iid}}" class="link">
-                <h2>{{idea.title}}</h2>
+            <div ng-click="$root.OpenIdea(idea.iid)" class="link">
+                <h2>
+                    <span ng-repeat="c in idea.titleChunks">
+                        <span ng-show="!c.hw">{{c.t}}</span><span class="hash" ng-click="SearchHashtag(c.hw)" ng-show="c.hw">{{c.t}}</span>
+                    </span>
+                </h2>
                 <ul class="bottom clearfix">
                     <!-- <li>10 talking</li> -->
-                    <li>{{nickname.num_members}} participants</li>
+                    <li>{{idea.num_members}} participants</li>
                 </ul>
-            </a>
+            </div>
         </li>
     </ul>
+
+    <div class="paginator" ng-show="loadMore">
+        <a style="cursor:pointer;" ng-click="LoadMore()">Load more</a>
+    </div>
+
 </div>
 
-<div ng-show="ideas.length==0">
-    No results
+
+<div ng-show="ideas.length==0" class="wrap noresults">
+    No results :(
 </div>

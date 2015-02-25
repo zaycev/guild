@@ -1,0 +1,10 @@
+{{creator.nickname}},
+
+Great! You have a new co-hacker! {{initiator.nickname}} wants to build your idea, and they added a comment:
+
+"{{comment.text}}"
+
+Visit the idea page to reply and coordinate the next steps:
+http://dev.letshackthis.com/#/idea?i={{idea.iid}}
+
+#LETSDOTHIS

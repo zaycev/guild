@@ -16,10 +16,10 @@ def project_dir(dir_name):
     return os.path.join(os.path.dirname(__file__), "..", dir_name)\
         .replace("\\", "//")
 
-SECRET_KEY = "h8(e(u3#k)l802(4mfh^f&&jp!@p*s#98tf++l#z-e83(#$x@*"
-DEBUG = True
-TEMPLATE_DEBUG = True
-ALLOWED_HOSTS = ["localhost"]
+SECRET_KEY      = "h8(e(u3#k)l802(4mfh^f&&jp!@p*s#98tf++l#z-e83(#$x@*"
+DEBUG           = {{DJANGO_DEBUG}}
+TEMPLATE_DEBUG  = {{DJANGO_DEBUG}}
+ALLOWED_HOSTS   = ["localhost"]
 
 
 INSTALLED_APPS = (
@@ -29,12 +29,12 @@ INSTALLED_APPS = (
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.admin",
-    "debug_toolbar",
     "rest_framework",
     "feed",
     "api",
     "app",
 )
+
 
 MIDDLEWARE_CLASSES = (
     "django.contrib.sessions.middleware.SessionMiddleware",
@@ -45,6 +45,7 @@ MIDDLEWARE_CLASSES = (
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 )
 
+
 ROOT_URLCONF = "ldt.urls"
 WSGI_APPLICATION = "ldt.wsgi.application"
 
@@ -52,19 +53,21 @@ WSGI_APPLICATION = "ldt.wsgi.application"
 DATABASES = {
     "default": {
         "ENGINE":   "django.db.backends.postgresql_psycopg2",
-        "NAME":     "udun",
-        "USER":     "saruman",
-        "PASSWORD": "Cefaigfilj#twuc5",
-        "HOST":     "127.0.0.1",
-        "PORT":     "1111",
+        "NAME":     "{{DJANGO_DB_NAME}}",
+        "USER":     "{{DJANGO_DB_USER}}",
+        "PASSWORD": "{{DJANGO_DB_PASS}}",
+        "HOST":     "{{DJANGO_DB_HOST}}",
+        "PORT":     "{{DJANGO_DB_PORT}}",
     }
 }
 
-LANGUAGE_CODE = "en-us"
-TIME_ZONE = "UTC"
-USE_I18N = True
-USE_L10N = True
-USE_TZ = True
+
+LANGUAGE_CODE   = "en-us"
+TIME_ZONE       = "America/Los_Angeles"
+USE_I18N        = True
+USE_L10N        = True
+USE_TZ          = True
+
 
 STATIC_ROOT = "/webapp/"
 STATIC_URL = "/webapp/"
@@ -87,7 +90,7 @@ LOGGING = {
 
     "formatters": {
         "verbose": {
-            "format": "%(levelname)s %(asctime)s %(module)s %(process)d %(thread)d %(message)s"
+            "format": "%(levelname)s\t%(asctime)s\t%(module)s\t%(message)s"
         },
         "simple": {
             "format": "%(levelname)s %(message)s"
@@ -96,21 +99,28 @@ LOGGING = {
 
     "handlers": {
 
-        "main-log-file": {
-            "class": "logging.handlers.WatchedFileHandler",
-            "filename": "logs/app.txt",
-            "formatter": "verbose",
+        "django-file": {
+            "class":        "logging.handlers.RotatingFileHandler",
+            "filename":     "{{LOGGING_DJANGO_FILE}}",
+            "formatter":    "verbose",
+            "backupCount":  32,
+            "maxBytes":     1024 * 1024 * 128,
         },
 
-        "ldt-log-file": {
-            "class": "logging.handlers.WatchedFileHandler",
-            "filename": "logs/ldt.txt",
-            "formatter": "verbose",
+        "ldt-file": {
+            "class":        "logging.handlers.RotatingFileHandler",
+            "filename":     "{{LOGGING_APILOG_FILE}}",
+            "formatter":    "verbose",
+            "backupCount":  32,
+            "maxBytes":     1024 * 1024 * 128,
         },
 
-        "console": {
-            "class": "logging.StreamHandler",
-            "formatter": "simple",
+        "bhv-file": {
+            "class":        "logging.handlers.RotatingFileHandler",
+            "filename":     "{{LOGGING_BEHAVIOUR_FILE}}",
+            "formatter":    "verbose",
+            "backupCount":  32,
+            "maxBytes":     1024 * 1024 * 128,
         },
 
     },
@@ -118,18 +128,26 @@ LOGGING = {
     "loggers": {
 
         "django": {
-            "handlers": ["main-log-file", "console"],
-            "level": "ERROR",
-            "propagate": True,
+            "handlers":     ["django-file"],
+            "level":        "ERROR",
+            "propagate":    True,
         },
 
         "ldt": {
-            "handlers": ["ldt-log-file", "console"],
-            "level": "INFO",
-            "propagate": True
+            "handlers":     ["ldt-file"],
+            "level":        "INFO",
+            "propagate":    True
         },
+
+        "bhv": {
+            "handlers":     ["bhv-file"],
+            "level":        "INFO",
+            "propagate":    True
+        },
+
     },
 }
+
 
 REST_FRAMEWORK = {
     "DEFAULT_PERMISSION_CLASSES": (
@@ -140,13 +158,7 @@ REST_FRAMEWORK = {
     ),
 }
 
-# 16 MB
-FILE_UPLOAD_MAX_MEMORY_SIZE = 16 * 1024 * 1024
 
-#
-EMAIL_BACKEND       = "django.core.mail.backends.smtp.EmailBackend"
-EMAIL_USE_TLS       = True
-EMAIL_HOST          = "smtp.gmail.com"
-EMAIL_PORT          = 587 #also tried with 465
-EMAIL_HOST_USER     = "vladimir.zaytsev.m@gmail.com"
-EMAIL_HOST_PASSWORD = "#!Pass39572685"
+# 8 MB
+FILE_UPLOAD_MAX_MEMORY_SIZE = 8 * 1024 * 1024
+ALLOWED_HOSTS = ["{{NGINX_SERVER_NAME}}"]

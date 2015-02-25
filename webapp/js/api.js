@@ -21,6 +21,19 @@ app.factory("LdtApi", ["$http", "$location",
                 });
             },
 
+            IdeaUpdate: function(iid, title, summary, pictureId) {
+                return $http({
+                    url:    "/api/idea/update/",
+                    method: "POST",
+                    params: {
+                        "iid": iid,
+                        "title": title,
+                        "summary": summary,
+                        "pictureId": pictureId
+                    }
+                });
+            },
+
             IdeaGet: function(iid) {
                 return $http({
                     url:    "/api/idea/get/",
@@ -54,10 +67,21 @@ app.factory("LdtApi", ["$http", "$location",
             },
 
 
+            IdeaRemove: function(iid) {
+                return $http({
+                    url:    "/api/idea/remove/",
+                    method: "POST",
+                    params: {
+                        "iid": iid
+                    }
+                });
+            },
+
+
             ProfileCreate: function(profileData) {
                 return $http({
                     url:    "/api/profile/create/",
-                    method: "GET",
+                    method: "POST",
                     params: profileData
                 });
             },
@@ -74,12 +98,13 @@ app.factory("LdtApi", ["$http", "$location",
             },
 
 
-            ProfileUpdate: function(tagline) {
+            ProfileUpdate: function(tagline, email) {
                 return $http({
                     url:    "/api/profile/update/",
                     method: "POST",
                     params: {
-                        "tagline": tagline
+                        "tagline": tagline,
+                        "email": email
                     }
                 });
             },
@@ -106,9 +131,18 @@ app.factory("NavApi", [function() {
 
     return {
 
-        Init: function($root, $location) {
+        Init: function($root, $location, $cookies, $window) {
+
+            try {
+                $window.ga('send', 'pageview', { page: $location.path() });
+            } catch(err) {
+                console.log(err.message);
+            }
 
             var searchQuery = $location.search().q;
+            var searchHolder = $("#header .search input[type='text']");
+
+            $root.showEmailWarning = $root.Auth.isAuthenticated && !Boolean($cookies.dissmissWarning) && !Boolean($cookies.emailSet);
 
             if ($root.controller != "list") {
                 $root.textQuery    = "";
@@ -120,79 +154,76 @@ app.factory("NavApi", [function() {
                 $root.tQ           = searchQuery;
             }
 
-            $(document).ready(function($) {
-                $("#header .search input[type='text']")
-                    .on("focusin", function(){
-                        $("#header .search-placeholder").hide();
-                    })
-                    .on("focusout", function(){
-                        if( !$(this).val() && searchQuery !== true && typeof searchQuery !== "undefined" ) {
-                            $("#header .search-placeholder").show();
-                        }
-                    });
-                var hashtag = "#letsdoit ";
-                checkValue($("#lets-do-it input[type='text']").val());
-                $("#lets-do-it input[type='text']")
-                    .on("keyup", function(){
-                        checkValue($("#lets-do-it input[type='text']").val());
-                    })
-                    .on("focusin", function(){
-                        if( !$(this).val() ) {
-                            $(this).val(hashtag);
-                        }
-                    })
-                    .on("focusout", function(){
-                        if( !$(this).val() ) {
-                            $("#lets-do-it.comment")
-                                .removeClass("comment")
-                                .addClass("join")
-                                    .find("button")
-                                        .text("Lets do it");
-                        }
-                    });
-                function checkValue(str){
-                    if(str) {
-                        if(str.indexOf(hashtag) >= 0) {
-                            $("#lets-do-it")
-                                .removeClass("comment")
-                                .addClass("join")
-                                    .find("button")
-                                        .text("Lets do it");
-                        } else {
-                            $("#lets-do-it")
-                                .removeClass("join")
-                                .addClass("comment")
-                                    .find("button")
-                                        .text("Comment");
-                        }
-                    } else {
+            $root.showBack = ! (
+                $root.controller == "list"
+                && !Boolean(searchQuery)
+            );
+
+            $("#HeaderSearch")
+                .focusin(function(){
+                    console.log("FOCUSIN");
+                    $("#HeaderSearchPlaceholder").hide();
+                })
+                .focusout(function(){
+                    console.log("FOCUSOUT");
+                    if( !$(this).val()) {
+                        $("#HeaderSearchPlaceholder").show();
+                    }
+                });
+
+
+            var hashtag = "#letsdothis ";
+            checkValue($("#lets-do-it input[type='text']").val());
+            $("#lets-do-it input[type='text']")
+                .on("keyup", function(){
+                    checkValue($("#lets-do-it input[type='text']").val());
+                })
+                .on("focusin", function(){
+                    if( !$(this).val() ) {
+                        $(this).val(hashtag);
+                    }
+                })
+                .on("focusout", function(){
+                    if( !$(this).val() ) {
+                        $("#lets-do-it.comment")
+                            .removeClass("comment")
+                            .addClass("join")
+                                .find("button")
+                                    .text("Let's do this!");
+                    }
+                });
+
+            function checkValue(str){
+                if(str) {
+                    if(str.indexOf(hashtag) >= 0) {
                         $("#lets-do-it")
                             .removeClass("comment")
                             .addClass("join")
                                 .find("button")
-                                    .text("Lets do it");
+                                    .text("Let's do this!");
+                    } else {
+                        $("#lets-do-it")
+                            .removeClass("join")
+                            .addClass("comment")
+                                .find("button")
+                                    .text("Comment");
                     }
-                }
-
-                if (searchQuery !== true && typeof searchQuery !== "undefined") {
-                    $root.searchQuery = searchQuery;
-                    $("#header .search-placeholder").hide();
                 } else {
-                    $("#header .search-placeholder").show();
+                    $("#lets-do-it")
+                        .removeClass("comment")
+                        .addClass("join")
+                            .find("button")
+                                .text("Let's do this!");
                 }
-
-                $root.showBack = $root.controller != "list" || searchQuery !== true || typeof searchQuery !== "undefined";
-
-            });
-
-            if (searchQuery !== true && typeof searchQuery !== "undefined") {
-                $root.searchQuery = searchQuery;
-                $("#header .search-placeholder").hide();
-            } else {
-                $("#header .search-placeholder").show();
             }
 
-            $root.showBack = $root.controller != "list" || searchQuery !== true || typeof searchQuery !== "undefined";
+            if (Boolean(searchQuery)) {
+                console.log("HIDE");
+                $("#HeaderSearchPlaceholder").hide();
+            } else {
+                console.log("SHOW");
+                $("#HeaderSearchPlaceholder").show();
+            }
 
         }
 

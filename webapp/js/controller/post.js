@@ -3,12 +3,12 @@
  */
 
 
-app.controller("PostController", ["$scope", "$rootScope", "$location", "LdtApi", "NavApi", "auth", "FileUploader", "ngProgress",
-    function ($scope, $rootScope, $location, LdtApi, NavApi, auth, FileUploader, ngProgress) {
+app.controller("PostController", ["$scope", "$rootScope", "$location", "$window", "$cookies", "LdtApi", "NavApi", "auth", "FileUploader", "ngProgress",
+    function ($scope, $rootScope, $location, $window, $cookies, LdtApi, NavApi, auth, FileUploader, ngProgress) {
 
         //
         $rootScope.controller = "create";
-        NavApi.Init($rootScope, $location);
+        NavApi.Init($rootScope, $location, $cookies, $window);
 
 
         //
@@ -20,7 +20,7 @@ app.controller("PostController", ["$scope", "$rootScope", "$location", "LdtApi",
         });
 
         // CreateIdea
-        var createIdea = function() {
+        var CreateIdea = function() {
             if ($scope.ideaTitle.length == 0)
                 return;
             ngProgress.start();
@@ -45,7 +45,7 @@ app.controller("PostController", ["$scope", "$rootScope", "$location", "LdtApi",
 
             } else {
 
-                createIdea();
+                CreateIdea();
             }
         };
 
@@ -55,7 +55,7 @@ app.controller("PostController", ["$scope", "$rootScope", "$location", "LdtApi",
             if (response.pid) {
                 pictureId = response.pid;
                 ngProgress.set(50);
-                createIdea();
+                CreateIdea();
             } else {
                 $rootScope.ShowError("UploadImage");
             }

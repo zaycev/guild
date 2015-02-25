@@ -1,5 +1,4 @@
-<header id="header" class="have-back logged clearfix">
-
+<header id="header" class="logged clearfix" ng-class="{'have-back': $root.showBack}">
     <a ng-show="$root.Auth.isAuthenticated"
        href="#/profile"
        style="cursor:pointer;"
@@ -23,13 +22,13 @@
        Add thing
     </a>
 
-    <a ng-show="$root.controller!='list'||$root.tQ"
-       ng-click="$root.Back()"
+    <a ng-click="$root.Back()"
        style="cursor:pointer;"
        class="back h-btn ir"
        title="Back">
         Back
     </a>
+
 
     <div class="search">
         <form>
@@ -38,9 +37,10 @@
                     class="h-btn ir">
                 Search
             </button>
-            <input type="text" name="search" ng-model="$root.textQuery" ng-enter="$root.Search()"/>
-            <div class="search-placeholder" style="display:none;"><em>#letsdoit</em> find things to build</div>
+            <input id="HeaderSearch" type="text" name="search" ng-model="$root.textQuery" ng-enter="$root.Search()"/>
+            <div id="HeaderSearchPlaceholder" class="search-placeholder"><em>#letsdothis</em> find things to build</div>
         </form>
     </div>
 </header>
-<br/>
+<div class="email-warn" ng-show="$root.showEmailWarning">Please <a href="#/edit-profile/"> add your e-mail address</a> so we can notify you on your idea activity. <a class="dismiss" style="cursor:pointer;" ng-click="$root.DissmissEmailWarning()">Dismiss</a></div>
+<br ng-show="$root.showEmailWarning"/>

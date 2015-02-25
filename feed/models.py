@@ -2,6 +2,8 @@
 # Author: Vova Zaytsev <zaytsev@usc.edu>
 
 import os
+import re
+import gzip
 import uuid
 import shutil
 import imghdr
@@ -9,7 +11,10 @@ import string
 import requests
 
 from datetime import datetime
+from cStringIO import StringIO
+
 from django.db import models
+from django.db.models import Q
 from api.common import format_iso_datetime
 from django.contrib.auth.models import User
 from django.core.exceptions import ObjectDoesNotExist
@@ -21,6 +26,12 @@ try:
     from PIL import Image
 except ImportError:
     import Image
+
+from django.core.mail import EmailMultiAlternatives
+from django.template.loader import render_to_string
+
+
+MAGICAL_TEXT = "#letsdothis"
 
 
 ALPHABET = string.letters + string.digits
@@ -40,14 +51,23 @@ COMMENT_STATUS = {
 }
 
 
+def send_email(to_address, template, context):
+    txt_body = render_to_string("email/%s/body.txt" % template, context)
+    html_body = render_to_string("email/%s/body.html" % template, context)
+    subject = render_to_string("email/%s/subject.txt" % template, context)
+    subject = subject.replace("\n", " ")
+    msg = EmailMultiAlternatives(subject, txt_body, "#LETSDOTHIS <do.not.reply@mail.letshackthis.com>", (to_address, ))
+    msg.attach_alternative(html_body, "text/html")
+    msg.send()
+
 class UserProfile(models.Model):
 
     class Meta:
         db_table = "t_profile"
 
     user = models.ForeignKey(User, primary_key=True, null=False)
-    nickname = models.CharField(max_length=30, null=False, blank=False)
-    email = models.EmailField(unique=True, null=True, max_length=50)
+    nickname = models.CharField(max_length=64, null=False, blank=False)
+    email = models.EmailField(unique=False, null=True, max_length=50)
     email_verified = models.BooleanField(default=False, null=False)
     tagline = models.CharField(max_length=100, null=True, blank=True)
     realm_id = models.CharField(max_length=32, null=False, blank=False)
@@ -55,15 +75,21 @@ class UserProfile(models.Model):
     created = models.DateTimeField(default=datetime.now, auto_now_add=True, null=True)
     pic_id = models.IntegerField(null=True)
 
+    def votes(self):
+        votes = self.t_votes.values("iid")
+        return set((idea["iid"] for idea in votes))
+
     def gen_pic_path(self):
         dir_name = "%02x" % (self.user_id % 255)
         pic_name = "u__%08x.jpg" % self.user_id
         return dir_name, pic_name
 
-    def json(self, max_ideas=0, ideas=False, activity=False, comments=False, username=False):
+    def json(self, max_ideas=0, ideas=False, activity=False, comments=False, username=False, email=False):
 
         if ideas:
-            ideas = IdeaEntry.objects.select_related("creator").filter(creator=self)[:max_ideas]
+            ideas = IdeaEntry.objects.select_related("creator") \
+                .filter(~Q(status="D")) \
+                .filter(creator=self)[:max_ideas]
             ideas = [idea.json(creator=True) for idea in ideas]
         else:
             ideas = None
@@ -83,7 +109,7 @@ class UserProfile(models.Model):
             "uid":      self.user_id,
             "username": username,
             "nickname": self.nickname,
-            "email":    self.email,
+            "email":    self.email if email else None,
             "tagline":  self.tagline,
             "created":  format_iso_datetime(self.created),
             "picture":  None if self.pic_id is None else "/webapp/usercontent/%s/%s" % self.gen_pic_path(),
@@ -98,6 +124,9 @@ class UserProfile(models.Model):
 
 
 class IdeaEntry(models.Model):
+
+    EMPTY_RE = re.compile("\s+")
+    HASHTAG_RE = re.compile("#[a-zA-Z0-9_]+")
 
     class Meta:
         db_table = "t_idea"
@@ -155,15 +184,34 @@ class IdeaEntry(models.Model):
             self.save()
 
     def add_comment(self, profile, text):
-        contains_hashtag = "#letsdoit" in text
+        contains_hashtag = MAGICAL_TEXT in text
+        members = {m["user_id"] for m in self.members.all().values("user_id")}
+        from_member = profile.user_id in members
         from_creator = profile.user_id == self.creator_id
-        status = "I" if from_creator or contains_hashtag else "N"
+        status = "I" if (from_creator or contains_hashtag or from_member) else "N"
         comment = Comment(creator=profile, idea=self, text=text, status=status)
         comment.save()
         if contains_hashtag:
             self.add_member(profile)
         self.num_comments = Comment.objects.filter(idea=self).count()
         self.save()
+
+        # Send email
+        if not from_creator:
+            if self.creator.email is not None and len(self.creator.email) > 0:
+                # 1) If comment is from new co-hacker
+                context = {
+                    "creator": self.creator,
+                    "initiator": profile,
+                    "comment": comment,
+                    "idea": self,
+                }
+                if contains_hashtag and not from_member:
+                    send_email(self.creator.email, "new_cohacker", context)
+                # 2) If regular comment posted
+                else:
+                    send_email(self.creator.email, "new_comment", context)
+
         return comment
 
 
@@ -208,9 +256,11 @@ class IdeaEntry(models.Model):
             "iid":          self.iid,
             "pic":          pic,
             "title":        self.title,
+            "titleChunks":  IdeaEntry.hashtagify(self.title),
             "creator":      creator,
 
             "summary":      self.summary,
+            "summaryChunks":IdeaEntry.hashtagify(self.summary),
             "created":      format_iso_datetime(self.created),
 
             "votes":        votes,
@@ -221,6 +271,27 @@ class IdeaEntry(models.Model):
             "num_members":  self.num_members,
             "num_comments": self.num_comments,
         }
+
+    @staticmethod
+    def hashtagify(text):
+        chunks = []
+        prev_pos = 0
+        for hashtag in IdeaEntry.HASHTAG_RE.finditer(text):
+            h_start, h_end = hashtag.start(), hashtag.end()
+            hashtag = text[h_start:h_end]
+            chunks.append({
+                "t": text[prev_pos:h_start],
+            })
+            chunks.append({
+                "t": hashtag,
+                "hw": hashtag[1:],
+            })
+            prev_pos = h_end
+        chunks.append({
+            "t": text[prev_pos:],
+        })
+        return chunks
+
 
 
 class Picture(models.Model):
@@ -272,17 +343,22 @@ class Picture(models.Model):
         save_path = os.path.join(save_dir, pic_name)
 
         pic_format = imghdr.what(origin)
-        if pic_format == "jpeg" or pic_format == "png" or pic_format == "gif":
-            im = Image.open(origin)
-            if resize:
-                im.thumbnail(resize, Image.ANTIALIAS)
-            im.convert("RGB").save(save_path, "JPEG", quality=85)
-            if remove_origin:
-                os.remove(origin)
-            return pic_meta.pid, path
 
-        else:
-            return None, None
+        try:
+            im = Image.open(origin)
+        except IOError:
+            with gzip.GzipFile(origin, "r") as stream:
+                file_data = stream.read()
+            im = Image.open(StringIO(file_data))
+
+        if resize:
+            im.thumbnail(resize, Image.ANTIALIAS)
+        im.convert("RGB").save(save_path, "JPEG", quality=85)
+
+        if remove_origin:
+            os.remove(origin)
+
+        return pic_meta.pid, path
 
 
 class Comment(models.Model):

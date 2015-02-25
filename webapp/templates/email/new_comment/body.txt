@@ -1,0 +1,10 @@
+{{creator.nickname}},
+
+{{initiator.nickname}} commented on your idea:
+
+"{{comment.text}}"
+
+To reply, open the idea page:
+http://dev.letshackthis.com/#/idea?i={{idea.iid}}
+
+#LETSDOTHIS

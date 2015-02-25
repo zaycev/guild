@@ -4,15 +4,30 @@ Author: Vova Zaytsev <zaytsev@usc.edu>
 
 "use strict";
 
-app.run(["auth", "$rootScope", "$location", "LdtApi", "ngProgress",
-         function(auth, $rootScope, $location, LdtApi, ngProgress) {
+app.run(["auth", "$rootScope", "$location", "$cookies", "LdtApi", "ngProgress",
+         function(auth, $rootScope, $location, $cookies, LdtApi, ngProgress) {
 
     auth.hookEvents();
-    $rootScope.Auth         = auth;
-    $rootScope.textQuery    = "";
-    $rootScope.skipSize     = 0;
-    $rootScope.tQ           = "";
-    $rootScope.showBack     = false;
+
+    $rootScope.Auth             = auth;
+    $rootScope.textQuery        = "";
+    $rootScope.skipSize         = 0;
+    $rootScope.tQ               = "";
+
+    $rootScope.showSearch       = false;
+    $rootScope.showBack         = false;
+
+    $rootScope.showEmailWarning = auth.isAuthenticated && !Boolean($cookies.dissmissWarning) && !Boolean($cookies.emailSet);
+
+    $rootScope.DissmissEmailWarning = function() {
+        $cookies.dissmissWarning = true;
+        $rootScope.showEmailWarning = auth.isAuthenticated && !Boolean($cookies.dissmissWarning) && !Boolean($cookies.emailSet);
+    };
+
+    //
+    $rootScope.OpenIdea = function(iid) {
+        $location.path("idea").search({"i": iid});
+    }
 
 
     //
@@ -31,6 +46,10 @@ app.run(["auth", "$rootScope", "$location", "LdtApi", "ngProgress",
 
     //
     $rootScope.Create = function() {
+        if (!auth.isAuthenticated) {
+            $rootScope.Login();
+            return;
+        }
         $location.path("post");
     };
 
@@ -45,7 +64,10 @@ app.run(["auth", "$rootScope", "$location", "LdtApi", "ngProgress",
             LdtApi.ProfileCreate(auth.profile)
                 .success(function(data) {
                     ngProgress.complete();
-                    window.location = location.protocol + "//" + location.host + location.pathname + "#profile";
+                    $cookies.dissmissWarning = false;
+                    $cookies.emailSet = Boolean(data.email);
+                    $rootScope.showEmailWarning = auth.isAuthenticated && !Boolean($cookies.dissmissWarning) && !Boolean($cookies.emailSet);
+                    window.location.reload();
                 })
                 .error(function(data) {
                     $rootScope.ShowError("LogIn");

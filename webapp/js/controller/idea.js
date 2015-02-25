@@ -3,18 +3,19 @@
  */
 
 
-app.controller("IdeaController", ["$scope", "$rootScope", "$location", "LdtApi", "NavApi", "auth", "ngProgress",
-    function ($scope, $rootScope, $location, LdtApi, NavApi, auth, ngProgress) {
+app.controller("IdeaController", ["$scope", "$rootScope", "$location", "$window", "$cookies", "LdtApi", "NavApi", "auth", "ngProgress",
+    function ($scope, $rootScope, $location, $window, $cookies, LdtApi, NavApi, auth, ngProgress) {
 
         //
         $rootScope.controller = "idea";
-        NavApi.Init($rootScope, $location);
+        NavApi.Init($rootScope, $location, $cookies, $window);
+
 
         //
         $scope.auth = auth;
         $scope.idea = null;
         $scope.ideaId = $location.search().i;
-        $scope.commentText = ""
+        $scope.commentText = "";
 
 
         // Load Idea
@@ -34,6 +35,10 @@ app.controller("IdeaController", ["$scope", "$rootScope", "$location", "LdtApi",
 
         // Post Comment
         $scope.PostComment = function() {
+            if (!auth.isAuthenticated) {
+                $rootScope.Login();
+                return;
+            }
             if (!$scope.commentText)
                 return;
             ngProgress.start();
@@ -51,6 +56,10 @@ app.controller("IdeaController", ["$scope", "$rootScope", "$location", "LdtApi",
         // UpVote
         ngProgress.start();
         $scope.UpVote = function() {
+            if (!auth.isAuthenticated) {
+                $rootScope.Login();
+                return;
+            }
             LdtApi.IdeaVote($scope.idea.iid)
                 .success(function(data) {
                     LoadIdea();

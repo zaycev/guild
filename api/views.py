@@ -1,7 +1,10 @@
 # coding: utf-8
 # Author: Vova Zaytsev <zaytsev@usc.edu>
 
+import logging
+
 from django.db.models import F
+from django.db.models import Q
 from django.db import connection
 from django.core.exceptions import ObjectDoesNotExist
 
@@ -25,8 +28,10 @@ from feed.models import IDEA_STATUS
 from feed.models import COMMENT_STATUS
 
 
-PAGE_SIZE = 50
+PAGE_SIZE = 30
 
+ldt_logger = logging.getLogger("ldt")
+bhv_logger = logging.getLogger("bhv")
 
 # ########################
 # IDEA API
@@ -40,43 +45,65 @@ def idea_get(request):
     idea_iid = request.GET.get("iid")
     if idea_iid is not None:
         try:
-            idea = IdeaEntry.objects.select_related("creator").get(iid=idea_iid)
+            idea = IdeaEntry.objects.select_related("creator").filter(~Q(status="D")).get(iid=idea_iid)
+            bhv_logger.info("GET_IDEA\tFOUND\t%s" % idea_iid)
         except ObjectDoesNotExist:
+            bhv_logger.info("GET_IDEA\tNO_FOUND\t%s" % idea_iid)
             idea = None
     else:
+        bhv_logger.info("GET_IDEA\tNO_IID\t<NONE>")
         idea = None
     if idea is not None:
+        editable = idea.creator_id == request.user.id # TODO: remove this legacy
         idea = idea.json(creator=True, comments=True, votes=True, members=True, pic=True)
+        idea["editable"] = editable
         return Response(idea)
-
     return Response({
         "iid": None,
         "details": "Idea not found.",
     }, status=status.HTTP_404_NOT_FOUND)
 
 
-
 @api_view(["GET"])
 @authentication_classes([Auth0Authentication])
 @permission_classes([IsAuthenticatedOrReadOnly])
 def idea_list(request):
-
     skip_size = request.GET.get("skipSize", None)
     text_query = request.GET.get("textQuery", None)
-
+    bhv_logger.info("LIST_IDEA\t%s\t%s" % (
+        skip_size if skip_size is not None else "<NONE>",
+        text_query if text_query is not None else "<NONE>"
+    ))
     if skip_size is not None and len(skip_size) > 0:
         skip_size = int(skip_size)
     else:
         skip_size = 0
-
     if text_query is not None and len(text_query) > 0:
-        ideas = IdeaEntry.objects.select_related("creator").search(text_query)[skip_size:(skip_size + PAGE_SIZE)]
+        ideas = IdeaEntry.objects.select_related("creator") \
+            .filter(~Q(status="D")) \
+            .search(text_query)[skip_size:(skip_size + PAGE_SIZE + 1)]
     else:
-        ideas = IdeaEntry.objects.select_related("creator").all()[skip_size:(skip_size + PAGE_SIZE)]
-
+        ideas = IdeaEntry.objects.select_related("creator") \
+            .filter(~Q(status="D"))[skip_size:(skip_size + PAGE_SIZE + 1)]
     ideas = [idea.json(creator=True) for idea in ideas]
+    if len(ideas) > PAGE_SIZE:
+        load_more = True
+        ideas = ideas[:PAGE_SIZE]
+    else:
+        load_more = False
 
-    return Response(ideas)
+    if request.user.is_authenticated():
+        try:
+            votes = UserProfile.objects.get(user=request.user).votes()
+            for idea in ideas:
+                idea["voted"] = idea["iid"] in votes
+        except:
+            pass
+
+    return Response({
+        "loadMore": load_more,
+        "ideas": ideas,
+    })
 
 
 @api_view(["POST"])
@@ -86,17 +113,22 @@ def idea_vote(request):
     profile = UserProfile.objects.get(user=request.user)
     iid = request.GET.get("iid")
     try:
-        idea = IdeaEntry.objects.get(iid=iid)
+        idea = IdeaEntry.objects.filter(~Q(status="D")).get(iid=iid)
     except ObjectDoesNotExist:
         idea = None
-
     if idea is not None:
         idea.add_vote(profile)
-        return Response({
-            "iid": iid,
-            "uid": profile.user_id,
-        })
-
+        idea = idea.json(creator=True,
+                         comments=False,
+                         votes=False,
+                         members=False,
+                         pic=True)
+        try:
+            votes = UserProfile.objects.get(user=request.user).votes()
+            idea["voted"] = idea["iid"] in votes
+        except:
+            pass
+        return Response(idea)
     return Response({
         "iid": None,
         "details": "Idea not found",
@@ -126,13 +158,60 @@ def idea_create(request):
     })
 
 
+@api_view(["POST"])
+@authentication_classes([Auth0Authentication])
+@permission_classes([IsAuthenticated])
 def idea_update(request):
-    pass
+    user = request.user
+    profile = UserProfile.objects.get(user=user)
+    iid = request.GET.get("iid")
+    try:
+        idea = IdeaEntry.objects.filter(~Q(status="D")).get(iid=iid)
+        pic_id = request.GET.get("pictureId")
+        if idea.creator_id != user.id:
+            return Response({
+                "iid": iid,
+                "details": "Idea not belong this user",
+            }, status=status.HTTP_400_BAD_REQUEST)
+        idea.title = request.GET.get("title")
+        idea.summary = request.GET.get("summary")
+        if pic_id:
+            idea.pic_id = pic_id
+        idea.save()
+        return Response({
+            "iid": idea.iid,
+        })
+    except ObjectDoesNotExist:
+        return Response({
+            "iid": None,
+            "details": "Idea not found",
+        }, status=status.HTTP_400_NOT_FOUND)
 
 
+@api_view(["POST"])
+@authentication_classes([Auth0Authentication])
+@permission_classes([IsAuthenticated])
 def idea_remove(request):
-    pass
-
+    user = request.user
+    profile = UserProfile.objects.get(user=user)
+    iid = request.GET.get("iid")
+    try:
+        idea = IdeaEntry.objects.filter(~Q(status="D")).get(iid=iid)
+        if idea.creator_id != user.id:
+            return Response({
+                "iid": iid,
+                "details": "Idea not belong this user",
+            }, status=status.HTTP_400_BAD_REQUEST)
+        idea.status = "D"
+        idea.save()
+        return Response({
+            "iid": idea.iid,
+        })
+    except ObjectDoesNotExist:
+        return Response({
+            "iid": None,
+            "details": "Idea not found",
+        }, status=status.HTTP_400_NOT_FOUND)
 
 #########################
 # PIC API
@@ -182,38 +261,49 @@ def profile_get(request):
         except ObjectDoesNotExist:
             profile = None
     if profile is not None:
-
+        editable = profile.user_id == user_id or (user_id is None and request.user.is_authenticated())
         profile = profile.json(max_ideas=7,
                                ideas=True,
                                activity=True,
                                comments=False,
+                               email=editable,
                                username=request.user.is_authenticated())
-
+        profile["editable"] = editable
         return Response(profile)
-
     return Response({
         "uid": None,
         "details": "User not found",
     }, status=status.HTTP_404_NOT_FOUND)
 
 
-# @permission_classes([IsAuthenticated])
-@api_view(["GET"])
+@api_view(["POST"])
 @authentication_classes([Auth0Authentication])
 @permission_classes([IsAuthenticatedOrReadOnly])
 def profile_create(request):
     profile = UserProfile.objects.get(user=request.user)
     profile.nickname = request.GET.get("nickname")
-    profile.email = request.GET.get("email")
-    profile.email_verified = request.GET.get("email_verified", False)
+
+    if profile.email is None or len(profile.email) == 0:
+        profile.email = request.GET.get("email")
+        profile.email_verified = request.GET.get("email_verified", False)
+
     if request.GET.get("picture") is not None:
         pic_url = request.GET.get("picture")
+        # Hack for twitter larger image
+        # if profile.realm == "twitter":
+        #     try:
+        #         large_pic_url = pic_url[:(-(len("_normal.jpeg")))]+"_400x400.jpeg"
+        #         print "LARGE PIC USED", large_pic_url
+        #         pic_url = large_pic_url
+        #     except:
+        #         pass
         download_path = Picture.download(pic_url)
         dir_name, pic_name = profile.gen_pic_path()
         pic_id, _ = Picture.store(download_path, profile, save_to=(dir_name, pic_name), resize=(256, 256))
         profile.pic_id = pic_id
+
     profile.save()
-    return Response(profile.json(max_ideas=0, ideas=False, activity=False, comments=False))
+    return Response(profile.json(max_ideas=0, ideas=False, activity=False, comments=False, email=True))
 
 
 @api_view(["POST"])
@@ -222,7 +312,13 @@ def profile_create(request):
 def profile_update(request):
     profile = UserProfile.objects.get(user=request.user)
     tagline = request.GET.get("tagline")
+    email = request.GET.get("email")
     profile.tagline = tagline
+    if email is not None and len(email) > 0:
+        try:
+            profile.email = email
+        except:
+            pass
     profile.save()
     profile = profile.json()
     return Response(profile)
@@ -245,7 +341,7 @@ def comment_create(request):
     iid = request.GET.get("iid")
     text = request.GET.get("text")
     try:
-        idea = IdeaEntry.objects.get(iid=iid)
+        idea = IdeaEntry.objects.filter(~Q(status="D")).get(iid=iid)
     except ObjectDoesNotExist:
         idea = None
 
