@@ -5,8 +5,6 @@ from django.conf.urls import url
 from django.conf.urls import include
 from django.conf.urls import patterns
 
-from django.contrib import admin
-
 
 from api import views as api
 from app import views as app
@@ -35,9 +33,4 @@ urlpatterns = patterns("",
     url(r"api/comment/create/$",    api.comment_create),
     url(r"api/comment/delete/$",    api.comment_remove),
 
-    url(r"^admin/", include(admin.site.urls)),
-
 )
-
-admin.autodiscover()
-
