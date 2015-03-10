@@ -17,7 +17,7 @@
     "DJANGO_ALLOWED_HOSTS":     "u\"letsdothis.cc\", u\"www.letsdothis.cc\",",
 
     "NGINX_PORT":               80,
-    "NGINX_SERVER_NAME":        "letsdothis.cc www.letsdothis.cc",
+    "NGINX_SERVER_NAME":        "letsdothis.cc",
 
     "NGINX_LOG_ACCESS":         "/root/logs/prod/nginx.access.log",
     "NGINX_LOG_ERROR":          "/root/logs/prod/nginx.error.log",
