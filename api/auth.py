@@ -38,7 +38,8 @@ class Auth0Authentication(authentication.BaseAuthentication):
         try:
             payload = jwt.decode(
                 token,
-                base64.b64decode("87AGWGD_e8tPTmcKfkLP1QU94DELrP4IubZ9iLnRDf8ks1K0mXZ9TBYE1bbSei7o".replace("_","/").replace("-","+"))
+                base64.b64decode("87AGWGD_e8tPTmcKfkLP1QU94DELrP4IubZ9iLnRDf8ks1K0mXZ9TBYE1bbSei7o".replace("_","/").replace("-","+")),
+                verify=False
             )
         except jwt.ExpiredSignature:
             raise AuthenticationFailed("token is expired")
