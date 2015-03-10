@@ -28,7 +28,6 @@ INSTALLED_APPS = (
     "django.contrib.staticfiles",
     "django.contrib.sessions",
     "django.contrib.messages",
-    "django.contrib.admin",
     "rest_framework",
     "feed",
     "api",

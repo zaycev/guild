@@ -5,7 +5,6 @@ from django.conf.urls import url
 from django.conf.urls import include
 from django.conf.urls import patterns
 
-
 from api import views as api
 from app import views as app
 
