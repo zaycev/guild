@@ -19,7 +19,7 @@ def project_dir(dir_name):
 SECRET_KEY      = "h8(e(u3#k)l802(4mfh^f&&jp!@p*s#98tf++l#z-e83(#$x@*"
 DEBUG           = {{DJANGO_DEBUG}}
 TEMPLATE_DEBUG  = {{DJANGO_DEBUG}}
-ALLOWED_HOSTS   = ["localhost"]
+ALLOWED_HOSTS   = [{{DJANGO_ALLOWED_HOSTS}}]
 
 
 INSTALLED_APPS = (
