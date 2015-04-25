@@ -74,6 +74,7 @@ class UserProfile(models.Model):
     realm = models.CharField(max_length=16, null=False, blank=False)
     created = models.DateTimeField(default=datetime.now, auto_now_add=True, null=True)
     pic_id = models.IntegerField(null=True)
+    is_verified = models.BooleanField(default=False, null=False)
 
     def votes(self):
         votes = self.t_votes.values("iid")
@@ -106,15 +107,16 @@ class UserProfile(models.Model):
             username = None
 
         p_json = {
-            "uid":      self.user_id,
-            "username": username,
-            "nickname": self.nickname,
-            "email":    self.email if email else None,
-            "tagline":  self.tagline,
-            "created":  format_iso_datetime(self.created),
-            "picture":  None if self.pic_id is None else "/webapp/usercontent/%s/%s" % self.gen_pic_path(),
-            "ideas":    ideas,
-            "activity": activity,
+            "uid"           : self.user_id,
+            "username"      : username,
+            "nickname"      : self.nickname,
+            "email"         : self.email if email else None,
+            "is_verified"   : self.is_verified,
+            "tagline"       : self.tagline,
+            "created"       : format_iso_datetime(self.created),
+            "picture"       : None if self.pic_id is None else "/webapp/usercontent/%s/%s" % self.gen_pic_path(),
+            "ideas"         : ideas,
+            "activity"      : activity,
         }
 
         if username:
