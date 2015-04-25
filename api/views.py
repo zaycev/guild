@@ -163,7 +163,6 @@ def idea_create(request):
 @permission_classes([IsAuthenticated])
 def idea_update(request):
     user = request.user
-    profile = UserProfile.objects.get(user=user)
     iid = request.GET.get("iid")
     try:
         idea = IdeaEntry.objects.filter(~Q(status="D")).get(iid=iid)
@@ -185,7 +184,7 @@ def idea_update(request):
         return Response({
             "iid": None,
             "details": "Idea not found",
-        }, status=status.HTTP_400_NOT_FOUND)
+        }, status=status.HTTP_404_NOT_FOUND)
 
 
 @api_view(["POST"])
@@ -193,7 +192,6 @@ def idea_update(request):
 @permission_classes([IsAuthenticated])
 def idea_remove(request):
     user = request.user
-    profile = UserProfile.objects.get(user=user)
     iid = request.GET.get("iid")
     try:
         idea = IdeaEntry.objects.filter(~Q(status="D")).get(iid=iid)
@@ -211,7 +209,7 @@ def idea_remove(request):
         return Response({
             "iid": None,
             "details": "Idea not found",
-        }, status=status.HTTP_400_NOT_FOUND)
+        }, status=status.HTTP_404_NOT_FOUND)
 
 #########################
 # PIC API
@@ -222,19 +220,16 @@ def idea_remove(request):
 @authentication_classes([Auth0Authentication])
 @permission_classes([AllowAny])
 def pic_upload(request):
-
     data = request.FILES["file"].read()
     upload_path = Picture.upload(data)
     pic_id, _ = Picture.store(upload_path, resize=(960, 960))
-
     return Response({
         "pid": pic_id
     })
 
 
-
 def pic_remove(request):
-    pass
+    raise NotImplemented("Pic get not implemented.")
 
 
 #########################
@@ -282,27 +277,22 @@ def profile_get(request):
 def profile_create(request):
     profile = UserProfile.objects.get(user=request.user)
     profile.nickname = request.GET.get("nickname")
-
+    ldt_logger.info("Creating new profile [%s] with id [%d]" % (profile.nickname, profile.user_id))
     if profile.email is None or len(profile.email) == 0:
         profile.email = request.GET.get("email")
         profile.email_verified = request.GET.get("email_verified", False)
-
     if request.GET.get("picture") is not None:
         pic_url = request.GET.get("picture")
-        # Hack for twitter larger image
-        # if profile.realm == "twitter":
-        #     try:
-        #         large_pic_url = pic_url[:(-(len("_normal.jpeg")))]+"_400x400.jpeg"
-        #         print "LARGE PIC USED", large_pic_url
-        #         pic_url = large_pic_url
-        #     except:
-        #         pass
-        download_path = Picture.download(pic_url)
-        dir_name, pic_name = profile.gen_pic_path()
-        pic_id, _ = Picture.store(download_path, profile, save_to=(dir_name, pic_name), resize=(256, 256))
-        profile.pic_id = pic_id
-
+        try:
+            ldt_logger.info("Trying to get image from [%s]" % pic_url)
+            download_path = Picture.download(pic_url)
+            dir_name, pic_name = profile.gen_pic_path()
+            pic_id, _ = Picture.store(download_path, profile, save_to=(dir_name, pic_name), resize=(256, 256))
+            profile.pic_id = pic_id
+        except Exception as e:
+            ldt_logger.error("Unable to get image from URL [%r]: %s." % (pic_url, str(e)))
     profile.save()
+    ldt_logger.info("Profile created %d." % profile.user_id)
     return Response(profile.json(max_ideas=0, ideas=False, activity=False, comments=False, email=True))
 
 
@@ -317,8 +307,8 @@ def profile_update(request):
     if email is not None and len(email) > 0:
         try:
             profile.email = email
-        except:
-            pass
+        except Exception as e:
+            ldt_logger.error("Unable to send email to profile [%d]: %s." % (profile.user_id,  str(e)))
     profile.save()
     profile = profile.json()
     return Response(profile)
@@ -330,7 +320,7 @@ def profile_update(request):
 
 
 def comment_get(request):
-    pass
+    raise NotImplemented("Comment get not implemented.")
 
 
 @api_view(["POST"])
@@ -356,4 +346,4 @@ def comment_create(request):
 
 
 def comment_remove(request):
-    pass
+    raise NotImplemented("Comment remove not implemented.")

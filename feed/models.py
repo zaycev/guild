@@ -60,6 +60,7 @@ def send_email(to_address, template, context):
     msg.attach_alternative(html_body, "text/html")
     msg.send()
 
+
 class UserProfile(models.Model):
 
     class Meta:
@@ -216,7 +217,6 @@ class IdeaEntry(models.Model):
 
         return comment
 
-
     def json(self, creator=False, comments=False, votes=False, members=False, pic=False):
 
         if creator:
@@ -295,7 +295,6 @@ class IdeaEntry(models.Model):
         return chunks
 
 
-
 class Picture(models.Model):
 
     UPLOADS = "webapp/uploads"
@@ -343,8 +342,6 @@ class Picture(models.Model):
             os.makedirs(save_dir)
 
         save_path = os.path.join(save_dir, pic_name)
-
-        pic_format = imghdr.what(origin)
 
         try:
             im = Image.open(origin)
