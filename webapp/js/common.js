@@ -63,6 +63,7 @@ app.run(["auth", "$rootScope", "$location", "$cookies", "LdtApi", "ngProgress",
             ngProgress.start();
             LdtApi.ProfileCreate(auth.profile)
                 .success(function(data) {
+                    alert("PROFILE CREATE");
                     ngProgress.complete();
                     $cookies.dissmissWarning = false;
                     $cookies.emailSet = Boolean(data.email);
