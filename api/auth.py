@@ -60,21 +60,22 @@ class Auth0Authentication(authentication.BaseAuthentication):
         if subject is None:
             logger.warn("Subject not found")
             return None
+
         try:
             user = User.objects.get(username=subject)
             try:
                 profile = UserProfile.objects.get(user=user)
             except ObjectDoesNotExist:
-                logger.warn("User '%s' found, but profile does not exist." % user.username)
-                logger.warn("Creating profile for '%s'." % user.username)
+                logger.info("User [%s] found, but profile does not exist." % user.username)
+                logger.info("Creating profile for [%s]." % user.username)
                 profile = UserProfile(user=user,
                                       realm=realm,
                                       realm_id=realm_id)
                 profile.save()
-                logger.warn("Profile '%s' was created." % user.username)
+                logger.warn("Profile [%s] was created." % user.username)
 
         except User.DoesNotExist:
-            logger.warn("User '%s' not found, creating." % subject)
+            logger.warn("User [%s] not found, creating." % subject)
             user = User.objects.create_user(subject)
             profile = UserProfile(user=user,
                                   realm=realm,

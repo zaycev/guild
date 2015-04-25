@@ -292,7 +292,7 @@ def profile_create(request):
         except Exception as e:
             ldt_logger.error("Unable to get image from URL [%r]: %s." % (pic_url, str(e)))
     profile.save()
-    ldt_logger.info("Profile created %d." % profile.user_id)
+    ldt_logger.info("Profile created [%d]." % profile.user_id)
     return Response(profile.json(max_ideas=0, ideas=False, activity=False, comments=False, email=True))
 
 
