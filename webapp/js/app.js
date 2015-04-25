@@ -5,13 +5,13 @@ Author: Vova Zaytsev <zaytsev@usc.edu>
 "use strict";
 
 
-var app = angular.module("LdtApp", ["ngRoute", "ngSanitize", "ngCookies", "angularFileUpload", "auth0", "ngProgress"])
-    .config(["$routeProvider", "$locationProvider", "authProvider", "$httpProvider",
+var app = angular.module("LdtApp", ["ngRoute", "ngSanitize", "ngCookies", "angularFileUpload", "ngProgress", "auth0"])
+    .config(["$routeProvider", "$locationProvider", "$httpProvider", "authProvider",
 
 
-    function($routeProvider, $locationPrvioder, authProvider, $httpProvider) {
+    function($routeProvider, $locationPrvioder, $httpProvider, authProvider) {
 
-        $httpProvider.interceptors.push('authInterceptor');
+//        $httpProvider.interceptors.push("authInterceptor");
 
         $routeProvider.when("/list", {
              templateUrl: "/webapp/partials/list.html",

@@ -73,7 +73,7 @@ class UserProfile(models.Model):
     tagline = models.CharField(max_length=100, null=True, blank=True)
     realm_id = models.CharField(max_length=32, null=False, blank=False)
     realm = models.CharField(max_length=16, null=False, blank=False)
-    created = models.DateTimeField(default=datetime.now, auto_now_add=True, null=True)
+    created = models.DateTimeField(auto_now_add=True, null=True)
     pic_id = models.IntegerField(null=True)
     is_verified = models.BooleanField(default=False, null=False)
 
@@ -108,16 +108,16 @@ class UserProfile(models.Model):
             username = None
 
         p_json = {
-            "uid"           : self.user_id,
-            "username"      : username,
-            "nickname"      : self.nickname,
-            "email"         : self.email if email else None,
-            "is_verified"   : self.is_verified,
-            "tagline"       : self.tagline,
-            "created"       : format_iso_datetime(self.created),
-            "picture"       : None if self.pic_id is None else "/webapp/usercontent/%s/%s" % self.gen_pic_path(),
-            "ideas"         : ideas,
-            "activity"      : activity,
+            "uid": self.user_id,
+            "username": username,
+            "nickname": self.nickname,
+            "email": self.email if email else None,
+            "is_verified": self.is_verified,
+            "tagline": self.tagline,
+            "created": format_iso_datetime(self.created),
+            "picture": None if self.pic_id is None else "/webapp/usercontent/%s/%s" % self.gen_pic_path(),
+            "ideas": ideas,
+            "activity": activity,
         }
 
         if username:
@@ -145,12 +145,9 @@ class IdeaEntry(models.Model):
 
     title = models.CharField(max_length=100, null=False, blank=False)
     summary = models.CharField(max_length=1000, null=False, blank=False)
-    created = models.DateTimeField(default=datetime.now, auto_now_add=True, null=True)
-    voted = models.DateTimeField(default=datetime.now, auto_now_add=True, null=True)
-    updated = models.DateTimeField(default=datetime.now,
-                                   auto_now=True,
-                                   auto_now_add=True,
-                                   null=True)
+    created = models.DateTimeField(auto_now_add=True, null=True)
+    voted = models.DateTimeField(auto_now_add=True, null=True)
+    updated = models.DateTimeField(auto_now=True, null=True)
 
     pic_id = models.IntegerField(null=True)
     geo_id = models.IntegerField(null=True)

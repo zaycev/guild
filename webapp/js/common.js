@@ -60,6 +60,7 @@ app.run(["auth", "$rootScope", "$location", "$cookies", "LdtApi", "ngProgress",
         auth.signin({
             popup: true
         }, function() {
+            console.log("Sign in successful");
             ngProgress.start();
             LdtApi.ProfileCreate(auth.profile)
                 .success(function(data) {
