@@ -66,7 +66,7 @@ class UserProfile(models.Model):
     class Meta:
         db_table = "t_profile"
 
-    user = models.ForeignKey(User, primary_key=True, null=False)
+    user = models.ForeignKey(User, primary_key=True, null=False, unique=True)
     nickname = models.CharField(max_length=64, null=False, blank=False)
     email = models.EmailField(unique=False, null=True, max_length=50)
     email_verified = models.BooleanField(default=False, null=False)

@@ -22,6 +22,7 @@ class Auth0Authentication(authentication.BaseAuthentication):
 
         auth = request.META.get("HTTP_AUTHORIZATION")
         if not auth:
+            logger.error("Not credentials provided.")
             return None
 
         parts = auth.split()
@@ -38,8 +39,7 @@ class Auth0Authentication(authentication.BaseAuthentication):
         try:
             payload = jwt.decode(
                 token,
-                base64.b64decode("87AGWGD_e8tPTmcKfkLP1QU94DELrP4IubZ9iLnRDf8ks1K0mXZ9TBYE1bbSei7o".replace("_","/").replace("-","+")),
-                verify=False
+                base64.b64decode("87AGWGD_e8tPTmcKfkLP1QU94DELrP4IubZ9iLnRDf8ks1K0mXZ9TBYE1bbSei7o".replace("_", "/").replace("-", "+"))
             )
         except jwt.ExpiredSignature:
             raise AuthenticationFailed("token is expired")
