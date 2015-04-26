@@ -11,8 +11,6 @@ var app = angular.module("LdtApp", ["ngRoute", "ngSanitize", "ngCookies", "angul
 
     function($routeProvider, $locationPrvioder, $httpProvider, authProvider) {
 
-//        $httpProvider.interceptors.push("authInterceptor");
-
         $routeProvider.when("/list", {
              templateUrl: "/webapp/partials/list.html",
              controller: "ListController"
@@ -43,8 +41,6 @@ var app = angular.module("LdtApp", ["ngRoute", "ngSanitize", "ngCookies", "angul
              controller: "EditProfileController"
         });
 
-
-
         $routeProvider.otherwise({redirectTo: "/list"});
 
         authProvider.init({
@@ -53,6 +49,7 @@ var app = angular.module("LdtApp", ["ngRoute", "ngSanitize", "ngCookies", "angul
             callbackURL: location.href
         });
 
+        $httpProvider.interceptors.push("authInterceptor");
 
 }])
 

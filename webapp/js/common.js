@@ -61,18 +61,20 @@ app.run(["auth", "$rootScope", "$location", "$cookies", "LdtApi", "ngProgress",
             popup: true
         }, function() {
             console.log("Sign in successful");
+            console.log(auth);
             ngProgress.start();
             LdtApi.ProfileCreate(auth.profile)
                 .success(function(data) {
-                    alert("PROFILE CREATE");
                     ngProgress.complete();
                     $cookies.dissmissWarning = false;
                     $cookies.emailSet = Boolean(data.email);
                     $rootScope.showEmailWarning = auth.isAuthenticated && !Boolean($cookies.dissmissWarning) && !Boolean($cookies.emailSet);
-                    window.location.reload();
+//                    window.location.reload();
+                    alert("SUCCESS");
                 })
                 .error(function(data) {
                     $rootScope.ShowError("LogIn");
+                    alert("ERROR");
                 });
 
         }, function() {
