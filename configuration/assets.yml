@@ -1,0 +1,44 @@
+#
+assets:
+
+    css_all:
+        type: css
+        files:
+            - webapp/css/reset.css
+            - webapp/css/main.css
+            - webapp/css/font.css
+
+    js_vendor_angular:
+        type: js
+        files:
+            - webapp/js/vendor/angular.min.js
+
+    js_vendor_angular_libs:
+        type: js
+        files:
+            - webapp/js/vendor/angular-route.min.js
+            - webapp/js/vendor/angular-cookies.min.js
+            - webapp/js/vendor/angular-sanitize.min.js
+            - webapp/js/vendor/angular-file-upload.js
+            - webapp/js/vendor/angular-progress.min.js
+
+    js_vendor_libs:
+        type: js
+        files:
+            - webapp/js/vendor/auth0-widget-5.2.min.js
+            - webapp/js/vendor/auth0-angular-2.js
+            - webapp/js/vendor/jquery-2.1.0.min.js
+
+    js_app:
+        type: js
+        files:
+            - webapp/js/app.js
+            - webapp/js/directives.js
+            - webapp/js/common.js
+            - webapp/js/api.js
+            - webapp/js/controller/list.js
+            - webapp/js/controller/post.js
+            - webapp/js/controller/profile.js
+            - webapp/js/controller/edit-profile.js
+            - webapp/js/controller/idea.js
+            - webapp/js/controller/edit-idea.js

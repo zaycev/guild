@@ -1,0 +1,59 @@
+#
+name    : farmhouse
+stage   : dev
+version : 0.2.0-development
+email   : vladimir.zaytsev.m@gmail.com
+
+#
+build:
+    repository                  : https://github.com/zaycev/letsdothis.git
+    branch                      : dev
+    root                        : ./build/farmhouse_dev
+    path                        : ./build/farmhouse_dev/application
+
+#
+deploy:
+    host                        : 107.170.194.53
+    hostname                    : dev.letsdothis.cc
+    root                        : /farmhouse
+    path                        : /farmhouse/application
+    user                        : root
+
+#
+application:
+
+    logdir                      : /farmhouse/logs
+
+    django:
+        module                  : farmhouse
+        debug                   : False
+        django_log              : /farmhouse/logs/django.log
+        custom_log              : /farmhouse/logs/farmhouse.api.log
+
+    nginx:
+        user                    : root
+        port                    : 80
+        worker_connections      : 1024
+        worker_processes        : 2
+        server_name             : dev.letsdothis.cc
+        access_log              : /farmhouse/logs/nginx.access.log
+        error_log               : /farmhouse/logs/nginx.error.log
+
+    uwsgi:
+        max_requests            : 1024
+        uwsgi_log               : /farmhouse/logs/uwsgi.log
+        processes               : 2
+        threads                 : 4
+
+    postgres:
+        test                    : test
+
+#
+credentials:
+
+    database:
+        name                    : farmhouse
+        user                    : master
+        port                    : 5432
+        host                    : 192.241.202.249
+        pass                    : "Cefaigfilj#twuc5"

@@ -20,7 +20,7 @@
 
             <ul class="nav clearfix user-box">
                 <li class="author">
-                <h4>Author</h4>                    
+                <h4>Author</h4>
                     <div class="pic">
                         <a href="#/profile?u={{idea.creator.uid}}">
                             <img src="{{idea.creator.picture}}" alt="" />
@@ -67,7 +67,7 @@
             <ul id="comments" class="nav">
 
                 <li ng-class="{active:comment.status, pasive:!comment.status}"
-                    ng-repeat="comment in idea.comments">
+                    ng-repeat="comment in idea.comments | orderBy : 'created'">
 
                     <a href="#/profile?u={{comment.creator.uid}}" class="user-profile" title="">
                         <img src="{{comment.creator.picture}}" alt="" />
