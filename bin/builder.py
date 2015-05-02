@@ -55,7 +55,7 @@ def build_asset(assets_config):
 
 if __name__ == "__main__":
 
-    _, build_config_yml, assets_config_yml, asset_id, static_dir = sys.argv
+    _, assets_config_yml, asset_id, index_html, assets_out_dir = sys.argv
 
     with open(build_config_yml, "r") as build_config_if, open(assets_config_yml, "r") as assets_config_if:
 

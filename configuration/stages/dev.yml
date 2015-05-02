@@ -7,22 +7,25 @@ email   : vladimir.zaytsev.m@gmail.com
 #
 build:
     repository                  : https://github.com/zaycev/letsdothis.git
-    branch                      : dev
+    branch                      : dev-docker
     root                        : ./build/farmhouse_dev
     path                        : ./build/farmhouse_dev/application
+    static                      : ./build/farmhouse_dev/static
 
 #
 deploy:
+    user                        : root
     host                        : 107.170.194.53
     hostname                    : dev.letsdothis.cc
     root                        : /farmhouse
     path                        : /farmhouse/application
-    user                        : root
+    static                      : /farmhouse/static
 
 #
 application:
 
     logdir                      : /farmhouse/logs
+    static                      : /farmhouse/static
 
     django:
         module                  : farmhouse

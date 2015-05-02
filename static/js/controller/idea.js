@@ -28,6 +28,7 @@ app.controller("IdeaController", ["$scope", "$rootScope", "$location", "$window"
                 })
                 .error(function() {
                     $rootScope.ShowError("Load Idea");
+                    $scope.idea = 0;
                 });
         };
         LoadIdea();

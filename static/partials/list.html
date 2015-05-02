@@ -7,7 +7,7 @@
 <div class="wrap">
     <ul id="things" class="nav" ng-show="ideas.length>0">
         <li class="thing" ng-repeat="idea in ideas">
-            <a href="#/profile/?u={{idea.creator.uid}}" class="user-profile" title="{{idea.creator.nickname}}">
+            <a href="#/profile/?u={{idea.creator.uid}}" class="user-profile user" title="{{idea.creator.nickname}}" ng-class="{verified:idea.creator.is_verified}">
                 <img src="{{idea.creator.picture}}" alt="" />
             </a>
             <div class="rating">

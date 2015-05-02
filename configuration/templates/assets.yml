@@ -1,0 +1,52 @@
+#
+assets:
+
+    css_all:
+        type: css
+        files:
+            - static/css/reset.css
+            - static/css/main.css
+            - static/css/font.css
+
+    js_vendor_angular:
+        type: js
+        files:
+            - static/js/vendor/angular.min.js
+
+    js_vendor_angular_libs:
+        type: js
+        files:
+            - static/js/vendor/angular-route.min.js
+            - static/js/vendor/angular-cookies.min.js
+            - static/js/vendor/angular-sanitize.min.js
+            - static/js/vendor/angular-file-upload.js
+            - static/js/vendor/angular-progress.min.js
+
+    js_vendor_libs:
+        type: js
+        files:
+            - static/js/vendor/auth0-widget-5.2.min.js
+            - static/js/vendor/auth0-angular-2.js
+            - static/js/vendor/jquery-2.1.0.min.js
+    js_app:
+        type: js
+        files:
+            - static/js/app.js
+            - static/js/directives.js
+            - static/js/common.js
+            - static/js/api.js
+            - static/js/controller/list.js
+            - static/js/controller/post.js
+            - static/js/controller/profile.js
+            - static/js/controller/edit-profile.js
+            - static/js/controller/idea.js
+            - static/js/controller/edit-idea.js
+
+html:
+    - templates/index.min.html
+
+copy:
+    - img
+    - partials
+    - favicon.ico
+    - favicon.png

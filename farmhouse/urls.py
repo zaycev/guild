@@ -10,8 +10,7 @@ from app import views as app
 
 urlpatterns = patterns("",
 
-    url(r"^$",                      app.app),
-    url(r"^debug/$",                app.debug),
+    url(r"^$",                      app.debug_page),
 
     url(r"api/idea/get/$",          api.idea_get),
     url(r"api/idea/list/$",         api.idea_list),

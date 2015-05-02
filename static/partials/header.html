@@ -18,8 +18,8 @@
        ng-click="$root.Create()"
        style="cursor:pointer;"
        class="add-thing h-btn ir"
-       title="Add thing">
-       Add thing
+       title="Post a new idea">
+       Post a new idea
     </a>
 
     <a ng-click="$root.Back()"
@@ -38,9 +38,9 @@
                 Search
             </button>
             <input id="HeaderSearch" type="text" name="search" ng-model="$root.textQuery" ng-enter="$root.Search()"/>
-            <div id="HeaderSearchPlaceholder" class="search-placeholder"><em>#letsdothis</em> find things to build</div>
+            <div id="HeaderSearchPlaceholder" class="search-placeholder"><em>#letsdothis</em> find ideas to build</div>
         </form>
     </div>
 </header>
-<div class="email-warn" ng-show="$root.showEmailWarning">Please <a href="#/edit-profile/"> add your e-mail address</a> so we can notify you on your idea activity. <a class="dismiss" style="cursor:pointer;" ng-click="$root.DissmissEmailWarning()">Dismiss</a></div>
+<div class="email-warn" ng-show="$root.showEmailWarning">Please <a href="#/edit-profile/"> add your e-mail address</a> so we can notify you when people respond to your ideas. <a class="dismiss" style="cursor:pointer;" ng-click="$root.DissmissEmailWarning()">Dismiss</a></div>
 <br ng-show="$root.showEmailWarning"/>

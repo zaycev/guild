@@ -8,6 +8,14 @@
 
 /* Common styles
 ======================================================================== */
+
+* {
+	-webkit-transition: all 0.3s ease;
+    -moz-transition: all 0.3s ease;
+    -o-transition: all 0.3s ease;
+	transition: all 0.3s ease;
+}
+
 body,
 button,
 input,
@@ -32,6 +40,62 @@ h1, h2, h3, h4, h4 {
 .wrap {
 	margin: 0 auto;
 	width: 980px;
+}
+
+.user-profile,
+#thing-page .verified img { position: relative }
+
+
+
+		.verified:after {
+		  content: "v";
+		  display: block;
+		  text-align: center;
+		  position: absolute;
+		  border-radius: 50%;
+		  background-color: rgb(97, 243, 255);
+		  color: rgba(0, 0, 0, 0.6);
+
+		  font-size: 8px;
+ 		  line-height: 8px;
+		  height: 9px;
+		  width: 9px;
+		  right: -1px;
+		  bottom: 6%;
+
+		  }
+
+
+		.user-box .verified:after {
+
+		  font-size: 11px;
+		  font-weight: bold;
+		  line-height: 10px;
+		  height: 12px;
+		  width: 12px;
+		  right: 1px;
+		  bottom: 7%;
+
+
+		}
+
+		.user-box .upvoters .verified:after {
+
+		  font-size: 6px;
+		  line-height: 6px;
+		  height: 6px;
+		  width: 6px;
+		  right: -1px;
+		  bottom: 6%;
+
+		}
+
+
+
+
+#things {
+	-webkit-transition: height 1s; /* For Safari 3.1 to 6.0 */
+    transition: height 1s;
 }
 
 /*html,
@@ -75,9 +139,9 @@ body {
 	}
 	#header .join {
 		float: right;
-		background-image: url(/webapp/img/header-profile.png);
+		background-image: url(/static/img/header-profile.png);
 		background-position: 10px 6px;
-		margin-left: 3px;
+		margin-left: 0;
 	}
 	#header .join:hover {
 		background-position: 10px -77px;
@@ -100,7 +164,7 @@ body {
 	}
 	#header .add-thing {
 		float: right;
-		background-image: url(/webapp/img/header-add.png);
+		background-image: url(/static/img/header-add.png);
 		background-position: 13px 8px;
 	}
 	#header .add-thing:hover {
@@ -108,11 +172,12 @@ body {
 	}
 	#header .back {
 		float: left;
-		background-image: url(/webapp/img/header-back.png);
+		background-image: url(/static/img/header-back.png);
 		background-position: 14px 19px;
 		width: 65px;
 		height: 57px;
-		margin: 0 14 0 0px;
+		margin-left: 0 !important;
+		display: none;
 	}
 	#header .back:hover {
 		background-position: 14px -62px;
@@ -127,7 +192,7 @@ body {
 		#header .search button {
 			float: right;
 			margin: 0;
-			background-image: url(/webapp/img/header-search.png);
+			background-image: url(/static/img/header-search.png);
 			background-position: 14px 9px;
 			position: relative;
 			z-index: 2;
@@ -180,11 +245,18 @@ body {
 }
 	#header.logged .search {
 		margin-right: 169px;
-		margin-left: 26px;
+		margin-left: 0px;
 	}
-#header.have-back {
-	padding-left: 0px;
+
+
+#header.have-back .search {
+	margin-left: 26px;
 }
+
+#header.have-back .back {
+	display: block;
+}
+
 /* // Header - end */
 
 
@@ -213,8 +285,7 @@ body {
 	}
 		#things .user-profile {
 			float: right;
-			border-radius: 50%;
-			overflow: hidden;
+
 			margin: 14px 23px 0 0;
 			border: solid 2px transparent;
 		}
@@ -222,19 +293,35 @@ body {
 		#things .user-profile img {
 			width: 38px;
 			height: 38px;
+			border-radius: 50%;
 		}
 
 		#things .user-profile:hover {
-			/* border: solid 2px yellow; */
-			width: 40px;
-			height: 40px;
+			margin-right: 24px;
+			  margin-top: 13px;
 		}
 
+		.user:hover {
+			border: 0px;
+			/*width: 40px;
+			height: 40px;*/
+			}
+
+
+		.user:hover img,
 		#things .user-profile:hover img {
 			/* border: solid 2px yellow; */
 			width: 40px;
 			height: 40px;
-		}		
+		}
+
+		.user-box .upvoters .pics .user:hover {
+			width: 23px;
+			height: 23px;
+		}
+
+
+
 
 		#things .rating {
 			float: left;
@@ -249,7 +336,7 @@ body {
 				cursor: pointer;
 				height: 20px;
 				border-bottom: 1px solid rgba(132,132,132, .2);
-				background: url(/webapp/img/vote-arrow.png) no-repeat 7px 7px;
+				background: url(/static/img/vote-arrow.png) no-repeat 7px 7px;
 			}
 			#things .vote:hover {
 				background-color: #DBDBDB;
@@ -260,6 +347,7 @@ body {
 			#things .vote.voted {
 				background-color: rgba(95, 255, 60, 0.26);
 				border: 0;
+				border-radius: 4px;
 			}
 
 			#things .score {
@@ -335,7 +423,7 @@ body {
 			}
 				#thing-page .story .rating .vote {
 					height: 25px;
-					background: url(/webapp/img/vote-arrow-inner.png) no-repeat 11px 8px;
+					background: url(/static/img/vote-arrow-inner.png) no-repeat 11px 8px;
 					margin-top: 4px;
 					border-radius: 3px;
 				}
@@ -400,14 +488,14 @@ body {
 				margin-right: 60px;
 				letter-spacing: -.2px;
 			}
-				#thing-page .user-box .author .pic,
+				#thing-page .user-box .author .pic a,
 				#thing-page .user-box .participants .pics a,
 				#thing-page .user-box .upvoters .pics a {
 					float: left;
 					margin-right: 16px;
 					border-radius: 50%;
-					overflow: hidden;
 					display: block;
+					position: relative;
 				}
 				#thing-page .user-box .author .pic {
 					margin-top: 3px;
@@ -416,6 +504,7 @@ body {
 					#thing-page .user-box .participants .pics a img {
 						width: 62px;
 						height: 62px;
+						border-radius: 50%;
 					}
 				#thing-page .user-box .author .name {
 					margin-bottom: 3px;
@@ -460,10 +549,11 @@ body {
 					#thing-page .user-box .upvoters .pics a img {
 						width: 23px;
 						height: 23px;
+						border-radius: 50%;
 					}
 
 		#lets-do-it {
-			margin-bottom: 70px;
+			margin-bottom: 40px;
 		}
 			#lets-do-it input[type="text"] {
 				padding: 0 0 0 20px;
@@ -535,8 +625,7 @@ body {
 			}
 				#comments .user-profile {
 					float: left;
-					border-radius: 50%;
-					overflow: hidden;
+
 				}
 				#comments .pasive .user-profile {
 					margin: -4px 19px 0 1px;
@@ -545,6 +634,7 @@ body {
 						width: 29px;
 						height: 29px;
 						opacity: .5;
+						border-radius: 50%;
 					}
 				#comments .active .user-profile {
 					margin: -3px 14px 0 -3px;
@@ -552,6 +642,7 @@ body {
 					#comments .active .user-profile img {
 						width: 38px;
 						height: 38px;
+						border-radius: 50%;
 					}
 				#comments .message-holder {
 					overflow: hidden;
@@ -605,7 +696,7 @@ body {
 		font-size: 10px;
 		margin-left: 10px;
 		line-height: 23px;
-		vertical-align: top;		
+		vertical-align: top;
 	}
 
 	#footer .footerabout {
@@ -692,11 +783,10 @@ form .hint {
 
 .profile .userdata img {
 	display: block;
-	margin: 20px auto;
+	margin: 20px auto 0px;
 	border-radius: 50%;
-	overflow: hidden;
-	width: 100px;
-	height: 100px;
+	width: 38px;
+	height: 38px;
 }
 
 .profile .userdata h3 {
@@ -716,7 +806,16 @@ form .hint {
 	color: lightblue;
  }
 
- .profile .rating a { 
+
+ .profile a.user {
+	margin: 20px auto;
+	  font-size: 13px;
+	  position: relative;
+	  width: 41px;
+	  display: block;
+}
+
+ .profile .rating a {
  	margin: 0;
  }
 
@@ -752,8 +851,8 @@ float: right;
 	padding-bottom: 10px;
 }
 
-.paginator { 
-	text-align: center ; 
+.paginator {
+	text-align: center ;
 	margin-top: 20px;
 	border-radius: 2px;
 	background-color: #F7F7F7;
@@ -763,8 +862,8 @@ float: right;
 	background-color: #eee;
 }
 
-.paginator a { 
-	padding: 20px 0 ; 
+.paginator a {
+	padding: 20px 0 ;
 	display: block;
 	text-decoration: none;
 	font-size: 12px;
@@ -782,7 +881,7 @@ Progress bar
     z-index: 99998;
     background-color: green;
     color: green;
-    /*box-shadow: 0 0 10px 0;  Inherits the font color 
+    /*box-shadow: 0 0 10px 0;  Inherits the font color
     */
     height: 2px;
     opacity: 0;
@@ -806,7 +905,7 @@ Progress bar
 }
 
 
-.noresults { 
+.noresults {
 	text-align: center;
 	padding: 50px 0;
 	min-height: 50px;

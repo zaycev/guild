@@ -20,9 +20,9 @@
 
             <ul class="nav clearfix user-box">
                 <li class="author">
-                <h4>Author</h4>
+                <h4>Author</h4>                    
                     <div class="pic">
-                        <a href="#/profile?u={{idea.creator.uid}}">
+                        <a href="#/profile?u={{idea.creator.uid}}" class="user-profile user test" ng-class="{verified:idea.creator.is_verified}">
                             <img src="{{idea.creator.picture}}" alt="" />
                         </a>
                     </div>
@@ -34,7 +34,7 @@
                 <li class="participants" ng-show="idea.num_members>0">
                     <h4>{{idea.num_members}} participants</h4>
                     <div class="pics">
-                        <a href="#/profile?u={{member.uid}}" ng-repeat="member in idea.members">
+                        <a href="#/profile?u={{member.uid}}" ng-repeat="member in idea.members" class="user" ng-class="{verified:member.is_verified}">
                             <img src="{{member.picture}}" alt="" />
                         </a>
                     </div>
@@ -42,7 +42,7 @@
                 <li class="upvoters" ng-show="idea.num_votes>0">
                     <h4>{{idea.num_votes}} upvoters</h4>
                     <div class="pics">
-                        <a href="#/profile?u={{member.uid}}" ng-repeat="member in idea.votes">
+                        <a href="#/profile?u={{member.uid}}" ng-repeat="member in idea.votes" class="user" ng-class="{verified:member.is_verified}">
                             <img src="{{member.picture}}" alt="" />
                         </a>
                     </div>
@@ -67,9 +67,9 @@
             <ul id="comments" class="nav">
 
                 <li ng-class="{active:comment.status, pasive:!comment.status}"
-                    ng-repeat="comment in idea.comments | orderBy : 'created'">
+                    ng-repeat="comment in idea.comments | orderBy: 'created'">
 
-                    <a href="#/profile?u={{comment.creator.uid}}" class="user-profile" title="">
+                    <a href="#/profile?u={{comment.creator.uid}}" class="user-profile user" title=""  ng-class="{verified:member.is_verified}">
                         <img src="{{comment.creator.picture}}" alt="" />
                     </a>
 
@@ -89,7 +89,7 @@
 </div>
 
 
-<div id="thing-page" ng-show="!idea">
+<div id="thing-page" ng-show="idea==0">
     <div class="wrap">
         <div class="inner">
             Idea not found

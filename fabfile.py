@@ -7,6 +7,8 @@ import glob
 import os
 import os.path
 import yaml
+import calendar
+import time
 
 from jinja2 import Environment
 from jinja2 import FileSystemLoader
@@ -172,7 +174,9 @@ templates = Environment(loader=FileSystemLoader("./configuration/templates/"))
 #         run("sudo service nginx restart".format(**config))
 
 
-def build_image(stage="dev", do_prepare="y", do_config="y", do_assets="y", do_docker="y"):
+def build(stage="dev", do_prepare="y", do_config="y", do_assets="y", do_docker="y"):
+
+    build_id = str(calendar.timegm(time.gmtime()))
 
     if stage == "prod":
         print(red("Building Docker container for %s" % stage))
@@ -181,38 +185,46 @@ def build_image(stage="dev", do_prepare="y", do_config="y", do_assets="y", do_do
     with open("configuration/stages/%s.yml" % stage, "r") as config_yml:
         config = yaml.load(config_yml)
 
-    # Prepare build root.
-    if do_prepare == "y":
-        print(green("Preparing build root [%s]" % config["build"]["root"]))
-        local("rm -rf %s" % config["build"]["root"])
-        local("mkdir -p  %s" % config["build"]["root"])
-        local("mkdir -p  %s/configuration" % config["build"]["root"])
-        local("mkdir -p  %s/static" % config["build"]["root"])
-        local("echo '*' > %s/.gitignore" % config["build"]["root"])
-        local("git clone -b %s %s %s" % (
-            config["build"]["branch"],
-            config["build"]["repository"],
-            config["build"]["path"],
-        ))
-        local("rm -rf %s/.git" % config["build"]["path"])
+    print(red("BuildId=%s" % build_id))
+    config["build_id"] = build_id
 
-    # Render configurations.
-    if do_config == "y":
-        print(green("Rendering configurations. [%s]" % ",".join(glob.glob("./configuration/templates/*"))))
-        for template_path in glob.glob("./configuration/templates/*"):
-            template_name = os.path.basename(template_path)
-            print(blue("\t Rendering [%s]" % template_name))
-            template = templates.get_template(template_name)
-            with open("%s/configuration/%s" % (config["build"]["root"], template_name), "wb") as o_fl:
-                o_fl.write(template.render(config))
-        local("mv %s/configuration/Dockerfile ./Dockerfile" % config["build"]["root"])
+    # # Prepare build root.
+    # if do_prepare == "y":
+    #     print(green("Preparing build root [%s]" % config["build"]["root"]))
+    #     local("rm -rf %s" % config["build"]["root"])
+    #     local("mkdir -p  %s" % config["build"]["root"])
+    #     local("mkdir -p  %s/configuration" % config["build"]["root"])
+    #     local("echo '*' > %s/.gitignore" % config["build"]["root"])
+    #     local("git clone -b %s %s %s" % (
+    #         config["build"]["branch"],
+    #         config["build"]["repository"],
+    #         config["build"]["path"],
+    #     ))
+    #     local("rm -rf %s/.git" % config["build"]["path"])
+    #     local("mv %s/webapp %s" % (config["build"]["path"], config["build"]["static"]))
 
-    # Render assets
+    # # Render configurations.
+    # if do_config == "y":
+    #     print(green("Rendering configurations. [%s]" % ",".join(glob.glob("./configuration/templates/*"))))
+    #     for template_path in glob.glob("./configuration/templates/*"):
+    #         template_name = os.path.basename(template_path)
+    #         print(blue("\t Rendering [%s]" % template_name))
+    #         template = templates.get_template(template_name)
+    #         with open("%s/configuration/%s" % (config["build"]["root"], template_name), "wb") as o_fl:
+    #             o_fl.write(template.render(config))
+    #     local("mv %s/configuration/Dockerfile ./Dockerfile" % config["build"]["root"])
+
+    # Render assets.
+    if do_assets == "y":
+        print(green("Rendering assets."))
+        local("rm -rf %s" % config["build"]["static"])
+        local("mkdir -p %s" % config["build"]["static"])
+        # local("./bin/builder.py %s/configuration/assets.yml %s %s %s" % (
+        #     config["build"]["root"],
+        #     config["build"]["root"],
+        #     config["build"]["static"],
+        #     build_id,
+        # ))
 
 
-
-
-    # local("docker build -t lucid_ai_image .")
-    # local("docker save lucid_ai_image | pbzip2 -9 > lucid_ai_image.tar.bz2")
-
-    local("rm Dockerfile")
+    # local("rm Dockerfile")

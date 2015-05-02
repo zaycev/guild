@@ -12,32 +12,32 @@ var app = angular.module("LdtApp", ["ngRoute", "ngSanitize", "ngCookies", "angul
     function($routeProvider, $locationPrvioder, $httpProvider, authProvider) {
 
         $routeProvider.when("/list", {
-             templateUrl: "/webapp/partials/list.html",
+             templateUrl: "/static/partials/list.html",
              controller: "ListController"
         });
 
         $routeProvider.when("/idea", {
-             templateUrl: "/webapp/partials/idea.html",
+             templateUrl: "/static/partials/idea.html",
              controller: "IdeaController"
         });
 
         $routeProvider.when("/edit-idea", {
-             templateUrl: "/webapp/partials/edit-idea.html",
+             templateUrl: "/static/partials/edit-idea.html",
              controller: "EditIdeaController"
         });
 
         $routeProvider.when("/post", {
-             templateUrl: "/webapp/partials/post.html",
+             templateUrl: "/static/partials/post.html",
              controller: "PostController"
         });
 
         $routeProvider.when("/profile", {
-             templateUrl: "/webapp/partials/profile.html",
+             templateUrl: "/static/partials/profile.html",
              controller: "ProfileController"
         });
 
         $routeProvider.when("/edit-profile", {
-             templateUrl: "/webapp/partials/edit-profile.html",
+             templateUrl: "/static/partials/edit-profile.html",
              controller: "EditProfileController"
         });
 

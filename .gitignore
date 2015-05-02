@@ -135,3 +135,6 @@ local_settings.py
 
 
 ### SQLite3 ###
+
+
+*.txt

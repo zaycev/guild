@@ -52,7 +52,7 @@ WSGI_APPLICATION    = "farmhouse.wsgi.application"
 DATABASES = {
     "default": {
         "ENGINE"    : "django.db.backends.postgresql_psycopg2",
-        "NAME"      : "farmhouse_prod",
+        "NAME"      : "farmhouse_dev",
         "USER"      : "master",
         "PASSWORD"  : "ixurf9swykOtubNapshaiGrykigujEb#",
         "HOST"      : "localhost",
@@ -66,9 +66,9 @@ USE_I18N            = True
 USE_L10N            = True
 USE_TZ              = True
 
-STATIC_ROOT         = "/webapp/"
-STATIC_URL          = "/webapp/"
-STATICFILES_DIRS    = (project_dir("webapp"),)
+STATIC_ROOT         = "/static/"
+STATIC_URL          = "/static/"
+STATICFILES_DIRS    = (project_dir("static"),)
 STATICFILES_FINDERS = (
     "django.contrib.staticfiles.finders.FileSystemFinder",
     "django.contrib.staticfiles.finders.AppDirectoriesFinder",
@@ -77,9 +77,7 @@ TEMPLATE_LOADERS = (
     "django.template.loaders.filesystem.Loader",
     "django.template.loaders.app_directories.Loader",
 )
-TEMPLATE_DIRS = (
-    "webapp/templates",
-)
+TEMPLATE_DIRS = ("templates",)
 
 LOGGING = {
     "version": 1,
