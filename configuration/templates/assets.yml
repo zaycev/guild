@@ -1,58 +1,68 @@
-#
+# Configuration for assets builder
+
 assets:
 
     css_all:
-        type: css
-        section: head
+        type        : css
+        section     : head
+        embed       : false
         files:
             - static/css/reset.css
             - static/css/main.css
             - static/css/font.css
 
-    # js_vendor_angular:
-    #     type: js
-    #     section: head
-    #     files:
-    #         - static/js/vendor/angular.min.js
+    js_vendor_angular:
+        type        : js
+        section     : head
+        embed       : false
+        files:
+            - static/js/vendor/angular.min.js
 
-    # js_vendor_angular_libs:
-    #     type: js
-    #     section: foot
-    #     files:
-    #         - static/js/vendor/angular-route.min.js
-    #         - static/js/vendor/angular-cookies.min.js
-    #         - static/js/vendor/angular-sanitize.min.js
-    #         - static/js/vendor/angular-file-upload.js
-    #         - static/js/vendor/angular-progress.min.js
+    js_vendor_angular_libs:
+        type        :   js
+        section     : foot
+        embed       : false
+        files:
+            - static/js/vendor/angular-route.min.js
+            - static/js/vendor/angular-cookies.min.js
+            - static/js/vendor/angular-sanitize.min.js
+            - static/js/vendor/angular-file-upload.js
+            - static/js/vendor/angular-progress.min.js
 
-    # js_vendor_libs:
-    #     type: js
-    #     section: foot
-    #     files:
-    #         - static/js/vendor/auth0-widget-5.2.min.js
-    #         - static/js/vendor/auth0-angular-2.js
-    #         - static/js/vendor/jquery-2.1.0.min.js
-    # js_app:
-    #     type: js
-    #     section: foot
-    #     files:
-    #         - static/js/app.js
-    #         - static/js/directives.js
-    #         - static/js/common.js
-    #         - static/js/api.js
-    #         - static/js/controller/list.js
-    #         - static/js/controller/post.js
-    #         - static/js/controller/profile.js
-    #         - static/js/controller/edit-profile.js
-    #         - static/js/controller/idea.js
-    #         - static/js/controller/edit-idea.js
+    js_vendor_libs:
+        type        : js
+        section     : foot
+        files:
+            - static/js/vendor/auth0-widget-5.2.min.js
+            - static/js/vendor/auth0-angular-2.js
+            - static/js/vendor/jquery-2.1.0.min.js
 
+    js_app:
+        type        : js
+        section     : foot
+        embed       : false
+        files:
+            - static/js/app.js
+            - static/js/directives.js
+            - static/js/common.js
+            - static/js/api.js
+            - static/js/controller/list.js
+            - static/js/controller/post.js
+            - static/js/controller/profile.js
+            - static/js/controller/edit-profile.js
+            - static/js/controller/idea.js
+            - static/js/controller/edit-idea.js
+
+
+# Compile this index.html and place to the root of static dir.
 index_html:
     input: templates/index.min.html
     output: index.html
 
+
 copy:
 
+    # Copy this from repo "static" dir to build "static" dir:
     static:
         - img
         - partials

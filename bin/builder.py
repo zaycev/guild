@@ -6,7 +6,7 @@ import os
 import sys
 import yaml
 import uuid
-import calendar
+
 
 def build_asset(asset_config, build_id, repo_root, dest_root, gzip=True):
     asset_type = asset_config["type"]
@@ -31,13 +31,14 @@ def build_asset(asset_config, build_id, repo_root, dest_root, gzip=True):
     if asset_type == "css":
         os.system("echo '/* build=%s */\\n' > %s" % (build_id, asset_path))
     os.system("cat %s >> %s" % (asset_min_path, asset_path))
-    if gzip == True:
+    if gzip:
         os.system("gzip -9 < %s > %s" % (asset_path, asset_path_gz))
     os.system("rm -f %s" % asset_min_path)
+    element = "<span>Error</span>"
     if asset_type == "js":
-        element = '<link rel="stylesheet" href="/static/%s" />' % asset_file
-    if asset_type == "css":
         element = '<script src="/static/%s"></script>' % asset_file
+    if asset_type == "css":
+        element = '<link rel="stylesheet" href="/static/%s" />' % asset_file
     return element
 
 if __name__ == "__main__":
@@ -58,10 +59,10 @@ if __name__ == "__main__":
         # Render assets.
         for asset_name, asset_config in assets_config["assets"].iteritems():
             asset_map[asset_config["section"]].append(build_asset(asset_config, build_id, repo_root, static_root))
-            print asset_map
         index_html = open(os.path.join(repo_root, assets_config["index_html"]["input"]), "rb").read()
         for section, elements in asset_map.items():
             elements = "".join(elements)
             index_html = index_html.replace("{{%s}}" % section, elements)
+        index_html = index_html.replace("{{build_id}}", build_id)
         with open(os.path.join(static_root, assets_config["index_html"]["output"]), "wb") as o_html:
             o_html.write(index_html)

@@ -185,8 +185,8 @@ def build(stage="dev", do_prepare="y", do_config="y", do_assets="y", do_docker="
     with open("configuration/stages/%s.yml" % stage, "r") as config_yml:
         config = yaml.load(config_yml)
 
-    print(red("BuildId=%s" % build_id))
-    config["build_id"] = build_id
+    # print(red("BuildId=%s" % build_id))
+    # config["build_id"] = build_id
 
     # # Prepare build root.
     # if do_prepare == "y":
@@ -202,28 +202,32 @@ def build(stage="dev", do_prepare="y", do_config="y", do_assets="y", do_docker="
     #     ))
     #     local("rm -rf %s/.git" % config["build"]["path"])
 
-    # Render configurations.
-    if do_config == "y":
-        print(green("Rendering configurations. [%s]" % ",".join(glob.glob("./configuration/templates/*"))))
-        for template_path in glob.glob("./configuration/templates/*"):
-            template_name = os.path.basename(template_path)
-            print(blue("\t Rendering [%s]" % template_name))
-            template = templates.get_template(template_name)
-            with open("%s/configuration/%s" % (config["build"]["root"], template_name), "wb") as o_fl:
-                o_fl.write(template.render(config))
-        local("mv %s/configuration/Dockerfile ./Dockerfile" % config["build"]["root"])
+    # # Render configurations.
+    # if do_config == "y":
+    #     print(green("Rendering configurations. [%s]" % ",".join(glob.glob("./configuration/templates/*"))))
+    #     for template_path in glob.glob("./configuration/templates/*"):
+    #         template_name = os.path.basename(template_path)
+    #         print(blue("\t Rendering [%s]" % template_name))
+    #         template = templates.get_template(template_name)
+    #         with open("%s/configuration/%s" % (config["build"]["root"], template_name), "wb") as o_fl:
+    #             o_fl.write(template.render(config))
 
-    # Render assets.
-    if do_assets == "y":
-        print(green("Rendering assets."))
-        local("rm -rf %s" % config["build"]["static"])
-        local("mkdir -p %s" % config["build"]["static"])
-        local("./bin/builder.py %s/configuration/assets.yml %s %s %s" % (
-            config["build"]["root"],
-            config["build"]["path"],
-            config["build"]["static"],
-            build_id,
-        ))
+    # # Render assets.
+    # if do_assets == "y":
+    #     print(green("Rendering assets."))
+    #     local("rm -rf %s" % config["build"]["static"])
+    #     local("mkdir -p %s" % config["build"]["static"])
+    #     local("./bin/builder.py %s/configuration/assets.yml %s %s %s" % (
+    #         config["build"]["root"],
+    #         config["build"]["path"],
+    #         config["build"]["static"],
+    #         build_id,
+    #     ))
+
+    # Build Docker image.
+    local("docker build --force-rm=true --rm=true -f %s -tag farmhouse ." % (
+        "mv %s/configuration/Dockerfile" % config["build"]["root"],
+    ))
 
 
-    # local("rm Dockerfile")
+# docker build --force-rm=true --rm=true --file=./build/farmhouse_dev/configuration/Dockerfile --tag=farmhouse .
