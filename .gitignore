@@ -138,3 +138,7 @@ local_settings.py
 
 
 *.txt
+
+
+### Virtual Env ###
+venv/*
