@@ -1,0 +1,46 @@
+<header id="header" class="logged clearfix" ng-class="{'have-back': $root.showBack}">
+    <a ng-show="$root.Auth.isAuthenticated"
+       href="#/profile"
+       style="cursor:pointer;"
+       class="user-profile"
+       title="Your profile">
+        <img src="{{$root.Auth.profile.picture}}" alt="" />
+    </a>
+
+    <a ng-click="$root.Login()"
+       ng-show="!$root.Auth.isAuthenticated"
+       style="cursor:pointer;"
+       class="join h-btn ir"
+       title="">
+    </a>
+
+    <a ng-show="$root.controller!='create'"
+       ng-click="$root.Create()"
+       style="cursor:pointer;"
+       class="add-thing h-btn ir"
+       title="Post a new idea">
+       Post a new idea
+    </a>
+
+    <a ng-click="$root.Back()"
+       style="cursor:pointer;"
+       class="back h-btn ir"
+       title="Back">
+        Back
+    </a>
+
+
+    <div class="search">
+        <form>
+            <button ng-click="$root.Search()"
+                    style="cursor:pointer;"
+                    class="h-btn ir">
+                Search
+            </button>
+            <input id="HeaderSearch" type="text" name="search" ng-model="$root.textQuery" ng-enter="$root.Search()"/>
+            <div id="HeaderSearchPlaceholder" class="search-placeholder"><em>#letsdothis</em> find ideas to build</div>
+        </form>
+    </div>
+</header>
+<div class="email-warn" ng-show="$root.showEmailWarning">Please <a href="#/edit-profile/"> add your e-mail address</a> so we can notify you when people respond to your ideas. <a class="dismiss" style="cursor:pointer;" ng-click="$root.DissmissEmailWarning()">Dismiss</a></div>
+<br ng-show="$root.showEmailWarning"/>

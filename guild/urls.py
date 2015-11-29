@@ -2,8 +2,10 @@
 # Author: Vova Zaytsev <zaytsev@usc.edu>
 
 from django.conf.urls import url
-from django.conf.urls import include
 from django.conf.urls import patterns
+
+from django.conf import settings
+from django.conf.urls.static import static
 
 from api import views as api
 from app import views as app
@@ -32,3 +34,5 @@ urlpatterns = patterns("",
     url(r"api/comment/delete/$",    api.comment_remove),
 
 )
+
+urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
