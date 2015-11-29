@@ -2,9 +2,6 @@
 # Author: Vova Zaytsev <zaytsev@usc.edu>
 
 import os
-import sys
-
-sys.path.append("/usr/local/lib/python2.7/dist-packages")
 
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "guild.settings")
 
