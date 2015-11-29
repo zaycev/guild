@@ -142,3 +142,6 @@ local_settings.py
 
 ### Virtual Env ###
 venv/*
+
+### Django Static Files ###
+staticfiles/*
